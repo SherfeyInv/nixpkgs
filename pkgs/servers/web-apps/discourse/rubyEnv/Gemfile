@@ -26,7 +26,7 @@ else
   gem "activerecord", rails_version
   gem "activesupport", rails_version
   gem "railties", rails_version
-  gem "sprockets-rails"
+  gem "sprockets-rails", ">= 3.5.0"
 end
 
 gem "json"
