@@ -38,7 +38,7 @@
     "webdav": "^3.6.2",
     "wink-lemmatizer": "^3.0.4",
     "ws": "^8.13.0",
-    "zip-a-folder": "^0.0.12"
+    "zip-a-folder": "^3.1.7"
   },
   "devDependencies": {
     "@types/i18next": "^13.0.0",
