@@ -1,30 +1,31 @@
-{ lib
-, fetchFromGitHub
-, buildPythonPackage
-, pythonOlder
-, pytestCheckHook
-, beancount-black
-, beancount-parser
-, beanhub-forms
-, beanhub-import
-, click
-, fastapi
-, httpx
-, jinja2
-, poetry-core
-, pydantic
-, pydantic-core
-, pydantic-settings
-, pytz
-, pyyaml
-, rich
-, starlette-wtf
-, uvicorn
+{
+  lib,
+  fetchFromGitHub,
+  buildPythonPackage,
+  pythonOlder,
+  pytestCheckHook,
+  beancount-black,
+  beancount-parser,
+  beanhub-forms,
+  beanhub-import,
+  click,
+  fastapi,
+  httpx,
+  jinja2,
+  poetry-core,
+  pydantic,
+  pydantic-core,
+  pydantic-settings,
+  pytz,
+  pyyaml,
+  rich,
+  starlette-wtf,
+  uvicorn,
 }:
 
 buildPythonPackage rec {
   pname = "beanhub-cli";
-  version = "1.1.3";
+  version = "1.2.2";
   pyproject = true;
 
   disabled = pythonOlder "3.10";
@@ -33,12 +34,10 @@ buildPythonPackage rec {
     owner = "LaunchPlatform";
     repo = "beanhub-cli";
     rev = "refs/tags/${version}";
-    hash = "sha256-vYBbaUVJAs+aIp6aQpJb62DEDxe/sQTzgOkjPq6ADoc=";
+    hash = "sha256-ZN384KN6+pkDDsCk825sr+LsArQ5Vaf09ASLN8IemhM=";
   };
 
-  build-system = [
-    poetry-core
-  ];
+  build-system = [ poetry-core ];
 
   dependencies = [
     beancount-black
@@ -63,9 +62,7 @@ buildPythonPackage rec {
     httpx
   ];
 
-  pythonImportsCheck = [
-    "beanhub_cli"
-  ];
+  pythonImportsCheck = [ "beanhub_cli" ];
 
   meta = {
     description = "Command line tools for BeanHub or Beancount users";

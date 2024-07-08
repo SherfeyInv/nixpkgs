@@ -1,7 +1,7 @@
 {
   "name": "yaml-language-server",
   "description": "YAML language server",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "author": "Gorkem Ercan (Red Hat)",
   "license": "MIT",
   "contributors": [
@@ -36,13 +36,13 @@
     "ajv": "^8.11.0",
     "lodash": "4.17.21",
     "request-light": "^0.5.7",
-    "vscode-json-languageservice": "4.1.8",
+    "vscode-json-languageservice": "4.2.1",
     "vscode-languageserver": "^7.0.0",
     "vscode-languageserver-textdocument": "^1.0.1",
     "vscode-languageserver-types": "^3.16.0",
     "vscode-nls": "^5.0.0",
     "vscode-uri": "^3.0.2",
-    "yaml": "2.2.2"
+    "yaml": "2.4.2"
   },
   "devDependencies": {
     "@microsoft/eslint-formatter-sarif": "3.0.0",

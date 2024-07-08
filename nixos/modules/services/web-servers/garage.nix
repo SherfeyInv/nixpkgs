@@ -10,7 +10,7 @@ in
 {
   meta = {
     doc = ./garage.md;
-    maintainers = with pkgs.lib.maintainers; [ raitobezarius ];
+    maintainers = [ ];
   };
 
   options.services.garage = {
@@ -49,8 +49,15 @@ in
 
           data_dir = mkOption {
             default = "/var/lib/garage/data";
-            type = types.path;
-            description = "The main data storage, put this on your large storage (e.g. high capacity HDD)";
+            example = [ {
+              path = "/var/lib/garage/data";
+              capacity = "2T";
+            } ];
+            type = with types; either path (listOf attrs);
+            description = ''
+              The directory in which Garage will store the data blocks of objects. This folder can be placed on an HDD.
+              Since v0.9.0, Garage supports multiple data directories, refer to https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#data_dir for the exact format.
+            '';
           };
         };
       };
@@ -76,7 +83,7 @@ in
       # These assertions can be removed in NixOS 24.11, when all users have been
       # warned once.
       {
-        assertion = (cfg.settings ? replication_factor || cfg.settings ? replication_mode) || lib.versionOlder cfg.package "1.0.0";
+        assertion = (cfg.settings ? replication_factor || cfg.settings ? replication_mode) || lib.versionOlder cfg.package.version "1.0.0";
         message = ''
           Garage 1.0.0 requires an explicit replication factor to be set.
           Please set replication_factor to 1 explicitly to preserve the previous behavior.
