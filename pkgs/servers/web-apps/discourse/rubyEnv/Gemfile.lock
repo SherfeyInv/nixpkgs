@@ -216,8 +216,6 @@ GEM
     message_bus (4.3.8)
       rack (>= 1.1.3)
     method_source (1.0.0)
-    mini_mime (1.1.5)
-    mini_portile2 (2.8.6)
     mini_racer (0.8.0)
       libv8-node (~> 18.16.0.0)
     mini_scheduler (0.16.0)
@@ -244,9 +242,7 @@ GEM
       timeout
     net-smtp (0.4.0.1)
       net-protocol
-    nio4r (2.7.0)
-    nokogiri (1.16.0)
-      mini_portile2 (~> 2.8.2)
+   mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
@@ -312,7 +308,6 @@ GEM
     public_suffix (5.0.4)
     puma (6.4.2)
       nio4r (~> 2.0)
-    racc (1.7.3)
     rack (2.2.8)
     rack-mini-profiler (3.3.0)
       rack (>= 1.2.0)
@@ -427,7 +422,7 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-prof (1.7.0)
     ruby-progressbar (1.13.0)
-    ruby-readability (0.7.0)
+    ruby-readability (0.7.1)
       guess_html_encoding (>= 0.0.4)
       nokogiri (>= 1.6.0)
     ruby2_keywords (0.0.5)
@@ -633,7 +628,7 @@ DEPENDENCIES
   rtlcss
   rubocop-discourse
   ruby-prof
-  ruby-readability
+  ruby-readability (>= 0.7.1)
   rubyzip
   sanitize
   sassc-embedded
