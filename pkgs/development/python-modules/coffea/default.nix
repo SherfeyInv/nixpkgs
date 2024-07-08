@@ -1,40 +1,47 @@
-{ lib
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, hatchling
-, hatch-vcs
-, aiohttp
-, awkward
-, cachetools
-, cloudpickle
-, correctionlib
-, dask
-, dask-awkward
-, dask-histogram
-, fsspec-xrootd
-, hist
-, lz4
-, matplotlib
-, mplhep
-, numba
-, numpy
-, packaging
-, pandas
-, pyarrow
-, requests
-, scipy
-, toml
-, tqdm
-, uproot
-, distributed
-, pyinstrument
-, pytestCheckHook
+{
+  lib,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+
+  # build-system
+  hatchling,
+  hatch-vcs,
+
+  # dependencies
+  aiohttp,
+  awkward,
+  cachetools,
+  cloudpickle,
+  correctionlib,
+  dask,
+  dask-awkward,
+  dask-histogram,
+  fsspec-xrootd,
+  hist,
+  lz4,
+  matplotlib,
+  mplhep,
+  numba,
+  numpy,
+  packaging,
+  pandas,
+  pyarrow,
+  requests,
+  scipy,
+  toml,
+  tqdm,
+  uproot,
+
+  # checks
+  distributed,
+  pyinstrument,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
   pname = "coffea";
-  version = "2024.5.0";
+  version = "2024.6.1";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -43,7 +50,7 @@ buildPythonPackage rec {
     owner = "CoffeaTeam";
     repo = "coffea";
     rev = "refs/tags/v${version}";
-    hash = "sha256-FHE7/VL0mnf0eBPzCsrr8ISr7OmfFvI9xuV0CPa7JdU=";
+    hash = "sha256-Z6c8R8B8IrDkXVDx89XVtg3eRgORuHPfUyAPRGwAlrg=";
   };
 
   build-system = [
@@ -83,9 +90,7 @@ buildPythonPackage rec {
     pytestCheckHook
   ];
 
-  pythonImportsCheck = [
-    "coffea"
-  ];
+  pythonImportsCheck = [ "coffea" ];
 
   disabledTests = [
     # Requires internet access
@@ -95,11 +100,11 @@ buildPythonPackage rec {
 
   __darwinAllowLocalNetworking = true;
 
-  meta = with lib; {
+  meta = {
     description = "Basic tools and wrappers for enabling not-too-alien syntax when running columnar Collider HEP analysis";
     homepage = "https://github.com/CoffeaTeam/coffea";
     changelog = "https://github.com/CoffeaTeam/coffea/releases/tag/v${version}";
-    license = with licenses; [ bsd3 ];
-    maintainers = with maintainers; [ veprbl ];
+    license = with lib.licenses; [ bsd3 ];
+    maintainers = with lib.maintainers; [ veprbl ];
   };
 }

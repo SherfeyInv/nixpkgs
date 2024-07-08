@@ -24,7 +24,7 @@ self: super: {
     Cabal-syntax = self.Cabal-syntax_3_10_3_0;
   } // lib.optionalAttrs (lib.versionOlder self.ghc.version "9.2.5") {
     # Use process core package when possible
-    process = self.process_1_6_19_0;
+    process = self.process_1_6_20_0;
   }));
 
   # cabal-install needs most recent versions of Cabal and Cabal-syntax,
@@ -48,7 +48,7 @@ self: super: {
           # cabal-install, but we need to recompile process even if the correct
           # version is available to prevent inconsistent dependencies:
           # process depends on directory.
-          process = cself.process_1_6_19_0;
+          process = cself.process_1_6_20_0;
 
           # Prevent dependency on doctest which causes an inconsistent dependency
           # due to depending on ghc which depends on directory etc.
@@ -56,7 +56,21 @@ self: super: {
         };
     in
     {
-      cabal-install = super.cabal-install.overrideScope cabalInstallOverlay;
+      cabal-install =
+        let
+          cabal-install = super.cabal-install.overrideScope cabalInstallOverlay;
+          scope = cabal-install.scope;
+        in
+        # Some dead code is not properly eliminated on aarch64-darwin, leading
+        # to bogus references to some dependencies.
+        overrideCabal (old: lib.optionalAttrs (pkgs.stdenv.hostPlatform.isDarwin && pkgs.stdenv.hostPlatform.isAarch64) {
+          postInstall = ''
+            ${old.postInstall or ""}
+            remove-references-to -t ${scope.HTTP} "$out/bin/.cabal-wrapped"
+            remove-references-to -t ${scope.Cabal} "$out/bin/.cabal-wrapped"
+          '';
+        }) cabal-install;
+
       cabal-install-solver = super.cabal-install-solver.overrideScope cabalInstallOverlay;
 
       # Needs cabal-install >= 3.8 /as well as/ matching Cabal
@@ -220,20 +234,16 @@ self: super: {
   fused-effects-random = doJailbreak super.fused-effects-random;
   fused-effects-readline = doJailbreak super.fused-effects-readline;
 
-  # Allow scotty < 0.21
-  # For < 0.22 add https://github.com/taffybar/taffybar/commit/71fe820d892a85e49ad2f2843eac0a59e01f3fd4
-  taffybar = appendPatches [
-    (pkgs.fetchpatch {
-      name = "taffybar-scotty-0.20.patch";
-      url = "https://github.com/taffybar/taffybar/commit/dcc4184fa63295d51b6c6efb2f97f23b13170e66.patch";
-      sha256 = "0hsn0zxpc8icabdq48jlkfn2v07xfjy4l344fnq2pbdc5apcm0fy";
-    })
-  ] super.taffybar;
-
-  # fix tests failure for base≥4.15 (https://github.com/kim/leveldb-haskell/pull/41)
-  leveldb-haskell = appendPatch (fetchpatch {
-    url = "https://github.com/kim/leveldb-haskell/commit/f5249081f589233890ddb1945ec548ca9fb717cf.patch";
-    sha256 = "14gllipl28lqry73c5dnclsskzk1bsrrgazibl4lkl8z98j2csjb";
+  leveldb-haskell = overrideCabal (drv: {
+    version = "2024-05-05-unstable";
+    # Fix tests on mtl ≥ 2.3
+    # https://github.com/kim/leveldb-haskell/pull/42
+    src = pkgs.fetchFromGitHub {
+      owner = "kim";
+      repo = "leveldb-haskell";
+      rev = "3a505f3a7de0f5d14463538d7c2c9a9881a60eb9";
+      sha256 = "sha256-okUn5ZuWcj8vPr0GWXvO1LygNCrDfttkDaUoOt+FLA0=";
+    };
   }) super.leveldb-haskell;
 
   # Arion's test suite needs a Nixpkgs, which is cumbersome to do from Nixpkgs
@@ -263,12 +273,6 @@ self: super: {
     url = "https://github.com/jwiegley/c2hsc/commit/490ecab202e0de7fc995eedf744ad3cb408b53cc.patch";
     sha256 = "1c7knpvxr7p8c159jkyk6w29653z5yzgjjqj11130bbb8mk9qhq7";
   }) super.c2hsc;
-
-  # Some Hackage packages reference this attribute, which exists only in the
-  # GHCJS package set. We provide a dummy version here to fix potential
-  # evaluation errors.
-  ghcjs-base = null;
-  ghcjs-prim = null;
 
   ghc-debug-client = doJailbreak super.ghc-debug-client;
 
@@ -389,7 +393,7 @@ self: super: {
       name = "git-annex-${super.git-annex.version}-src";
       url = "git://git-annex.branchable.com/";
       rev = "refs/tags/" + super.git-annex.version;
-      sha256 = "sha256-tlEsBXfELnK9rU4LHSDNby/yym+guqXjsh2GA+L9aWA=";
+      sha256 = "sha256-adV7I1P0O/dqH1rEyf3c2Vp4GSiiHReJyqnkSOYQGT0=";
       # delete android and Android directories which cause issues on
       # darwin (case insensitive directory). Since we don't need them
       # during the build process, we can delete it to prevent a hash
@@ -433,22 +437,22 @@ self: super: {
 
   # Manually maintained
   cachix-api = overrideCabal (drv: {
-    version = "1.7";
+    version = "1.7.4";
     src = pkgs.fetchFromGitHub {
       owner = "cachix";
       repo = "cachix";
-      rev = "v1.7";
-      sha256 = "sha256-d9BohugsKajvjNgt+VyXHuDdLOFKr9mhwpdUNkpIP3s=";
+      rev = "v1.7.4";
+      sha256 = "sha256-lHy5kgx6J8uD+16SO47dPrbob98sh+W1tf4ceSqPVK4=";
     };
     postUnpack = "sourceRoot=$sourceRoot/cachix-api";
   }) super.cachix-api;
   cachix = (overrideCabal (drv: {
-    version = "1.7";
+    version = "1.7.4";
     src = pkgs.fetchFromGitHub {
       owner = "cachix";
       repo = "cachix";
-      rev = "v1.7";
-      sha256 = "sha256-d9BohugsKajvjNgt+VyXHuDdLOFKr9mhwpdUNkpIP3s=";
+      rev = "v1.7.4";
+      sha256 = "sha256-lHy5kgx6J8uD+16SO47dPrbob98sh+W1tf4ceSqPVK4=";
     };
     postUnpack = "sourceRoot=$sourceRoot/cachix";
   }) (lib.pipe
@@ -458,13 +462,6 @@ self: super: {
         [
          (addBuildTool self.hercules-ci-cnix-store.nixPackage)
          (addBuildTool pkgs.buildPackages.pkg-config)
-         (addBuildDepend self.immortal)
-         # should be removed once hackage packages catch up
-         (addBuildDepend self.crypton)
-         (addBuildDepend self.generic-lens)
-         (addBuildDepend self.amazonka)
-         (addBuildDepend self.amazonka-core)
-         (addBuildDepend self.amazonka-s3)
         ]
   ));
 
@@ -557,6 +554,9 @@ self: super: {
   # 2022-01-29: Tests fail: https://github.com/psibi/streamly-bytestring/issues/27
   # 2022-02-14: Strict upper bound: https://github.com/psibi/streamly-bytestring/issues/30
   streamly-bytestring = dontCheck (doJailbreak super.streamly-bytestring);
+
+  # 2024-05-18: Upstream tests against a different pandoc version
+  pandoc-crossref = dontCheck super.pandoc-crossref;
 
   # base bound
   digit = doJailbreak super.digit;
@@ -971,12 +971,12 @@ self: super: {
   # See https://github.com/valderman/selda/issues/187
   inherit (let
     mkSeldaPackage = name: overrideCabal (drv: {
-      version = "2023-02-05-unstable";
+      version = "2024-05-05-unstable";
       src = pkgs.fetchFromGitHub {
         owner = "valderman";
         repo = "selda";
-        rev = "ab9619db13b93867d1a244441bb4de03d3e1dadb";
-        hash = "sha256-P0nqAYzbeTyEEgzMij/3mKcs++/p/Wgc7Y6bDudXt2U=";
+        rev = "50c3ba5c5da72bb758a4112363ba2fe1c0e968ea";
+        hash = "sha256-LEAJsSsDL0mmVHntnI16fH8m5DmePfcU0hFw9ErqTgQ=";
       } + "/${name}";
     }) super.${name};
   in
@@ -1367,18 +1367,17 @@ self: super: {
     '';
   }) super.PortMidi;
 
-  # Fix for base >= 4.11
   scat = overrideCabal (drv: {
     patches = [
-      # Fix build with base >= 4.11
+      # Fix build with base >= 4.11 (https://github.com/redelmann/scat/pull/6)
       (fetchpatch {
         url = "https://github.com/redelmann/scat/commit/429f22944b7634b8789cb3805292bcc2b23e3e9f.diff";
         hash = "sha256-FLr1KfBaSYzI6MiZIBY1CkgAb5sThvvgjrSAN8EV0h4=";
       })
-      # Fix build with vector >= 0.13
+      # Fix build with vector >= 0.13, mtl >= 2.3 (https://github.com/redelmann/scat/pull/8)
       (fetchpatch {
-        url = "https://github.com/redelmann/scat/commit/e21cc9c17b5b605b5bc0aacad66d44bbe0beb8c4.diff";
-        hash = "sha256-MifHb2EKZx8skOcs+2t54CzxAS4PaEC0OTEfq4yVXzk=";
+        url = "https://github.com/redelmann/scat/compare/e8e064f7e6a152fe25a6ccd743573a16974239d0..c6a3636548d628f32d8edc73a333188ce24141a7.patch";
+        hash = "sha256-BU4MUn/TnZHpZBlX1vDHE7QZva5yhlLTb8zwpx7UScI";
       })
     ];
   }) super.scat;
@@ -1561,13 +1560,36 @@ self: super: {
       doJailbreak
     ];
 
-  jsaddle-dom = overrideCabal (old: {
-    postPatch = old.postPatch or "" + ''
-      rm Setup.hs
-    '';
-  }) super.jsaddle-dom;
-  jsaddle-hello = doJailbreak super.jsaddle-hello;
-  ghcjs-dom-hello = doJailbreak super.ghcjs-dom-hello;
+  ghcjs-dom-hello = appendPatches [
+    (fetchpatch {
+      url = "https://github.com/ghcjs/ghcjs-dom-hello/commit/53991df6a4eba9f1e9633eb22f6a0486a79491c3.patch";
+      sha256 = "sha256-HQeUgjvzYyY14+CDYiMahAMn7fBcy2d7p8/kqGq+rnI=";
+    })
+    (fetchpatch {
+      url = "https://github.com/ghcjs/ghcjs-dom-hello/commit/d766d937121f7ea5c4c154bd533a1eae47f531c9.patch";
+      sha256 = "sha256-QTkH+L+JMwGyuoqzHBnrokT7KzpHC4YiAWoeiaFBLUw=";
+    })
+    (fetchpatch {
+      url = "https://github.com/ghcjs/ghcjs-dom-hello/commit/831464d995f4033c9aa84f9ed9fb37a268f34d4e.patch";
+      sha256 = "sha256-hQMy+78geTuxd3kbdiyYqoAFrauu90HbpPi0EEKjMzM=";
+    })
+   ] super.ghcjs-dom-hello;
+
+  # Needs https://github.com/ghcjs/jsaddle-hello/pull/5 and hackage release
+  jsaddle-hello = appendPatches [
+    (fetchpatch {
+      url = "https://github.com/ghcjs/jsaddle-hello/commit/c4de837675117b821c50a5079d20d84ec16ff26a.patch";
+      sha256 = "sha256-NsM7QqNLt5V8i5bveYgMrawGnZVsIuAoJfBF75jBwV0=";
+    })
+    (fetchpatch {
+      url = "https://github.com/ghcjs/jsaddle-hello/commit/5c437363833684ea951ec74a0d0fdf5b6fbaca85.patch";
+      sha256 = "sha256-CUyZsts0FAQ3c8Z+zfvwbmlAJCMcidV80n8dA/SoRls=";
+    })
+    (fetchpatch {
+      url = "https://github.com/ghcjs/jsaddle-hello/commit/e2da9e266fbfa8f7fcf3009ab6cfbf825a8bcf7a.patch";
+      sha256 = "sha256-WL0CcnlMt6KI7MOZMg74fNN/I4gYSO3n+GiaXB2BOP0=";
+    })
+  ] super.jsaddle-hello;
 
   # Too strict upper bounds on text
   lsql-csv = doJailbreak super.lsql-csv;
@@ -1690,6 +1712,14 @@ self: super: {
 
   # Test suite fails to compile https://github.com/agrafix/Spock/issues/177
   Spock = dontCheck super.Spock;
+
+  Spock-core = appendPatches [
+    (fetchpatch {
+      url = "https://github.com/agrafix/Spock/commit/d0b51fa60a83bfa5c1b5fc8fced18001e7321701.patch";
+      sha256 = "sha256-l9voiczOOdYVBP/BNEUvqARb21t0Rp2kpsNbRFUWSLg=";
+      stripLen = 1;
+    })
+  ] (doJailbreak super.Spock-core);
 
   # https://github.com/strake/filtrable.hs/issues/6
   filtrable = doJailbreak super.filtrable;
@@ -1932,7 +1962,17 @@ self: super: {
   readline = appendPatch ./patches/readline-fix-for-cabal-3.patch super.readline;
 
   # https://github.com/jgm/pandoc/issues/9589
-  pandoc = assert super.pandoc.version == "3.1.11.1"; dontCheck super.pandoc;
+  pandoc = assert super.pandoc.version == "3.1.11.1"; lib.pipe super.pandoc
+    [
+      dontCheck
+      (appendPatch
+        (pkgs.fetchpatch {
+          name = "drop-usage-known-bad-actor-cdn.patch";
+          url = "https://github.com/jgm/pandoc/commit/5877ec546df29115163b36de32837f5e08506092.patch";
+          hash = "sha256-2ffdL2dS/hHWBjJcIHbae5OdL/VKlHNKUMDHRy3hqvc=";
+        })
+      )
+    ];
 
   # 2020-12-06: Restrictive upper bounds w.r.t. pandoc-types (https://github.com/owickstrom/pandoc-include-code/issues/27)
   pandoc-include-code = doJailbreak super.pandoc-include-code;
@@ -2647,18 +2687,6 @@ self: super: {
   # https://github.com/ngless-toolkit/ngless/issues/152
   NGLess = dontCheck super.NGLess;
 
-  # Raise version bounds: https://github.com/well-typed/lens-sop/pull/4
-  lens-sop = appendPatches [
-    (fetchpatch {
-      url = "https://github.com/well-typed/lens-sop/commit/d8657f27c12191a7c0a91701c0fcd9a590e0090e.patch";
-      sha256 = "sha256-9ODfbOb6Bs3EVTY9b7cUvkNmqzzZPWUmgmlAneaN3Tw=";
-    })
-    (fetchpatch {
-      url = "https://github.com/well-typed/lens-sop/commit/b7ecffdeb836d19373871659e2f8cd24da6f7312.patch";
-      sha256 = "sha256-hDUQ2fW9Qyom65YvtW9bsbz7XtueRmdsAbAB42D+gu4=";
-    })
-  ] super.lens-sop;
-
   # Raise version bounds: https://github.com/kosmikus/records-sop/pull/15
   records-sop = appendPatch (fetchpatch {
     url = "https://github.com/kosmikus/records-sop/commit/fb149f453a816ff14d0cb20b3ea56b80ff49d9f1.patch";
@@ -2997,7 +3025,7 @@ self: super: {
   }) super.kmonad;
 
   ghc-syntax-highlighter_0_0_11_0 = super.ghc-syntax-highlighter_0_0_11_0.overrideScope(self: super: {
-    ghc-lib-parser = self.ghc-lib-parser_9_8_2_20240223;
+    ghc-lib-parser = self.ghc-lib-parser_9_10_1_20240511;
   });
 
   # 2024-03-17: broken
@@ -3093,10 +3121,20 @@ self: super: {
   # https://github.com/isovector/type-errors/issues/9
   type-errors = dontCheck super.type-errors;
 
+  # 2024-05-15: Hackage distribution is missing files needed for tests
+  # https://github.com/isovector/cornelis/issues/150
+  cornelis = dontCheck super.cornelis;
+
   cabal-gild = super.cabal-gild.overrideScope (self: super: {
     tasty = super.tasty_1_5;
     tasty-quickcheck = super.tasty-quickcheck_0_10_3;
   });
+
+  # Fixes build on some platforms: https://github.com/obsidiansystems/commutative-semigroups/pull/18
+  commutative-semigroups = appendPatch (fetchpatch {
+    url = "https://github.com/obsidiansystems/commutative-semigroups/commit/e031495dd24ae73ffb808eca34e993f5df8e8d76.patch";
+    hash = "sha256-d7AwvGGUJlh/sOXaAbfQLCay6+JyNInb73TTGKkBDz8=";
+  }) super.commutative-semigroups;
 
   # Too strict bounds on text. Can be removed after https://github.com/alx741/currencies/pull/3 is merged
   currencies = doJailbreak super.currencies;

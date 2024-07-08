@@ -1,31 +1,34 @@
 { lib
 , fetchFromGitHub
-, llvmPackages_13
+, llvmPackages
 , makeBinaryWrapper
 , libiconv
 , MacOSX-SDK
+, Security
 , which
 }:
 
 let
-  llvmPackages = llvmPackages_13;
   inherit (llvmPackages) stdenv;
 in stdenv.mkDerivation rec {
   pname = "odin";
-  version = "dev-2024-04a";
+  version = "dev-2024-06";
 
   src = fetchFromGitHub {
     owner = "odin-lang";
     repo = "Odin";
     rev = version;
-    hash = "sha256-jFENpWUosNNTctYiHdKqDg7ENAoEtigz87pTfYJDj5Q=";
+    hash = "sha256-Ba+244L855y+XzLcaf1fgQhHVDv2Q77GPapRAYmCQfg=";
   };
 
   nativeBuildInputs = [
     makeBinaryWrapper which
   ];
 
-  buildInputs = lib.optional stdenv.isDarwin libiconv;
+  buildInputs = lib.optionals stdenv.isDarwin [
+    libiconv
+    Security
+  ];
 
   LLVM_CONFIG = "${llvmPackages.llvm.dev}/bin/llvm-config";
 
@@ -68,7 +71,7 @@ in stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = "A fast, concise, readable, pragmatic and open sourced programming language";
+    description = "Fast, concise, readable, pragmatic and open sourced programming language";
     mainProgram = "odin";
     homepage = "https://odin-lang.org/";
     license = licenses.bsd3;

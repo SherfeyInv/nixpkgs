@@ -5,7 +5,7 @@
   ...
 }:
 let
-  version = "0.0.5";
+  version = "0.1.0";
 in
 buildGoModule {
   pname = "izrss";
@@ -15,7 +15,7 @@ buildGoModule {
     owner = "isabelroses";
     repo = "izrss";
     rev = "refs/tags/v${version}";
-    hash = "sha256-6ayTxAjVqMjgDbk4oJjxzSUkWA6kU3Rnvvma+ryy4bw=";
+    hash = "sha256-Op9aiCQrBH8TuhMTt+3Wthd8UY3lU2g9yJ110v7TtXA=";
   };
 
   ldflags = [
@@ -24,13 +24,14 @@ buildGoModule {
     "-X main.version=${version}"
   ];
 
-  vendorHash = "sha256-gH5AFroreBD0tQmT99Bmo2pAdPkiPWUNGsmKX4p3/JA=";
+  vendorHash = "sha256-/TRCD6akZV2qDqJz62p7UzFIGuTAKLnUtYqqvdw3rCI=";
 
-  meta = with lib; {
-    description = "An RSS feed reader for the terminal written in Go";
+  meta = {
+    description = "RSS feed reader for the terminal written in Go";
+    changelog = "https://github.com/isabelroses/izrss/releases/v${version}";
     homepage = "https://github.com/isabelroses/izrss";
-    license = licenses.gpl3Plus;
-    maintainers = with maintainers; [
+    license = lib.licenses.gpl3Plus;
+    maintainers = with lib.maintainers; [
       isabelroses
       luftmensch-luftmensch
     ];

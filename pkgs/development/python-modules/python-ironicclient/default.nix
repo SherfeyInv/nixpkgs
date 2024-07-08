@@ -1,21 +1,22 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, pbr
-, appdirs
-, cliff
-, dogpile-cache
-, jsonschema
-, keystoneauth1
-, openstacksdk
-, osc-lib
-, oslo-utils
-, pyyaml
-, requests
-, stevedore
-, stestr
-, requests-mock
-, oslotest
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  cliff,
+  dogpile-cache,
+  jsonschema,
+  keystoneauth1,
+  openstacksdk,
+  osc-lib,
+  oslo-utils,
+  oslotest,
+  pbr,
+  platformdirs,
+  pyyaml,
+  requests,
+  requests-mock,
+  stestr,
+  stevedore,
 }:
 
 buildPythonPackage rec {
@@ -29,8 +30,6 @@ buildPythonPackage rec {
   };
 
   propagatedBuildInputs = [
-    pbr
-    appdirs
     cliff
     dogpile-cache
     jsonschema
@@ -38,6 +37,8 @@ buildPythonPackage rec {
     openstacksdk
     osc-lib
     oslo-utils
+    pbr
+    platformdirs
     pyyaml
     requests
     stevedore
@@ -56,7 +57,7 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "ironicclient" ];
 
   meta = with lib; {
-    description = "A client for OpenStack bare metal provisioning API, includes a Python module (ironicclient) and CLI (baremetal).";
+    description = "Client for OpenStack bare metal provisioning API, includes a Python module (ironicclient) and CLI (baremetal)";
     mainProgram = "baremetal";
     homepage = "https://github.com/openstack/python-ironicclient";
     license = licenses.asl20;

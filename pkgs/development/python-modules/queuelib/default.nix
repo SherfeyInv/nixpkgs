@@ -1,7 +1,8 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, pytest
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  pytest,
 }:
 
 buildPythonPackage rec {
@@ -17,10 +18,9 @@ buildPythonPackage rec {
   buildInputs = [ pytest ];
 
   meta = with lib; {
-    description = "A collection of persistent (disk-based) queues for Python";
+    description = "Collection of persistent (disk-based) queues for Python";
     homepage = "https://github.com/scrapy/queuelib";
     license = licenses.bsd3;
     maintainers = with maintainers; [ ];
   };
-
 }

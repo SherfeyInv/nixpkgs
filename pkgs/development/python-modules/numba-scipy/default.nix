@@ -1,12 +1,12 @@
-{ stdenv
-, lib
-, buildPythonPackage
-, fetchPypi
-, scipy
-, numba
-, pytestCheckHook
-, pythonOlder
-, pythonRelaxDepsHook
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  scipy,
+  numba,
+  pytestCheckHook,
+  pythonOlder,
+  pythonRelaxDepsHook,
 }:
 
 buildPythonPackage rec {
@@ -35,12 +35,9 @@ buildPythonPackage rec {
     "numba"
   ];
 
-  pythonImportsCheck = [
-    "numba_scipy"
-  ];
+  pythonImportsCheck = [ "numba_scipy" ];
 
   meta = with lib; {
-    broken = stdenv.isDarwin;
     description = "Extends Numba to make it aware of SciPy";
     homepage = "https://github.com/numba/numba-scipy";
     changelog = "https://github.com/numba/numba-scipy/blob/master/CHANGE_LOG";

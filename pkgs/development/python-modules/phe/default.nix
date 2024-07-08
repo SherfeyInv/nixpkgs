@@ -13,7 +13,7 @@
 
 buildPythonPackage rec {
   pname = "phe";
-  version = "1.5.0";
+  version = "1.5.1";
   pyproject = true;
 
   # https://github.com/data61/python-paillier/issues/51
@@ -23,7 +23,7 @@ buildPythonPackage rec {
     owner = "data61";
     repo = "python-paillier";
     rev = "refs/tags/${version}";
-    hash = "sha256-fsZ8x/K+8V4zyVgkci6XNAm89zQFWEbmRVp4jazFfVY=";
+    hash = "sha256-P//4ZL4+2zcB5sWvujs2N0CHFz+EBLERWrPGLLHj6CY=";
   };
 
   build-system = [ setuptools ];
@@ -39,7 +39,7 @@ buildPythonPackage rec {
   ];
 
   meta = with lib; {
-    description = "A library for Partially Homomorphic Encryption in Python";
+    description = "Library for Partially Homomorphic Encryption in Python";
     mainProgram = "pheutil";
     homepage = "https://github.com/data61/python-paillier";
     license = licenses.gpl3;
