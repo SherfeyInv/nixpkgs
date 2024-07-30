@@ -35,7 +35,7 @@
     "react-hot-toast": "^2.1.1",
     "react-tooltip": "^5.26.3",
     "ssh2-sftp-client": "^9.1.0",
-    "webdav": "^3.6.2",
+    "webdav": "^4.11.3",
     "wink-lemmatizer": "^3.0.4",
     "ws": "^8.13.0",
     "zip-a-folder": "^3.1.7"
