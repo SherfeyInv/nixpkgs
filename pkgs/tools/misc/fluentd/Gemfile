@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem 'fluentd'
 gem 'fluent-plugin-record-reformer'
 gem 'fluent-plugin-s3'
-gem 'fluent-plugin-kinesis'
+gem 'fluent-plugin-kinesis', '>= 3.5.0'
 gem 'fluent-plugin-kafka'
 gem 'fluent-plugin-elasticsearch'
 gem 'fluent-plugin-mongo'
