@@ -9497,6 +9497,8 @@ self: super: with self; {
 
   panasonic-viera = callPackage ../development/python-modules/panasonic-viera { };
 
+  pandantic = callPackage ../development/python-modules/pandantic { };
+
   pandas = callPackage ../development/python-modules/pandas {
     inherit (pkgs.darwin) adv_cmds;
   };
@@ -14382,6 +14384,8 @@ self: super: with self; {
 
   snakemake-interface-storage-plugins = callPackage ../development/python-modules/snakemake-interface-storage-plugins { };
 
+  snakemake-storage-plugin-fs = callPackage ../development/python-modules/snakemake-storage-plugin-fs { };
+
   snakemake-storage-plugin-s3 = callPackage ../development/python-modules/snakemake-storage-plugin-s3 { };
 
   snakemake-storage-plugin-xrootd = callPackage ../development/python-modules/snakemake-storage-plugin-xrootd { };
@@ -15062,6 +15066,8 @@ self: super: with self; {
   synergy = callPackage ../development/python-modules/synergy { };
 
   syslog-rfc5424-formatter = callPackage ../development/python-modules/syslog-rfc5424-formatter { };
+
+  sysrsync = callPackage ../development/python-modules/sysrsync { };
 
   systembridge = callPackage ../development/python-modules/systembridge { };
 

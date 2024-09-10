@@ -1196,8 +1196,6 @@ with pkgs;
     inherit url;
   };
 
-  installShellFiles = callPackage ../build-support/install-shell-files { };
-
   lazydocker = callPackage ../tools/misc/lazydocker { };
 
   ld-is-cc-hook = makeSetupHook { name = "ld-is-cc-hook"; }
@@ -1622,8 +1620,6 @@ with pkgs;
 
   inherit (recurseIntoAttrs (callPackage ../tools/package-management/akku { }))
     akku akkuPackages;
-
-  albert = qt6Packages.callPackage ../applications/misc/albert { };
 
   alice-lg = callPackage ../servers/alice-lg{ };
 
@@ -2157,13 +2153,13 @@ with pkgs;
 
   delta = darwin.apple_sdk_11_0.callPackage ../applications/version-management/delta { };
 
+  debase = callPackage ../by-name/de/debase/package.nix {
+    stdenv = if stdenv.isDarwin then darwin.apple_sdk_11_0.stdenv else stdenv;
+  };
+
   diff-so-fancy = callPackage ../applications/version-management/diff-so-fancy { };
 
   forgejo-lts = callPackage ../by-name/fo/forgejo/lts.nix { };
-
-  gex = callPackage ../applications/version-management/gex {
-    inherit (darwin.apple_sdk.frameworks) Security;
-  };
 
   gfold = callPackage ../applications/version-management/gfold {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -3373,7 +3369,9 @@ with pkgs;
 
   base16384 = callPackage ../tools/text/base16384 { };
 
-  bashate = python3Packages.callPackage ../development/tools/bashate { };
+  bashate = python3Packages.callPackage ../development/tools/bashate {
+    python3Packages = python311Packages;
+  };
 
   bash-my-aws = callPackage ../tools/admin/bash-my-aws { };
 
@@ -3655,6 +3653,10 @@ with pkgs;
 
   gams = callPackage ../tools/misc/gams (config.gams or {});
 
+  gancioPlugins = recurseIntoAttrs (
+    callPackage ../by-name/ga/gancio/plugins.nix { inherit (gancio) nodejs; }
+  );
+
   gem = callPackage ../applications/audio/pd-plugins/gem { };
 
   github-changelog-generator = callPackage ../development/tools/github-changelog-generator { };
@@ -3791,8 +3793,8 @@ with pkgs;
   lesspass-cli = callPackage ../tools/security/lesspass-cli { };
 
   livebook = callPackage ../servers/web-apps/livebook {
-    elixir = elixir_1_16;
-    beamPackages = beamPackages.extend (self: super: { elixir = elixir_1_16; });
+    elixir = elixir_1_17;
+    beamPackages = beamPackages.extend (self: super: { elixir = elixir_1_17; });
   };
 
   lsix = callPackage ../tools/graphics/lsix { };
@@ -5343,7 +5345,7 @@ with pkgs;
     cairo = cairo.override { xcbSupport = true; };  };
 
   hyprland = callPackage ../by-name/hy/hyprland/package.nix {
-    libliftoff = libliftoff_0_4;
+    stdenv = gcc14Stdenv;
   };
 
   hyprland-autoname-workspaces = callPackage ../applications/misc/hyprland-autoname-workspaces { };
@@ -5542,11 +5544,6 @@ with pkgs;
   loadwatch = callPackage ../tools/system/loadwatch { };
 
   loccount = callPackage ../development/tools/misc/loccount { };
-
-  logseq = callPackage ../by-name/lo/logseq/package.nix {
-    # electron version from: https://github.com/logseq/logseq/blob/0.10.9/package.json#L116
-    electron = electron_27;
-  };
 
   long-shebang = callPackage ../misc/long-shebang { };
 
@@ -6006,8 +6003,6 @@ with pkgs;
   socklog = callPackage ../tools/system/socklog { };
 
   spacevim = callPackage ../applications/editors/spacevim { };
-
-  srvc = callPackage ../applications/version-management/srvc { };
 
   ssmsh = callPackage ../tools/admin/ssmsh { };
 
@@ -8482,7 +8477,7 @@ with pkgs;
   gvproxy = callPackage ../tools/networking/gvproxy { };
 
   gyroflow = qt6Packages.callPackage ../applications/video/gyroflow {
-    ffmpeg = ffmpeg_6;
+    ffmpeg = ffmpeg_7;
   };
 
   gzip = callPackage ../tools/compression/gzip { };
@@ -13074,7 +13069,7 @@ with pkgs;
     extraFonts = true;
   };
 
-  texmaker = libsForQt5.callPackage ../applications/editors/texmaker { };
+  texmaker = qt6Packages.callPackage ../applications/editors/texmaker { };
 
   texstudio = qt6Packages.callPackage ../applications/editors/texstudio { };
 
@@ -13291,8 +13286,6 @@ with pkgs;
   trunk = callPackage ../development/tools/trunk {
     inherit (darwin.apple_sdk.frameworks) CoreServices SystemConfiguration;
   };
-
-  trunk-io = callPackage ../development/tools/trunk-io { };
 
   trunk-ng = callPackage ../by-name/tr/trunk-ng/package.nix {
     inherit (darwin.apple_sdk.frameworks) CoreServices Security SystemConfiguration;
@@ -13968,8 +13961,6 @@ with pkgs;
   uptime-kuma = callPackage ../servers/monitoring/uptime-kuma { };
 
   vul = callPackage ../applications/misc/vul { };
-
-  xar = callPackage ../tools/compression/xar { };
 
   xarchive = callPackage ../tools/archivers/xarchive { };
 
@@ -18724,7 +18715,9 @@ with pkgs;
 
   regex-cli = callPackage ../development/tools/misc/regex-cli { };
 
-  reno = callPackage ../development/tools/reno { };
+  reno = callPackage ../development/tools/reno {
+    python3Packages = python311Packages;
+  };
 
   re2c = callPackage ../development/tools/parsing/re2c { };
 
@@ -18968,7 +18961,7 @@ with pkgs;
 
   swig3 = callPackage ../development/tools/misc/swig/3.x.nix { };
   swig4 = callPackage ../development/tools/misc/swig/4.nix { };
-  swig = swig3;
+  swig = swig4;
   swigWithJava = swig;
 
   c2ffi = callPackage ../development/tools/misc/c2ffi { };
@@ -19121,7 +19114,7 @@ with pkgs;
     inherit (buildPackages.darwin) xnu bootstrap_cmds;
   };
   valgrind-light = (res.valgrind.override { gdb = null; }).overrideAttrs (oldAttrs: {
-    meta.description = "${oldAttrs.meta.description} (without GDB)";
+    meta = oldAttrs.meta // { description = "${oldAttrs.meta.description} (without GDB)"; };
   });
 
   qcachegrind = libsForQt5.callPackage ../development/tools/analysis/qcachegrind { };
@@ -20683,8 +20676,6 @@ with pkgs;
   hmat-oss = callPackage ../development/libraries/hmat-oss { };
 
   hound = callPackage ../development/tools/misc/hound { };
-
-  hpp-fcl = callPackage ../development/libraries/hpp-fcl { };
 
   hpx = callPackage ../development/libraries/hpx {
     boost = boost179;
@@ -26706,8 +26697,8 @@ with pkgs;
 
   ginkgo = callPackage ../development/tools/ginkgo { };
 
-  gdlv = darwin.apple_sdk_11_0.callPackage ../development/tools/gdlv {
-    inherit (darwin.apple_sdk_11_0.frameworks) Foundation CoreGraphics Metal AppKit;
+  gdlv = callPackage ../by-name/gd/gdlv/package.nix {
+    inherit (darwin.apple_sdk_11_0.frameworks) AppKit CoreGraphics Foundation Metal;
   };
 
   go-bindata = callPackage ../development/tools/go-bindata { };
@@ -26924,7 +26915,6 @@ with pkgs;
   qemu_xen_4_19 = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xenPackages.xen_4_19-slim; });
   qemu_xen_4_18 = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xenPackages.xen_4_18-slim; });
   qemu_xen_4_17 = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xenPackages.xen_4_17-slim; });
-  qemu_xen_4_16 = lowPrio (qemu.override { hostCpuOnly = true; xenSupport = true; xen = xenPackages.xen_4_16-slim; });
   qemu_xen = qemu_xen_4_19;
 
   qemu_test = lowPrio (qemu.override { hostCpuOnly = true; nixosTestRunner = true; });
@@ -27179,6 +27169,7 @@ with pkgs;
     ubootOlimexA64Teres1
     ubootOrangePi3
     ubootOrangePi5
+    ubootOrangePi5Plus
     ubootOrangePiPc
     ubootOrangePiZeroPlus2H5
     ubootOrangePiZero
@@ -29516,10 +29507,6 @@ with pkgs;
 
   oed = callPackage ../applications/editors/oed { };
 
-  ekho = callPackage ../applications/audio/ekho {
-    inherit (darwin.apple_sdk.frameworks) AudioUnit;
-  };
-
   electron-cash = libsForQt5.callPackage ../applications/misc/electron-cash { };
 
   electrum = libsForQt5.callPackage ../applications/misc/electrum { };
@@ -30586,9 +30573,7 @@ with pkgs;
 
   hydroxide = callPackage ../applications/networking/hydroxide { };
 
-  hyperion-ng = libsForQt5.callPackage ../applications/video/hyperion-ng {
-    protobuf = protobuf_21;
-  };
+  hyperion-ng = libsForQt5.callPackage ../applications/video/hyperion-ng { };
 
   hyperledger-fabric = callPackage ../tools/misc/hyperledger-fabric { };
 
@@ -31207,8 +31192,6 @@ with pkgs;
   kubectl-example = callPackage ../applications/networking/cluster/kubectl-example { };
 
   kubectl-explore = callPackage ../applications/networking/cluster/kubectl-explore { };
-
-  kubectl-gadget = callPackage ../applications/networking/cluster/kubectl-gadget { };
 
   kubectl-images = callPackage ../applications/networking/cluster/kubectl-images { };
 
@@ -34932,7 +34915,7 @@ with pkgs;
   lndmanage = callPackage ../applications/blockchains/lndmanage { };
 
   monero-cli = callPackage ../applications/blockchains/monero-cli {
-    inherit (darwin.apple_sdk.frameworks) CoreData IOKit PCSC;
+    inherit (darwin.apple_sdk.frameworks) CoreData IOKit;
   };
 
   haven-cli = callPackage ../applications/blockchains/haven-cli {
