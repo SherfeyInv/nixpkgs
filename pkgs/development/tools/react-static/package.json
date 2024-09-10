@@ -99,7 +99,7 @@
     "upath": "^1.1.2",
     "url-loader": "^2.1.0",
     "webpack": "^4.39.2",
-    "webpack-bundle-analyzer": "^3.4.1",
+    "webpack-bundle-analyzer": "^4.3.0",
     "webpack-dev-server": "^3.8.0",
     "webpack-flush-chunks": "^2.0.3",
     "webpack-node-externals": "^1.7.2"
