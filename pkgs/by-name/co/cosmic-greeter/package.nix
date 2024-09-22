@@ -22,7 +22,7 @@ rustPlatform.buildRustPackage rec {
     owner = "pop-os";
     repo = "cosmic-greeter";
     rev = "epoch-${version}";
-    sha256 = "sha256-dc+VV7eIEUKoio/bQieXcDVZCepf4HtQrIKRslym31Y=";
+    hash = "sha256-dc+VV7eIEUKoio/bQieXcDVZCepf4HtQrIKRslym31Y=";
   };
 
   cargoLock = {
@@ -75,7 +75,7 @@ rustPlatform.buildRustPackage rec {
     description = "Greeter for the COSMIC Desktop Environment";
     mainProgram = "cosmic-greeter";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ nyanbinary ];
+    maintainers = with maintainers; [ nyabinary ];
     platforms = platforms.linux;
   };
 }

@@ -1047,16 +1047,16 @@ with self; {
 
   ArchiveLibarchive = buildPerlPackage {
     pname = "Archive-Libarchive";
-    version = "0.08";
+    version = "0.09";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/P/PL/PLICEASE/Archive-Libarchive-0.08.tar.gz";
-      hash = "sha256-6ONC1U/T1uXn4xYP4IjBOgpQM8/76JSBodJHHUNyAFk=";
+      url = "mirror://cpan/authors/id/P/PL/PLICEASE/Archive-Libarchive-0.09.tar.gz";
+      hash = "sha256-avdG7P9/GjUwzmtaWNCtR0MaaZjUWduw8VYqEiPn3v8=";
     };
     patches = [ ../development/perl-modules/ArchiveLibarchive-set-findlib-path.patch ];
     postPatch = ''
-      substituteInPlace lib/Archive/Libarchive/Lib.pm --replace "@@libarchive@@" "${pkgs.libarchive.lib}/lib"
+      substituteInPlace lib/Archive/Libarchive/Lib.pm --replace-fail "@@libarchive@@" "${lib.getLib pkgs.libarchive}/lib"
     '';
-    buildInputs = [ FFIC Filechdir PathTiny SubIdentify TermTable Test2Suite Test2ToolsMemoryCycle TestArchiveLibarchive TestScript ];
+    buildInputs = [ FFIC Filechdir PathTiny SubIdentify Test2ToolsMemoryCycle TestArchiveLibarchive TestScript ];
     propagatedBuildInputs = [ FFICStat FFICheckLib FFIPlatypus FFIPlatypusTypeEnum FFIPlatypusTypePtrObject RefUtil ];
     meta = {
       homepage = "https://metacpan.org/pod/Archive::Libarchive";
@@ -9517,10 +9517,10 @@ with self; {
 
   FFIPlatypus = buildPerlPackage {
     pname = "FFI-Platypus";
-    version = "2.08";
+    version = "2.09";
     src = fetchurl {
-      url = "mirror://cpan/authors/id/P/PL/PLICEASE/FFI-Platypus-2.08.tar.gz";
-      hash = "sha256-EbOrEU7ZY1YxzYWzjSKXhuFEv5Sjr5rAnD17s0M2uSQ=";
+      url = "mirror://cpan/authors/id/P/PL/PLICEASE/FFI-Platypus-2.09.tar.gz";
+      hash = "sha256-nTEjEiieeHNbRcMRt6wWqejaCT93m/aUaccK+sTdW2M=";
     };
     buildInputs = [ AlienFFI Test2Suite ];
     propagatedBuildInputs = [ CaptureTiny FFICheckLib ];
@@ -10431,10 +10431,10 @@ with self; {
 
   FinanceQuote = buildPerlPackage rec {
     pname = "Finance-Quote";
-    version = "1.62";
+    version = "1.63";
     src = fetchurl {
       url = "mirror://cpan/authors/id/B/BP/BPSCHUCK/Finance-Quote-${version}.tar.gz";
-      hash = "sha256-DTEzsL89d5WCxWaFDVd/K76OGsvRFJeDHNQ9jzFgZII=";
+      hash = "sha256-Y0dqDIJ60aHf7KjePopkKiToeMH0p6neb1FNaoV3so0=";
     };
     buildInputs = [ DateManip DateRange DateSimple DateTime DateTimeFormatISO8601 StringUtil TestKwalitee TestPerlCritic TestPod TestPodCoverage ];
     propagatedBuildInputs = [ DateManip DateTimeFormatStrptime Encode HTMLTableExtract HTMLTokeParserSimple HTMLTree HTMLTreeBuilderXPath HTTPCookies HTTPCookieJar JSON IOCompress IOString LWPProtocolHttps Readonly StringUtil SpreadsheetXLSX TextTemplate TryTiny WebScraper XMLLibXML libwwwperl ];

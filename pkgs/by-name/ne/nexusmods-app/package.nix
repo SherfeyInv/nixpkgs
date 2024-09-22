@@ -1,11 +1,11 @@
 {
   _7zz,
+  avalonia,
   buildDotnetModule,
   copyDesktopItems,
   desktop-file-utils,
   dotnetCorePackages,
   fetchFromGitHub,
-  fontconfig,
   lib,
   runCommand,
   pname ? "nexusmods-app",
@@ -32,12 +32,19 @@ buildDotnetModule (finalAttrs: {
   projectFile = "src/NexusMods.App/NexusMods.App.csproj";
   testProjectFile = "NexusMods.App.sln";
 
+  buildInputs = [ avalonia ];
+
   nativeBuildInputs = [ copyDesktopItems ];
 
   nugetDeps = ./deps.nix;
+  mapNuGetDependencies = true;
 
   dotnet-sdk = dotnetCorePackages.sdk_8_0;
   dotnet-runtime = dotnetCorePackages.runtime_8_0;
+
+  postConfigureNuGet = ''
+    dotnet add src/NexusMods.Icons/NexusMods.Icons.csproj package SkiaSharp -v 2.88.7
+  '';
 
   preConfigure = ''
     substituteInPlace Directory.Build.props \

@@ -30,35 +30,13 @@ in
 
 { lib, pkgs }: variant: self:
 let
-  dontConfigure = pkg:
-    pkg.override (args: {
-      melpaBuild = drv: args.melpaBuild (drv // {
-        dontConfigure = true;
-      });
-    });
-
-  markBroken = pkg:
-    pkg.override (args: {
-      melpaBuild = drv: args.melpaBuild (drv // {
-        meta = (drv.meta or { }) // { broken = true; };
-      });
-    });
-
-  externalSrc = pkg: epkg:
-    pkg.override (args: {
-      melpaBuild = drv: args.melpaBuild (drv // {
-        inherit (epkg) src version;
-
-        propagatedUserEnvPkgs = [ epkg ];
-      });
-    });
-
-  buildWithGit = pkg: pkg.overrideAttrs (attrs: {
-    nativeBuildInputs =
-      (attrs.nativeBuildInputs or [ ]) ++ [ pkgs.git ];
-  });
-
-  fix-rtags = pkg: dontConfigure (externalSrc pkg pkgs.rtags);
+  inherit (import ./lib-override-helper.nix pkgs)
+    buildWithGit
+    dontConfigure
+    externalSrc
+    fix-rtags
+    markBroken
+    ;
 
   generateMelpa = lib.makeOverridable ({ archiveJson ? defaultArchive
                                        }:
@@ -154,6 +132,13 @@ let
       } // {
         # Expects bash to be at /bin/bash
         ac-rtags = fix-rtags super.ac-rtags;
+
+        age = super.age.overrideAttrs (attrs: {
+          postPatch = attrs.postPatch or "" + ''
+            substituteInPlace age.el \
+              --replace-fail 'age-program (executable-find "age")' 'age-program "${lib.getExe pkgs.age}"'
+          '';
+        });
 
         airline-themes = super.airline-themes.override {
           inherit (self.melpaPackages) powerline;
@@ -379,6 +364,13 @@ let
 
         forge = buildWithGit super.forge;
 
+        gnuplot-mode = super.gnuplot-mode.overrideAttrs (attrs: {
+          postPatch = attrs.postPatch or "" + ''
+            substituteInPlace gnuplot-mode.el \
+              --replace-fail 'gnuplot-program "gnuplot"' 'gnuplot-program "${lib.getExe pkgs.gnuplot}"'
+          '';
+        });
+
         magit = buildWithGit super.magit;
 
         magit-find-file = buildWithGit super.magit-find-file;
@@ -559,6 +551,13 @@ let
         vdiff-magit = super.vdiff-magit.overrideAttrs (attrs: {
           nativeBuildInputs =
             (attrs.nativeBuildInputs or [ ]) ++ [ pkgs.git ];
+        });
+
+        zig-mode = super.zig-mode.overrideAttrs (attrs: {
+          postPatch = attrs.postPatch or "" + ''
+            substituteInPlace zig-mode.el \
+              --replace-fail 'zig-zig-bin "zig"' 'zig-zig-bin "${lib.getExe pkgs.zig}"'
+          '';
         });
 
         zmq = super.zmq.overrideAttrs (old: {

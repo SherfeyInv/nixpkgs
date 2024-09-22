@@ -25,19 +25,20 @@
   pytestCheckHook,
   pytest-cov-stub,
   requests,
+  shiny,
   syrupy,
 }:
 
 buildPythonPackage rec {
   pname = "great-tables";
-  version = "0.11.0";
+  version = "0.11.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "posit-dev";
     repo = "great-tables";
     rev = "refs/tags/v${version}";
-    hash = "sha256-ccS//fSFa6sytKv0izRxIdnHoNICr7P90Eo+v62RmVA=";
+    hash = "sha256-IlukgnhOT8NF1WxRJCnNuNEI31DByWoNzbk/x458atA=";
   };
 
   build-system = [
@@ -66,11 +67,8 @@ buildPythonPackage rec {
     pytestCheckHook
     pytest-cov-stub
     requests
+    shiny
     syrupy
-  ];
-
-  disabledTestPaths = [
-    "tests/test_shiny.py" # requires `shiny` python package, not in Nixpkgs
   ];
 
   disabledTests = [
