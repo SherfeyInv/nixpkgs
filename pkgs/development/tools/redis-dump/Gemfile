@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'redis-dump'
+gem 'redis-dump', '>= 0.6.0'
