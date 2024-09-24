@@ -7,20 +7,20 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "csvlens";
-  version = "0.9.0";
+  version = "0.10.0";
 
   src = fetchFromGitHub {
     owner = "YS-L";
     repo = "csvlens";
     rev = "refs/tags/v${version}";
-    hash = "sha256-Qpda9qADnj3eGz+nvD6VgxUOwTXrFI1rMam6+sfK6MQ=";
+    hash = "sha256-1tFdsSaX6xWG3DuUfbkeHJKO73mUDZcGmGCaGn4Kx24=";
   };
 
   buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
     darwin.apple_sdk.frameworks.AppKit
   ];
 
-  cargoHash = "sha256-PDOuAz+ov1S7i7TpRp4YaeoQQJ4paal6FI0VU25d4zU=";
+  cargoHash = "sha256-rJ9InGfz4HS7Rt8c214LYaIuO2BWAx4UwLBPyTo9GZY=";
 
   meta = with lib; {
     description = "Command line csv viewer";

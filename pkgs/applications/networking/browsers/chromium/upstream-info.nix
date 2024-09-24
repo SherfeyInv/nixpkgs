@@ -1,37 +1,37 @@
 {
   stable = {
     chromedriver = {
-      hash_darwin = "sha256-00582jnlAkVkqFsylZnTWfHh5TJkz+m9W8QCXYKerfo=";
+      hash_darwin = "sha256-303weqU04cCCwlLlSVnEyvKvHu09RjGFLmg5cf/exss=";
       hash_darwin_aarch64 =
-        "sha256-EV45I6lav93uMzgZkjypq1RazqtP1W8w8/c4dVZ5hjI=";
-      hash_linux = "sha256-xCizRpHgcent3D/tMBK+CtXiwtTdH61fja1u8QyECCA=";
-      version = "124.0.6367.207";
+        "sha256-TybJYKeMzm9FQp0Jqx82VF1OOiVSpS/QgNUEDlWG7Uc=";
+      hash_linux = "sha256-D8aKGKnbFT6YUhyhZUuz/XhCrUVS+Y7I7GaI6Qfv2bE=";
+      version = "129.0.6668.58";
     };
     deps = {
       gn = {
-        hash = "sha256-aEL1kIhgPAFqdb174dG093HoLhCJ07O1Kpqfu7r14wQ=";
-        rev = "22581fb46c0c0c9530caa67149ee4dd8811063cf";
+        hash = "sha256-8o3rDdojqVHMQCxI2T3MdJOXKlW3XX7lqpy3zWhJiaA=";
+        rev = "d010e218ca7077928ad7c9e9cc02fe43b5a8a0ad";
         url = "https://gn.googlesource.com/gn";
-        version = "2024-03-14";
+        version = "2024-08-19";
       };
     };
-    hash = "sha256-IeIWk4y1dufEnhxqvZbQlFVD8dsoceysiEHqJ2G4Oz8=";
-    version = "124.0.6367.207";
+    hash = "sha256-8dKWu2/ZKw5ZthH1s5wR+h9b0aIqlDhNsPUrlE9DMQg=";
+    version = "129.0.6668.58";
   };
   ungoogled-chromium = {
     deps = {
       gn = {
-        hash = "sha256-aEL1kIhgPAFqdb174dG093HoLhCJ07O1Kpqfu7r14wQ=";
-        rev = "22581fb46c0c0c9530caa67149ee4dd8811063cf";
+        hash = "sha256-8o3rDdojqVHMQCxI2T3MdJOXKlW3XX7lqpy3zWhJiaA=";
+        rev = "d010e218ca7077928ad7c9e9cc02fe43b5a8a0ad";
         url = "https://gn.googlesource.com/gn";
-        version = "2024-03-14";
+        version = "2024-08-19";
       };
       ungoogled-patches = {
-        hash = "sha256-7Z9j+meVRZYLmreCzHlJe71E9kj5YJ4rrfpQ/deNTpM=";
-        rev = "124.0.6367.207-1";
+        hash = "sha256-3BK1HZiQ9SnRuMMviC8gm9ZLiu8ImceBlcAp24/aYlM=";
+        rev = "129.0.6668.58-1";
       };
     };
-    hash = "sha256-IeIWk4y1dufEnhxqvZbQlFVD8dsoceysiEHqJ2G4Oz8=";
-    version = "124.0.6367.207";
+    hash = "sha256-8dKWu2/ZKw5ZthH1s5wR+h9b0aIqlDhNsPUrlE9DMQg=";
+    version = "129.0.6668.58";
   };
 }

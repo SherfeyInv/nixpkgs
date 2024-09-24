@@ -1,17 +1,18 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
 
-# build-system
-, cython
+  # build-system
+  cython,
 
-# optional
-, numpy
+  # optional
+  numpy,
 
-# tests
-, hypothesis
-, pytest-cov
-, pytestCheckHook
+  # tests
+  hypothesis,
+  pytest-cov-stub,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -26,26 +27,20 @@ buildPythonPackage rec {
     hash = "sha256-F52ly3NkrZ0H9XoomMqmWfLl+8X0z26Yx67DB8DUqyU=";
   };
 
-  nativeBuildInputs = [
-    cython
-  ];
+  nativeBuildInputs = [ cython ];
 
   postPatch = ''
     substituteInPlace pytest.ini \
-      --replace "--cov=ndindex/ --cov-report=term-missing --flakes" ""
+      --replace "--flakes" ""
   '';
 
-  passthru.optional-dependencies.arrays = [
-    numpy
-  ];
+  passthru.optional-dependencies.arrays = [ numpy ];
 
-  pythonImportsCheck = [
-    "ndindex"
-  ];
+  pythonImportsCheck = [ "ndindex" ];
 
   nativeCheckInputs = [
     hypothesis
-    pytest-cov # uses cov markers
+    pytest-cov-stub
     pytestCheckHook
   ] ++ passthru.optional-dependencies.arrays;
 
@@ -54,6 +49,6 @@ buildPythonPackage rec {
     homepage = "https://github.com/Quansight-Labs/ndindex";
     changelog = "https://github.com/Quansight-Labs/ndindex/releases/tag/${version}";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

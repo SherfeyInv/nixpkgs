@@ -7,14 +7,14 @@
 
 buildNpmPackage rec {
   pname = "graphite-cli";
-  version = "1.3.4";
+  version = "1.4.4";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-${version}.tgz";
-    hash = "sha256-Rc/dj3r3EpMbxx9rYj4kXnstmUGLR46U+7v6n1jSaiQ=";
+    hash = "sha256-a/ouR93i887/QnIeSZX5zVgF194LCCc2hNmSGsH8aDY=";
   };
 
-  npmDepsHash = "sha256-w9d96SMLISPua9LMZscDjL7L8mGPO1RGyNjg8eU40hw=";
+  npmDepsHash = "sha256-MwJ7ALO0Ebh7K0LW4xJ79tL1FikNe5hiY06X1lwXlC4=";
 
   postPatch = ''
     ln -s ${./package-lock.json} package-lock.json
@@ -37,6 +37,7 @@ buildNpmPackage rec {
   passthru.updateScript = ./update.sh;
 
   meta = {
+    changelog = "https://graphite.dev/docs/cli-changelog";
     description = "CLI that makes creating stacked git changes fast & intuitive";
     downloadPage = "https://www.npmjs.com/package/@withgraphite/graphite-cli";
     homepage = "https://graphite.dev/docs/graphite-cli";

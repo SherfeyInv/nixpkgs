@@ -9,16 +9,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "moon";
-  version = "1.24.4";
+  version = "1.28.2";
 
   src = fetchFromGitHub {
     owner = "moonrepo";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-LOUACki6uG8jDBI2eOO0C/tQrJ7L3aehwo+4pe9ONgo=";
+    hash = "sha256-T+fPQ9qQ3mdnf80E6L7VYtDQpiGNj209yH+IgmdAgug=";
   };
 
-  cargoHash = "sha256-kTLWWtAqoSTmVBHYJKMUsV8jtSYzgERkSErLRMmZI7Y=";
+  cargoHash = "sha256-PgeVoq0jS7i6WD0cZRHu86zWgxK8fRpJhHujsaFqRy0=";
 
   env = {
     RUSTFLAGS = "-C strip=symbols";
@@ -36,7 +36,7 @@ rustPlatform.buildRustPackage rec {
   doCheck = false;
 
   meta = with lib; {
-    description = "A task runner and repo management tool for the web ecosystem, written in Rust";
+    description = "Task runner and repo management tool for the web ecosystem, written in Rust";
     mainProgram = "moon";
     homepage = "https://github.com/moonrepo/moon";
     license = licenses.mit;

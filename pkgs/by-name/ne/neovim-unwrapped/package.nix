@@ -1,6 +1,6 @@
-{ lib, stdenv, fetchFromGitHub, removeReferencesTo, cmake, gettext, msgpack-c, libtermkey, libiconv
-, libuv, lua, ncurses, pkg-config
-, unibilium, gperf
+{ lib, stdenv, fetchFromGitHub, removeReferencesTo, cmake, gettext, msgpack-c, libiconv
+, libuv, lua, pkg-config
+, unibilium
 , libvterm-neovim
 , tree-sitter
 , fetchurl
@@ -41,7 +41,7 @@ stdenv.mkDerivation (finalAttrs:
     (nvim-lpeg-dylib ps)
     luabitop
     mpack
-  ] ++ lib.optionals finalAttrs.doCheck [
+  ] ++ lib.optionals finalAttrs.finalPackage.doCheck [
     luv
     coxpcall
     busted
@@ -66,7 +66,7 @@ stdenv.mkDerivation (finalAttrs:
 
 in {
     pname = "neovim-unwrapped";
-    version = "0.10.0";
+    version = "0.10.1";
 
     __structuredAttrs = true;
 
@@ -74,7 +74,7 @@ in {
       owner = "neovim";
       repo = "neovim";
       rev = "v${finalAttrs.version}";
-      hash = "sha256-FCOipXHkAbkuFw9JjEpOIJ8BkyMkjkI0Dp+SzZ4yZlw=";
+      hash = "sha256-OsHIacgorYnB/dPbzl1b6rYUzQdhTtsJYLsFLJxregk=";
     };
 
     patches = [
@@ -86,11 +86,13 @@ in {
 
     dontFixCmake = true;
 
-    inherit lua treesitter-parsers;
+    inherit lua;
+    treesitter-parsers = treesitter-parsers //
+      { markdown = treesitter-parsers.markdown // { location = "tree-sitter-markdown"; }; } //
+      { markdown_inline = treesitter-parsers.markdown // { language = "markdown_inline"; location = "tree-sitter-markdown-inline"; }; }
+      ;
 
     buildInputs = [
-      gperf
-      libtermkey
       libuv
       libvterm-neovim
       # This is actually a c library, hence it's not included in neovimLuaEnv,
@@ -99,12 +101,11 @@ in {
       # and it's definition at: pkgs/development/lua-modules/overrides.nix
       lua.pkgs.libluv
       msgpack-c
-      ncurses
       neovimLuaEnv
       tree-sitter
       unibilium
     ] ++ lib.optionals stdenv.isDarwin [ libiconv CoreServices ]
-      ++ lib.optionals finalAttrs.doCheck [ glibcLocales procps ]
+      ++ lib.optionals finalAttrs.finalPackage.doCheck [ glibcLocales procps ]
     ;
 
     doCheck = false;
@@ -146,9 +147,14 @@ in {
       find "$out" -type f -exec remove-references-to -t ${stdenv.cc} '{}' +
     '';
     # check that the above patching actually works
-    disallowedRequisites = [ stdenv.cc ] ++ lib.optional (lua != codegenLua) codegenLua;
+    outputChecks = let
+      disallowedRequisites = [ stdenv.cc ] ++ lib.optional (lua != codegenLua) codegenLua;
+    in {
+      out = { inherit disallowedRequisites; };
+      debug = { inherit disallowedRequisites; };
+    };
 
-    cmakeFlagsArray = [
+    cmakeFlags = [
       # Don't use downloaded dependencies. At the end of the configurePhase one
       # can spot that cmake says this option was "not used by the project".
       # That's because all dependencies were found and
@@ -156,24 +162,24 @@ in {
       "-DUSE_BUNDLED=OFF"
     ]
     ++ lib.optional (!lua.pkgs.isLuaJIT) "-DPREFER_LUA=ON"
-    ;
+    ++ lib.optionals lua.pkgs.isLuaJIT [
+      "-DLUAC_PRG=${codegenLua}/bin/luajit -b -s %s -"
+      "-DLUA_GEN_PRG=${codegenLua}/bin/luajit"
+      "-DLUA_PRG=${neovimLuaEnvOnBuild}/bin/luajit"
+    ];
 
-    preConfigure = lib.optionalString lua.pkgs.isLuaJIT ''
-      cmakeFlagsArray+=(
-        "-DLUAC_PRG=${codegenLua}/bin/luajit -b -s %s -"
-        "-DLUA_GEN_PRG=${codegenLua}/bin/luajit"
-        "-DLUA_PRG=${neovimLuaEnvOnBuild}/bin/luajit"
-      )
-    '' + lib.optionalString stdenv.isDarwin ''
+    preConfigure = lib.optionalString stdenv.isDarwin ''
       substituteInPlace src/nvim/CMakeLists.txt --replace "    util" ""
     '' + ''
       mkdir -p $out/lib/nvim/parser
     '' + lib.concatStrings (lib.mapAttrsToList
-      (language: src: ''
+      (language: grammar: ''
         ln -s \
           ${tree-sitter.buildGrammar {
-            inherit language src;
+            inherit (grammar) src;
             version = "neovim-${finalAttrs.version}";
+            language = grammar.language or language;
+            location = grammar.location or null;
           }}/parser \
           $out/lib/nvim/parser/${language}.so
       '')
@@ -185,7 +191,7 @@ in {
 
     separateDebugInfo = true;
 
-    meta = with lib; {
+    meta = {
       description = "Vim text editor fork focused on extensibility and agility";
       longDescription = ''
         Neovim is a project that seeks to aggressively refactor Vim in order to:
@@ -202,8 +208,8 @@ in {
       # Contributions committed after b17d96 are licensed under Apache 2.0 unless
       # those contributions were copied from Vim (identified in the commit logs
       # by the vim-patch token). See LICENSE for details."
-      license = with licenses; [ asl20 vim ];
-      maintainers = with maintainers; [ manveru rvolosatovs ];
-      platforms   = platforms.unix;
+      license = with lib.licenses; [ asl20 vim ];
+      maintainers = with lib.maintainers; [ manveru rvolosatovs ];
+      platforms   = lib.platforms.unix;
     };
   })

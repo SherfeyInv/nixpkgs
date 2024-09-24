@@ -1,16 +1,16 @@
 { lib, buildGoModule, fetchFromGitHub }:
 buildGoModule rec {
   pname = "treefmt";
-  version = "2.0.0-rc1";
+  version = "2.0.5";
 
   src = fetchFromGitHub {
     owner = "numtide";
     repo = "treefmt";
     rev = "v${version}";
-    hash = "sha256-iRjd7iYd3617XZrGD6Bi6d1SoE8dgATMbT4AMXklfgM=";
+    hash = "sha256-lDQbrq9AWH5Hjgy5AllbLLBUl/JkYGw68M5wob14kus=";
   };
 
-  vendorHash = "sha256-xbXy5Csl2JD5/F5mtvh8J36VZqrUIfO3OBV/LE+KzWA=";
+  vendorHash = "sha256-OyOgTBwcRNd6kdnn3TFuq7xukeK0A1imK/WMer0tldk=";
 
   subPackages = [ "." ];
 
@@ -19,7 +19,7 @@ buildGoModule rec {
   ldflags = [
     "-s"
     "-w"
-    "-X git.numtide.com/numtide/treefmt/build.Name=${pname}"
+    "-X git.numtide.com/numtide/treefmt/build.Name=treefmt"
     "-X git.numtide.com/numtide/treefmt/build.Version=v${version}"
   ];
 

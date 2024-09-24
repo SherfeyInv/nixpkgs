@@ -24,7 +24,7 @@ let
   unpackGog = runCommand "ut1999-gog" {
     src = requireFile rec {
       name = "setup_ut_goty_2.0.0.5.exe";
-      sha256 = "00v8jbqhgb1fry7jvr0i3mb5jscc19niigzjc989qrcp9pamghjc";
+      hash = "sha256-TMJX1U2XZZxQYvK/GG0KjGlZVh0R5C2Pzy6sB/GSaAM=";
       message = ''
         Unreal Tournament 1999 requires the official GOG package, version 2.0.0.5.
 
@@ -102,8 +102,9 @@ in stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  # .so files in the SystemARM64 directory are not loaded properly on aarch64-linux
-  appendRunpaths = lib.optionals (stdenv.hostPlatform.system == "aarch64-linux") [
+  # Bring in game's .so files into lookup. Otherwise game fails to start
+  # as: `Object not found: Class Render.Render`
+  appendRunpaths = [
     "${placeholder "out"}/${systemDir}"
   ];
 
@@ -119,7 +120,7 @@ in stdenv.mkDerivation {
   ];
 
   meta = with lib; {
-    description = "Unreal Tournament GOTY (1999) with the OldUnreal patch.";
+    description = "Unreal Tournament GOTY (1999) with the OldUnreal patch";
     license = licenses.unfree;
     platforms = attrNames srcs;
     maintainers = with maintainers; [ eliandoran ];

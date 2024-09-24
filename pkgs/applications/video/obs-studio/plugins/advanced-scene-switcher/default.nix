@@ -1,35 +1,36 @@
-{ lib
-, fetchFromGitHub
+{
+  lib,
+  fetchFromGitHub,
 
-, cmake
-, ninja
+  cmake,
+  ninja,
 
-, alsa-lib
-, asio
-, curl
-, nlohmann_json
-, obs-studio
-, opencv
-, procps
-, qtbase
-, stdenv
-, tesseract
-, websocketpp
-, xorg
+  alsa-lib,
+  asio,
+  curl,
+  nlohmann_json,
+  obs-studio,
+  opencv,
+  procps,
+  qtbase,
+  stdenv,
+  tesseract,
+  websocketpp,
+  xorg,
 
-, httplib
-, libremidi
+  httplib,
+  libremidi,
 }:
 
 stdenv.mkDerivation rec {
   pname = "advanced-scene-switcher";
-  version = "1.26.0";
+  version = "1.27.2";
 
   src = fetchFromGitHub {
     owner = "WarmUpTill";
     repo = "SceneSwitcher";
     rev = version;
-    hash = "sha256-ba+QQWekDp/9V+kNcNowXXJrfU4DCttz0tSoC7Ko1bE=";
+    hash = "sha256-7IciHCe2KemKNJpD9QcYK4AtxHlYuWaPsBCcVuPVvgA=";
   };
 
   nativeBuildInputs = [
@@ -64,10 +65,10 @@ stdenv.mkDerivation rec {
   env.NIX_CFLAGS_COMPILE = "-Wno-error=stringop-overflow";
 
   meta = with lib; {
-    description = "An automated scene switcher for OBS Studio";
+    description = "Automated scene switcher for OBS Studio";
     homepage = "https://github.com/WarmUpTill/SceneSwitcher";
     license = licenses.gpl2Plus;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

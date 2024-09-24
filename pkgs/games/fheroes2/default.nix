@@ -7,13 +7,13 @@
 
 stdenv.mkDerivation rec {
   pname = "fheroes2";
-  version = "1.0.13";
+  version = "1.1.2";
 
   src = fetchFromGitHub {
     owner = "ihhub";
     repo = "fheroes2";
     rev = version;
-    hash = "sha256-uR46G1DISurBk17GQdo+x94F2cP0+157PxjdG2s1Ik4=";
+    hash = "sha256-FSfA2gjJZWAbl2nTJwkAhWcJghbw5ulftU+6QBqljxY=";
   };
 
   nativeBuildInputs = [ imagemagick ];

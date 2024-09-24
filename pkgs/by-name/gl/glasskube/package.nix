@@ -1,18 +1,19 @@
 { lib
-, buildGoModule
+, buildGo123Module
 , buildNpmPackage
 , fetchFromGitHub
 , nix-update-script
 , installShellFiles
+, versionCheckHook
 }:
 
 let
-  version = "0.2.1";
+  version = "0.21.0";
   gitSrc = fetchFromGitHub {
     owner = "glasskube";
     repo = "glasskube";
     rev = "refs/tags/v${version}";
-    hash = "sha256-yHktQZ/s3RYcRQd0U+0VTnLOMTyRmlny9RtAdfFT6J8=";
+    hash = "sha256-MRmT7DqD6Tlej5Y/LVr++RcMjWlGA9xFe3FNYgxIPvM=";
   };
   web-bundle = buildNpmPackage rec {
     inherit version;
@@ -20,7 +21,7 @@ let
 
     src = gitSrc;
 
-    npmDepsHash = "sha256-WKwEAVMG6r/ZFmxgLR+zJCW8F2DOHxpWDYqhX/vcdrs=";
+    npmDepsHash = "sha256-246xQz1eI3WmJxSrKe6Q/oUQtZMjpa4mYwOIqSukyo8=";
 
     dontNpmInstall = true;
 
@@ -34,13 +35,13 @@ let
     '';
   };
 
-in buildGoModule rec {
+in buildGo123Module rec {
   inherit version;
   pname = "glasskube";
 
   src = gitSrc;
 
-  vendorHash = "sha256-ADa3nQZ/5K9m0aB5NwGQpjqhGwAne5pN2Z5RUb3eEcU=";
+  vendorHash = "sha256-RUUDIPuCxV+JwPLNxLALEmRIJ68XSNPtfwchuAJJYn0=";
 
   CGO_ENABLED = 0;
 
@@ -51,9 +52,11 @@ in buildGoModule rec {
     "-X github.com/glasskube/glasskube/internal/config.Commit=${src.rev}"
   ];
 
-  subPackages = [ "cmd/${pname}" "cmd/package-operator" ];
+  subPackages = [ "cmd/glasskube" "cmd/package-operator" ];
 
   nativeBuildInputs = [ installShellFiles ];
+  nativeCheckInputs = [ versionCheckHook ];
+  doInstallCheck = true;
 
   preBuild = ''
     cp -r ${web-bundle}/bundle internal/web/root/static/bundle

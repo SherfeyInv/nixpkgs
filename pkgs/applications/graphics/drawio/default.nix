@@ -14,24 +14,24 @@
 
 stdenv.mkDerivation rec {
   pname = "drawio";
-  version = "24.2.5";
+  version = "24.7.8";
 
   src = fetchFromGitHub {
     owner = "jgraph";
     repo = "drawio-desktop";
     rev = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-8Cs+uME6uXWIWeuS9cgKnlYJG/m13l2BIVNDG0bqEmc=";
+    hash = "sha256-mpFmUPdgK9S6HcoO5wc6onUkmS6tRbFwLAsMhvIQ8sU=";
   };
 
   # `@electron/fuses` tries to run `codesign` and fails. Disable and use autoSignDarwinBinariesHook instead
   postPatch = ''
-    sed -i -e 's/resetAdHocDarwinSignature:.*/resetAdHocDarwinSignature: false,/' build/fuses.js
+    sed -i -e 's/resetAdHocDarwinSignature:.*/resetAdHocDarwinSignature: false,/' build/fuses.cjs
   '';
 
   offlineCache = fetchYarnDeps {
     yarnLock = src + "/yarn.lock";
-    hash = "sha256-tQFcdZc+4N6TYY6MDAwUgpaIvqYkU681DbuYCQhvJ1c=";
+    hash = "sha256-/3Dn4l5Bao01pcSXuPhq/AbH+gxZzHILP8TiHvplJpw=";
   };
 
   nativeBuildInputs = [
@@ -63,14 +63,14 @@ stdenv.mkDerivation rec {
     runHook preBuild
 
   '' + lib.optionalString stdenv.isDarwin ''
-    cp -R ${electron}/Applications/Electron.app Electron.app
+    cp -R ${electron.dist}/Electron.app Electron.app
     chmod -R u+w Electron.app
     export CSC_IDENTITY_AUTO_DISCOVERY=false
     sed -i "/afterSign/d" electron-builder-linux-mac.json
   '' + ''
     yarn --offline run electron-builder --dir \
-      ${if stdenv.isDarwin then "--config electron-builder-linux-mac.json" else ""} \
-      -c.electronDist=${if stdenv.isDarwin then "." else "${electron}/libexec/electron"} \
+      ${lib.optionalString stdenv.isDarwin "--config electron-builder-linux-mac.json"} \
+      -c.electronDist=${if stdenv.isDarwin then "." else electron.dist} \
       -c.electronVersion=${electron.version}
 
     runHook postBuild
@@ -114,7 +114,7 @@ stdenv.mkDerivation rec {
   ];
 
   meta = with lib; {
-    description = "A desktop application for creating diagrams";
+    description = "Desktop application for creating diagrams";
     homepage = "https://about.draw.io/";
     license = licenses.asl20;
     changelog = "https://github.com/jgraph/drawio-desktop/releases/tag/v${version}";

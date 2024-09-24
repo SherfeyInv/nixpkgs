@@ -8,15 +8,15 @@
 
 buildGoModule rec {
   pname = "goperf";
-  version = "0-unstable-2023-11-08";
+  version = "0-unstable-2024-09-05";
 
   src = fetchgit {
     url = "https://go.googlesource.com/perf";
-    rev = "cb71e802ccb878a069712546879bf26489f0f300";
-    hash = "sha256-1NvrelLsy9lrepttXXnggc0oycC6EgJgU80iXDu3IoI=";
+    rev = "ce4811554b022ac27d024d355ad160e95079bec1";
+    hash = "sha256-kJJod7Qma3++lrctezYltB9hV8/gH/CycHrk+GpOasE=";
   };
 
-  vendorHash = "sha256-dJQHqIR6v0yYbxplytkdA98IHtdxnsvi9X6kIESCsB8=";
+  vendorHash = "sha256-VWywJ1LalYcfOQjrC0sLBfbQyIg8fYv4paMlIfa3RxI=";
 
   passthru.updateScript = writeShellScript "update-goperf" ''
     export UPDATE_NIX_ATTR_PATH=goperf

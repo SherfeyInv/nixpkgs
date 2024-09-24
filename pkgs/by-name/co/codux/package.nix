@@ -5,11 +5,11 @@
 
 let
   pname = "codux";
-  version = "15.26.0";
+  version = "15.34.0";
 
   src = fetchurl {
     url = "https://github.com/wixplosives/codux-versions/releases/download/${version}/Codux-${version}.x86_64.AppImage";
-    sha256 = "sha256-jja9WYfirltjBdJNCQONowVjMTg0aj265Sjq57qSjbc=";
+    hash = "sha256-/e5tz3/XD/aaxLc/SUrTmWWfqI2Gw/xBTTTSmv5uZEQ=";
   };
 
   appimageContents = appimageTools.extractType2 { inherit pname version src; };
@@ -25,7 +25,7 @@ appimageTools.wrapType2 rec {
   '';
 
   meta = with lib; {
-    description = "A visual IDE for React";
+    description = "Visual IDE for React";
     homepage = "https://www.codux.com";
     license = licenses.unfree;
     platforms = [ "x86_64-linux" ];

@@ -13,15 +13,15 @@
 
 buildPythonApplication rec {
   pname = "syncplay";
-  version = "1.7.2";
+  version = "1.7.3";
 
   format = "other";
 
   src = fetchFromGitHub {
     owner = "Syncplay";
     repo = "syncplay";
-    rev = "v${version}";
-    sha256 = "sha256-PERPE6141LXmb8fmW17Vu54Unpf9vEK+ahm6q1byRTU=";
+    rev = "refs/tags/v${version}";
+    sha256 = "sha256-ipo027XyN4BpMkxzXznbnaufsaG/YkHxFJYo+XWzbyE=";
   };
 
   patches = [
@@ -46,6 +46,6 @@ buildPythonApplication rec {
     description = "Free software that synchronises media players";
     license = licenses.asl20;
     platforms = platforms.linux ++ platforms.darwin;
-    maintainers = with maintainers; [ assistant Enzime ];
+    maintainers = with maintainers; [ assistant ];
   };
 }

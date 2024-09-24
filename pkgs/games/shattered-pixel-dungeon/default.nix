@@ -5,16 +5,16 @@
 
 callPackage ./generic.nix rec {
   pname = "shattered-pixel-dungeon";
-  version = "2.4.0";
+  version = "2.5.0";
 
   src = fetchFromGitHub {
     owner = "00-Evan";
     repo = "shattered-pixel-dungeon";
     rev = "v${version}";
-    hash = "sha256-WTmzSuEoXLhr14vm2eQAmhmbTX/v7uKioQ1DcLnvAUw=";
+    hash = "sha256-G/g84Jl+jkmvxmQtCIPHsW9vHi3FPKt7A087SkVxNVE=";
   };
 
-  depsHash = "sha256-vihoR0bPh7590sRxeYJ1uuynNRxtRBuiFUrdmsRNUJc=";
+  depsPath = ./deps.json;
 
   passthru.tests = {
     shattered-pixel-dungeon-starts = nixosTests.shattered-pixel-dungeon;

@@ -9,8 +9,6 @@
 , darwin
 }:
 
-assert wayland.withLibraries;
-
 let
   stdenv = clangStdenv;
 in
@@ -79,7 +77,7 @@ stdenv.mkDerivation {
   '';
 
   meta = with lib; {
-    description = "A portable Wayland compositor in Objective-C";
+    description = "Portable Wayland compositor in Objective-C";
     homepage = "https://github.com/owl-compositor/owl";
     license = licenses.gpl3Plus;
     maintainers = with maintainers; [ wegank ];

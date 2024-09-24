@@ -1,7 +1,9 @@
 { lib
 , rustPlatform
 , fetchFromGitHub
+, nix-update-script
 , pkg-config
+, libdisplay-info
 , libxkbcommon
 , pango
 , pipewire
@@ -13,26 +15,26 @@
 , mesa
 , fontconfig
 , libglvnd
-, libclang
 , autoPatchelfHook
 , clang
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "niri";
-  version = "0.1.5";
+  version = "0.1.9";
 
   src = fetchFromGitHub {
     owner = "YaLTeR";
     repo = "niri";
     rev = "v${version}";
-    hash = "sha256-YuYowUw5ecPa78bhT72zY2b99wn68mO3vVkop8hnb8M=";
+    hash = "sha256-4YDrKMwXGVOBkeaISbxqf24rLuHvO98TnqxWYfgiSeg=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
-      "smithay-0.3.0" = "sha256-1ANERwRG7Uwe1gSm6zQnEMQlpRrGSFP8mp6JItzjz0k=";
+      "smithay-0.3.0" = "sha256-/3BO66yVoo63+5rwrZzoxhSTncvLyHdvtSaApFj3fBg=";
+      "libspa-0.8.0" = "sha256-R68TkFbzDFA/8Btcar+0omUErLyBMm4fsmQlCvfqR9o=";
     };
   };
 
@@ -47,6 +49,7 @@ rustPlatform.buildRustPackage rec {
     wayland
     systemd # For libudev
     seatd # For libseat
+    libdisplay-info
     libxkbcommon
     libinput
     mesa # For libgbm
@@ -62,7 +65,7 @@ rustPlatform.buildRustPackage rec {
     libglvnd # For libEGL
   ];
 
-  passthru.providedSessions = ["niri"];
+  passthru.providedSessions = [ "niri" ];
 
   postPatch = ''
     patchShebangs ./resources/niri-session
@@ -77,8 +80,10 @@ rustPlatform.buildRustPackage rec {
     install -Dm0644 resources/niri{-shutdown.target,.service} -t $out/share/systemd/user
   '';
 
+  passthru.updateScript = nix-update-script { };
+
   meta = with lib; {
-    description = "A scrollable-tiling Wayland compositor";
+    description = "Scrollable-tiling Wayland compositor";
     homepage = "https://github.com/YaLTeR/niri";
     license = licenses.gpl3Only;
     maintainers = with maintainers; [ iogamaster foo-dogsquared sodiboo ];

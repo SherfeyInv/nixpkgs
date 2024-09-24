@@ -1,29 +1,22 @@
 { lib
 , rustPlatform
 , fetchFromGitHub
-, stdenv
 , python3
 , nix-update-script
 }:
 
 rustPlatform.buildRustPackage rec {
   pname = "nickel";
-  version = "1.6.0";
+  version = "1.8.0";
 
   src = fetchFromGitHub {
     owner = "tweag";
     repo = "nickel";
     rev = "refs/tags/${version}";
-    hash = "sha256-AL5YkdITO9CPFYzMGQwHbuFZrMDUvF1yTt2XTotoymM=";
+    hash = "sha256-mjmT1ogvUJgy3Jb6m/npE+1if1Uy191wPU80nNlVwdM=";
   };
 
-  cargoLock = {
-    lockFile = ./Cargo.lock;
-    outputHashes = {
-      "topiary-core-0.3.0" = "sha256-KWfgbVFV2zbCuNNFp9yeSgAa0Cc7cT090KK2J1ynfKg=";
-      "tree-sitter-nickel-0.1.0" = "sha256-WuY6X1mnXdjiy4joIcY8voK2sqICFf0GvudulZ9lwqg=";
-    };
-  };
+  cargoHash = "sha256-XDDvuIVWvmsO09aQLF28OyH5n+9aO5J+89EQLru7Jrc=";
 
   cargoBuildFlags = [ "-p nickel-lang-cli" "-p nickel-lang-lsp" ];
 

@@ -1,25 +1,29 @@
 { lib }:
+let
+  inherit (lib) optionalAttrs;
 
-lib.mapAttrs (lname: lset: let
-  defaultLicense = {
-    shortName = lname;
-    free = true; # Most of our licenses are Free, explicitly declare unfree additions as such!
-    deprecated = false;
+  mkLicense = lname: {
+    shortName ? lname,
+    # Most of our licenses are Free, explicitly declare unfree additions as such!
+    free ? true,
+    deprecated ? false,
+    spdxId ? null,
+    url ? null,
+    fullName ? null,
+    redistributable ? free
+  }@attrs: {
+    inherit shortName free deprecated redistributable;
+  } // optionalAttrs (attrs ? spdxId) {
+    inherit spdxId;
+    url = "https://spdx.org/licenses/${spdxId}.html";
+  } // optionalAttrs (attrs ? url) {
+    inherit url;
+  } // optionalAttrs (attrs ? fullName) {
+    inherit fullName;
   };
 
-  mkLicense = licenseDeclaration: let
-    applyDefaults = license: defaultLicense // license;
-    applySpdx = license:
-      if license ? spdxId
-      then license // { url = "https://spdx.org/licenses/${license.spdxId}.html"; }
-      else license;
-    applyRedistributable = license: { redistributable = license.free; } // license;
-  in lib.pipe licenseDeclaration [
-    applyDefaults
-    applySpdx
-    applyRedistributable
-  ];
-in mkLicense lset) ({
+in
+lib.mapAttrs mkLicense ({
   /* License identifiers from spdx.org where possible.
    * If you cannot find your license here, then look for a similar license or
    * add it to this list. The URL mentioned above is a good source for inspiration.
@@ -225,6 +229,7 @@ in mkLicense lset) ({
   };
 
   bsl11 = {
+    spdxId = "BUSL-1.1";
     fullName = "Business Source License 1.1";
     url = "https://mariadb.com/bsl11";
     free = false;
@@ -317,6 +322,12 @@ in mkLicense lset) ({
     free = false;
   };
 
+  cc-by-nd-40 = {
+    spdxId = "CC-BY-ND-4.0";
+    fullName = "Creative Commons Attribution-No Derivative Works v4.0";
+    free = false;
+  };
+
   cc-by-sa-10 = {
     spdxId = "CC-BY-SA-1.0";
     fullName = "Creative Commons Attribution Share Alike 1.0";
@@ -362,6 +373,12 @@ in mkLicense lset) ({
     fullName = "Creative Commons Attribution Share Alike 4.0";
   };
 
+  cc-sa-10 = {
+    shortName = "CC-SA-1.0";
+    fullName = "Creative Commons Share Alike 1.0";
+    url = "https://creativecommons.org/licenses/sa/1.0";
+  };
+
   cddl = {
     spdxId = "CDDL-1.0";
     fullName = "Common Development and Distribution License 1.0";
@@ -385,6 +402,12 @@ in mkLicense lset) ({
   cecill-c = {
     spdxId = "CECILL-C";
     fullName  = "CeCILL-C Free Software License Agreement";
+  };
+
+  cockroachdb-community-license = {
+    fullName = "CockroachDB Community License Agreement";
+    url = "https://www.cockroachlabs.com/cockroachdb-community-license/";
+    free = false;
   };
 
   cpal10 = {
@@ -522,6 +545,20 @@ in mkLicense lset) ({
 
   free = {
     fullName = "Unspecified free software license";
+  };
+
+  fsl11Mit = {
+    fullName = "Functional Source License, Version 1.1, MIT Future License";
+    url = "https://fsl.software/FSL-1.1-MIT.template.md";
+    free = false;
+    redistributable = true;
+  };
+
+  fsl11Asl20 = {
+    fullName = "Functional Source License, Version 1.1, Apache 2.0 Future License";
+    url = "https://fsl.software/FSL-1.1-Apache-2.0.template.md";
+    free = false;
+    redistributable = true;
   };
 
   ftl = {
@@ -691,10 +728,9 @@ in mkLicense lset) ({
     fullName = "ISC License";
   };
 
-  # Proprietary binaries; free to redistribute without modification.
   databricks = {
-    fullName = "Databricks Proprietary License";
-    url = "https://pypi.org/project/databricks-connect";
+    fullName = "Databricks License";
+    url = "https://www.databricks.com/legal/db-license";
     free = false;
   };
 
@@ -703,6 +739,12 @@ in mkLicense lset) ({
     url = "https://github.com/databrickslabs/dbx/blob/743b579a4ac44531f764c6e522dbe5a81a7dc0e4/LICENSE";
     free = false;
     redistributable = false;
+  };
+
+  databricks-license = {
+    fullName = "Databricks License";
+    url = "https://www.databricks.com/legal/db-license";
+    free = false;
   };
 
   fair = {
@@ -797,11 +839,6 @@ in mkLicense lset) ({
     fullName = "PNG Reference Library version 2";
   };
 
-  libssh2 = {
-    fullName = "libssh2 License";
-    url = "https://www.libssh2.org/license.html";
-  };
-
   libtiff = {
     spdxId = "libtiff";
     fullName = "libtiff License";
@@ -843,8 +880,6 @@ in mkLicense lset) ({
     url = "https://opensource.org/licenses/MirOS";
   };
 
-  # spdx.org does not (yet) differentiate between the X11 and Expat versions
-  # for details see https://en.wikipedia.org/wiki/MIT_License#Various_versions
   mit = {
     spdxId = "MIT";
     fullName = "MIT License";
@@ -853,6 +888,12 @@ in mkLicense lset) ({
   mit-feh = {
     spdxId = "MIT-feh";
     fullName = "feh License";
+  };
+
+  mit-modern = {
+    # Also known as Zsh license
+    spdxId = "MIT-Modern-Variant";
+    fullName = "MIT License Modern Variant";
   };
 
   mitAdvertising = {
@@ -900,6 +941,17 @@ in mkLicense lset) ({
     spdxId = "NASA-1.3";
     fullName = "NASA Open Source Agreement 1.3";
     free = false;
+  };
+
+  ncbiPd = {
+    spdxId = "NCBI-PD";
+    fullName = "NCBI Public Domain Notice";
+    # Due to United States copyright law, anything with this "license" does not have a copyright in the
+    # jurisdiction of the United States. However, other jurisdictions may assign the United States
+    # government copyright to the work, and the license explicitly states that in such a case, no license
+    # is granted. This is nonfree and nonredistributable in most jurisdictions other than the United States.
+    free = false;
+    redistributable = false;
   };
 
   ncsa = {
@@ -1065,6 +1117,11 @@ in mkLicense lset) ({
     url = "https://qwt.sourceforge.io/qwtlicense.html";
   };
 
+  radiance = {
+    fullName = "The Radiance Software License, Version 2.0";
+    url = "https://github.com/LBNL-ETA/Radiance/blob/master/License.txt";
+  };
+
   ruby = {
     spdxId = "Ruby";
     fullName = "Ruby License";
@@ -1137,7 +1194,7 @@ in mkLicense lset) ({
     shortName = "TSL";
     fullName = "Timescale License Agreegment";
     url = "https://github.com/timescale/timescaledb/blob/main/tsl/LICENSE-TIMESCALE";
-    unfree = true;
+    free = false;
   };
 
   tcltk = {
@@ -1261,6 +1318,11 @@ in mkLicense lset) ({
     fullName = "xinetd License";
   };
 
+  xskat = {
+    spdxId = "XSkat";
+    fullName = "XSkat License";
+  };
+
   zlib = {
     spdxId = "Zlib";
     fullName = "zlib License";
@@ -1276,10 +1338,6 @@ in mkLicense lset) ({
     fullName = "Zope Public License 2.1";
   };
 
-  xskat = {
-    spdxId = "XSkat";
-    fullName = "XSkat License";
-  };
 } // {
   # TODO: remove legacy aliases
   apsl10 = {

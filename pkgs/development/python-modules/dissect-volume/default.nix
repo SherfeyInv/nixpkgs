@@ -1,26 +1,27 @@
-{ lib
-, buildPythonPackage
-, dissect-cstruct
-, dissect-util
-, fetchFromGitHub
-, setuptools
-, setuptools-scm
-, pytestCheckHook
-, pythonOlder
+{
+  lib,
+  buildPythonPackage,
+  dissect-cstruct,
+  dissect-util,
+  fetchFromGitHub,
+  setuptools,
+  setuptools-scm,
+  pytestCheckHook,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "dissect-volume";
-  version = "3.10";
+  version = "3.11";
   pyproject = true;
 
-  disabled = pythonOlder "3.10";
+  disabled = pythonOlder "3.11";
 
   src = fetchFromGitHub {
     owner = "fox-it";
     repo = "dissect.volume";
     rev = "refs/tags/${version}";
-    hash = "sha256-tQNmSnQBchj3SUq2XPsK/LWrKiCw4MFKmopHbxnzMxg=";
+    hash = "sha256-eHIInoquuyukKuPVvVB6qtovx1NloHHVGKfFBHxVd+o=";
   };
 
   nativeBuildInputs = [
@@ -33,13 +34,9 @@ buildPythonPackage rec {
     dissect-util
   ];
 
-  nativeCheckInputs = [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
-  pythonImportsCheck = [
-    "dissect.volume"
-  ];
+  pythonImportsCheck = [ "dissect.volume" ];
 
   disabledTests = [
     # gzip.BadGzipFile: Not a gzipped file

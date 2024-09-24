@@ -8,12 +8,12 @@
   numpy,
   pytestCheckHook,
   syrupy,
-  libiconv
+  libiconv,
 }:
 
 buildPythonPackage rec {
   pname = "quil";
-  version = "0.7.1";
+  version = "0.11.4";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -22,20 +22,16 @@ buildPythonPackage rec {
     owner = "rigetti";
     repo = "quil-rs";
     rev = "quil-py/v${version}";
-    hash = "sha256-GFePbCJnVbzL4cpQ7fy1tk2l7NhAyTVW63lVYTv0/Oo=";
+    hash = "sha256-I8LV7lqJP2xc8eVxMbixeHMRYiTpmpSahfA3WWRjoHA=";
   };
 
   cargoDeps = rustPlatform.fetchCargoTarball {
     name = "${pname}-${version}";
     inherit src;
-    hash = "sha256-catUGCFbkvov1z52f6eyxogflu61VcjIItgEVEWzkpY=";
+    hash = "sha256-U9AVJ4i9E0TeG5cPxdx9hJcMKkZvUXcRfZF7VkM7ddI=";
   };
 
   buildAndTestSubdir = "quil-py";
-
-  preConfigure = ''
-    cargo metadata --offline
-  '';
 
   build-system = [
     rustPlatform.cargoSetupHook
@@ -46,7 +42,12 @@ buildPythonPackage rec {
 
   dependencies = [ numpy ];
 
-  pythonImportsCheck = [ "numpy" ];
+  pythonImportsCheck = [
+    "quil.expression"
+    "quil.instructions"
+    "quil.program"
+    "quil.validation"
+  ];
 
   nativeCheckInputs = [
     pytestCheckHook

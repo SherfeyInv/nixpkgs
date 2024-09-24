@@ -2,13 +2,13 @@
 
 buildGoModule rec {
   pname = "ddev";
-  version = "1.23.0";
+  version = "1.23.4";
 
   src = fetchFromGitHub {
     owner = "ddev";
     repo = "ddev";
     rev = "v${version}";
-    hash = "sha256-+CyihuSo/ssX8tX2rYi3c41eAwdG58aagAsYiBBjQ48=";
+    hash = "sha256-+Ou9YbFwUVu6AqR041ngnVb9TpiO1UMph2w1zsbEMEM=";
   };
 
   vendorHash = null;
@@ -38,6 +38,6 @@ buildGoModule rec {
     license = licenses.asl20;
     platforms = platforms.unix;
     mainProgram = "ddev";
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
   };
 }

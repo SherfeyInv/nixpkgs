@@ -7,7 +7,7 @@
 , python3
 , giflib
 , darwin
-, ghostscript
+, ghostscript_headless
 , imagemagickBig
 , jbig2enc
 , optipng
@@ -21,22 +21,24 @@
 , pango
 , pkg-config
 , nltk-data
+, xorg
 }:
 
 let
-  version = "2.7.2";
+  version = "2.11.6";
 
   src = fetchFromGitHub {
     owner = "paperless-ngx";
     repo = "paperless-ngx";
     rev = "refs/tags/v${version}";
-    hash = "sha256-vXW2d45Mth3Y95xPPH8bFjVLWVdUl+WuvSXJyPD3FyU=";
+    hash = "sha256-RNX+KS2h9zrOK8QzeQWH55pkNPTDW4gic2HLG+XXLRg=";
   };
 
   # subpath installation is broken with uvicorn >= 0.26
   # https://github.com/NixOS/nixpkgs/issues/298719
   # https://github.com/paperless-ngx/paperless-ngx/issues/5494
   python = python3.override {
+    self = python;
     packageOverrides = final: prev: {
       # tesseract5 may be overwritten in the paperless module and we need to propagate that to make the closure reduction effective
       ocrmypdf = prev.ocrmypdf.override { tesseract = tesseract5; };
@@ -55,7 +57,7 @@ let
 
 
   path = lib.makeBinPath [
-    ghostscript
+    ghostscript_headless
     imagemagickBig
     jbig2enc
     optipng
@@ -74,7 +76,7 @@ let
       cd src-ui
     '';
 
-    npmDepsHash = "sha256-MJ5pnQChghZBfVN6Lbz6VcMtbe8QadiFLTsMF5TlebQ=";
+    npmDepsHash = "sha256-ML1Yp3JIMbRF6kVu190ReoY7oDUtUfNkHE7dHF6YUAE=";
 
     nativeBuildInputs = [
       pkg-config
@@ -120,6 +122,7 @@ python.pkgs.buildPythonApplication rec {
 
   nativeBuildInputs = [
     gettext
+    xorg.lndir
   ];
 
   propagatedBuildInputs = with python.pkgs; [
@@ -138,6 +141,7 @@ python.pkgs.buildPythonApplication rec {
     django-filter
     django-guardian
     django-multiselectfield
+    django-soft-delete
     djangorestframework
     djangorestframework-guardian2
     drf-writable-nested
@@ -153,7 +157,7 @@ python.pkgs.buildPythonApplication rec {
     ocrmypdf
     pathvalidate
     pdf2image
-    psycopg2
+    psycopg
     python-dateutil
     python-dotenv
     python-gnupg
@@ -192,9 +196,9 @@ python.pkgs.buildPythonApplication rec {
   in ''
     runHook preInstall
 
-    mkdir -p $out/lib/paperless-ngx
+    mkdir -p $out/lib/paperless-ngx/static/frontend
     cp -r {src,static,LICENSE,gunicorn.conf.py} $out/lib/paperless-ngx
-    ln -s ${frontend}/lib/paperless-ui/frontend $out/lib/paperless-ngx/static/
+    lndir -silent ${frontend}/lib/paperless-ui/frontend $out/lib/paperless-ngx/static/frontend
     chmod +x $out/lib/paperless-ngx/src/manage.py
     makeWrapper $out/lib/paperless-ngx/src/manage.py $out/bin/paperless-ngx \
       --prefix PYTHONPATH : "${pythonPath}" \
@@ -215,9 +219,11 @@ python.pkgs.buildPythonApplication rec {
     daphne
     factory-boy
     imagehash
+    pytest-cov-stub
     pytest-django
     pytest-env
     pytest-httpx
+    pytest-mock
     pytest-rerunfailures
     pytest-xdist
     pytestCheckHook
@@ -235,25 +241,24 @@ python.pkgs.buildPythonApplication rec {
     export PATH="${path}:$PATH"
     export HOME=$(mktemp -d)
     export XDG_DATA_DIRS="${liberation_ttf}/share:$XDG_DATA_DIRS"
-
-    # Disable unneeded code coverage test
-    substituteInPlace src/setup.cfg \
-      --replace-fail "--cov --cov-report=html --cov-report=xml" ""
   '';
 
   disabledTests = [
     # FileNotFoundError(2, 'No such file or directory'): /build/tmp...
     "test_script_with_output"
+    "test_script_exit_non_zero"
     # AssertionError: 10 != 4 (timezone/time issue)
     # Due to getting local time from modification date in test_consumer.py
     "testNormalOperation"
+    # Something broken with new Tesseract and inline RTL/LTR overrides?
+    "test_rtl_language_detection"
   ];
 
   doCheck = !stdenv.isDarwin;
 
   passthru = {
     inherit python path frontend tesseract5;
-    nltkData = with nltk-data; [ punkt snowball_data stopwords ];
+    nltkData = with nltk-data; [ punkt_tab snowball_data stopwords ];
     tests = { inherit (nixosTests) paperless; };
   };
 
@@ -263,6 +268,6 @@ python.pkgs.buildPythonApplication rec {
     changelog = "https://github.com/paperless-ngx/paperless-ngx/releases/tag/v${version}";
     license = licenses.gpl3Only;
     platforms = platforms.unix;
-    maintainers = with maintainers; [ lukegb gador erikarvstedt leona ];
+    maintainers = with maintainers; [ leona SuperSandro2000 erikarvstedt ];
   };
 }

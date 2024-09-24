@@ -1,7 +1,6 @@
 { lib
 , dbus
 , fetchFromGitHub
-, fetchPypi
 , python3
 }:
 
@@ -17,11 +16,6 @@ python3.pkgs.buildPythonApplication rec {
     rev = "refs/tags/v${version}";
     hash = "sha256-AJ0ZWRxqhBJEics6XnIVWyf7pJI8MphQU4LRqSYYNSQ=";
   };
-
-  postPatch = ''
-    substituteInPlace setup.cfg \
-      --replace-fail '--cov-config=setup.cfg' ""
-  '';
 
   dependencies = with python3.pkgs; [
     dbus-python
@@ -41,6 +35,7 @@ python3.pkgs.buildPythonApplication rec {
   nativeCheckInputs = with python3.pkgs; [
     dbus
     freezegun
+    pytest-cov-stub
     pytest-datadir
     pytest-httpserver
     pytest-mock
@@ -57,7 +52,7 @@ python3.pkgs.buildPythonApplication rec {
   doCheck = true;
 
   meta = with lib; {
-    description = "A daemon to automatically suspend and wake up a system";
+    description = "Daemon to automatically suspend and wake up a system";
     homepage = "https://autosuspend.readthedocs.io";
     changelog = "https://github.com/languitar/autosuspend/releases/tag/v${version}";
     license = licenses.gpl2Only;

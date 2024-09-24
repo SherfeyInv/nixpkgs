@@ -6,6 +6,7 @@
   SDL2,
   alsa-lib,
   catch2_3,
+  fetchpatch,
   fftw,
   glib,
   gobject-introspection,
@@ -66,6 +67,8 @@
   wireplumberSupport ? true,
   withMediaPlayer ? mprisSupport && false,
   nix-update-script,
+  testers,
+  waybar,
 }:
 
 let
@@ -73,24 +76,36 @@ let
   libcava.src = fetchFromGitHub {
     owner = "LukashonakV";
     repo = "cava";
-    rev = "0.10.1";
-    hash = "sha256-iIYKvpOWafPJB5XhDOSIW9Mb4I3A4pcgIIPQdQYEqUw=";
+    rev = "0.10.2";
+    hash = "sha256-jU7RQV2txruu/nUUl0TzjK4nai7G38J1rcTjO7UXumY=";
   };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "waybar";
-  version = "0.10.3";
+  version = "0.11.0";
 
   src = fetchFromGitHub {
     owner = "Alexays";
     repo = "Waybar";
-    rev = finalAttrs.version;
-    hash = "sha256-LUageV0xC42MldMmYY1njkm95icBsqID1tEGy3wwrRM=";
+    rev = "refs/tags/${finalAttrs.version}";
+    hash = "sha256-3lc0voMU5RS+mEtxKuRayq/uJO09X7byq6Rm5NZohq8=";
   };
+
+  patches = [
+    # Fix a regression introduced in release 0.11.0
+    # TODO: remove this patch when updating to the next release
+    # Issue: https://github.com/Alexays/Waybar/issues/3597
+    # PR: https://github.com/Alexays/Waybar/pull/3604
+    (fetchpatch {
+      name = "fix-tray";
+      url = "https://github.com/Alexays/Waybar/commit/0d02f6877d88551ea2be0cd151c1e6354e208b1c.patch";
+      hash = "sha256-wpdK6AY+14jt85dOQy6xkh8tNGDN2F9GA9zOfAuOaIc=";
+    })
+  ];
 
   postUnpack = lib.optional cavaSupport ''
     pushd "$sourceRoot"
-    cp -R --no-preserve=mode,ownership ${libcava.src} subprojects/cava-0.10.1
+    cp -R --no-preserve=mode,ownership ${libcava.src} subprojects/cava-0.10.2
     patchShebangs .
     popd
   '';
@@ -150,9 +165,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   mesonFlags =
     (lib.mapAttrsToList lib.mesonEnable {
-      "cava" = cavaSupport;
+      "cava" = cavaSupport && lib.asserts.assertMsg sndioSupport "Sndio support is required for Cava";
       "dbusmenu-gtk" = traySupport;
       "jack" = jackSupport;
+      "libevdev" = evdevSupport;
       "libinput" = inputSupport;
       "libnl" = nlSupport;
       "libudev" = udevSupport;
@@ -163,12 +179,14 @@ stdenv.mkDerivation (finalAttrs: {
       "pulseaudio" = pulseSupport;
       "rfkill" = rfkillSupport;
       "sndio" = sndioSupport;
-      "systemd" = false;
+      "systemd" = true;
       "tests" = runTests;
       "upower_glib" = upowerSupport;
       "wireplumber" = wireplumberSupport;
     })
     ++ lib.optional experimentalPatches (lib.mesonBool "experimental" true);
+
+  PKG_CONFIG_SYSTEMD_SYSTEMDUSERUNITDIR = "${placeholder "out"}/lib/systemd/user";
 
   postPatch = ''
     substituteInPlace include/util/command.hpp \
@@ -182,7 +200,13 @@ stdenv.mkDerivation (finalAttrs: {
       --prefix PYTHONPATH : "$PYTHONPATH:$out/${python3.sitePackages}"
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    updateScript = nix-update-script { };
+    tests.version = testers.testVersion {
+      package = waybar;
+      version = "v${finalAttrs.version}";
+    };
+  };
 
   meta = {
     homepage = "https://github.com/alexays/waybar";

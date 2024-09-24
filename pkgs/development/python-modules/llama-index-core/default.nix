@@ -8,6 +8,7 @@
   fetchFromGitHub,
   fetchzip,
   fsspec,
+  jsonpath-ng,
   llamaindex-py-client,
   nest-asyncio,
   networkx,
@@ -21,12 +22,14 @@
   pytest-mock,
   pytestCheckHook,
   pythonOlder,
+  pyvis,
   pyyaml,
   requests,
-  tree-sitter,
+  spacy,
   sqlalchemy,
   tenacity,
   tiktoken,
+  tree-sitter,
   typing-inspect,
 }:
 
@@ -44,7 +47,7 @@ in
 
 buildPythonPackage rec {
   pname = "llama-index-core";
-  version = "0.10.36";
+  version = "0.11.10";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -53,7 +56,7 @@ buildPythonPackage rec {
     owner = "run-llama";
     repo = "llama_index";
     rev = "refs/tags/v${version}";
-    hash = "sha256-yP/60DLg43UOOogxbDvb1p5n8dnfBUjGhcfO5g5g0gA=";
+    hash = "sha256-6wQs6hB609Du5/n5sKJT5E0OJCj3dMKvpKxJ9C75HpI=";
   };
 
   sourceRoot = "${src.name}/${pname}";
@@ -80,6 +83,7 @@ buildPythonPackage rec {
     deprecated
     dirtyjson
     fsspec
+    jsonpath-ng
     llamaindex-py-client
     nest-asyncio
     networkx
@@ -88,8 +92,10 @@ buildPythonPackage rec {
     openai
     pandas
     pillow
+    pyvis
     pyyaml
     requests
+    spacy
     sqlalchemy
     tenacity
     tiktoken
@@ -127,6 +133,12 @@ buildPythonPackage rec {
     "tests/text_splitter/"
     "tests/token_predictor/"
     "tests/tools/"
+  ];
+
+  disabledTests = [
+    # Tests require network access
+    "test_from_namespaced_persist_dir"
+    "test_from_persist_dir"
   ];
 
   meta = with lib; {

@@ -1,35 +1,40 @@
-{ lib
-, buildPythonPackage
-, pythonOlder
-, fetchFromGitHub
-, pdm-backend
-, huggingface-hub
-, pyyaml
-, safetensors
-, torch
-, torchvision
-, expecttest
-, pytestCheckHook
-, pytest-timeout
+{
+  lib,
+  buildPythonPackage,
+  pythonOlder,
+  fetchFromGitHub,
+
+  # build-system
+  pdm-backend,
+
+  # dependencies
+  huggingface-hub,
+  pyyaml,
+  safetensors,
+  torch,
+  torchvision,
+
+  # checks
+  expecttest,
+  pytestCheckHook,
+  pytest-timeout,
 }:
 
 buildPythonPackage rec {
   pname = "timm";
-  version = "1.0.3";
+  version = "1.0.9";
   pyproject = true;
 
-  disabled = pythonOlder "3.7";
+  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "huggingface";
     repo = "pytorch-image-models";
     rev = "refs/tags/v${version}";
-    hash = "sha256-h2J1v2zXUMGRKBBqq+RnxrXKOzlD5RRrVoODWSuj9Ms=";
+    hash = "sha256-iWZXile3hCUMx2q3VHJasX7rlJmT0OKBm9rkCXuWISw=";
   };
 
-  build-system = [
-    pdm-backend
-  ];
+  build-system = [ pdm-backend ];
 
   dependencies = [
     huggingface-hub
@@ -45,9 +50,7 @@ buildPythonPackage rec {
     pytest-timeout
   ];
 
-  pytestFlagsArray = [
-    "tests"
-  ];
+  pytestFlagsArray = [ "tests" ];
 
   disabledTestPaths = [
     # Takes too long and also tries to download models

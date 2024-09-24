@@ -8,7 +8,7 @@
 , alsa-lib
 , dbus
 , fetchFromGitHub
-, ffmpeg_4
+, ffmpeg_7
 , flac
 , freetype
 , gamemode
@@ -47,12 +47,12 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "retroarch-bare";
-  version = "1.18.0";
+  version = "1.19.1";
 
   src = fetchFromGitHub {
     owner = "libretro";
     repo = "RetroArch";
-    hash = "sha256-uOnFkLrLQlBbUlIFA8wrOkQdVIvO7Np7fvi+sPJPtHE=";
+    hash = "sha256-NVe5dhH3w7RL1C7Z736L5fdi/+aO+Ah9Dpa4u4kn0JY=";
     rev = "v${version}";
   };
 
@@ -61,7 +61,7 @@ stdenv.mkDerivation rec {
     lib.optional (runtimeLibs != [ ]) makeWrapper;
 
   buildInputs = [
-    ffmpeg_4
+    ffmpeg_7
     flac
     freetype
     libGL

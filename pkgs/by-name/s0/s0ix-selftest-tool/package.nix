@@ -36,13 +36,13 @@ let
 in
 stdenv.mkDerivation {
   pname = "s0ix-selftest-tool";
-  version = "0-unstable-2024-02-07";
+  version = "0-unstable-2024-08-20";
 
   src = fetchFromGitHub {
     owner = "intel";
     repo = "S0ixSelftestTool";
-    rev = "c12ae3ea611812547e09bb755dd015dd969b664c";
-    hash = "sha256-9O72TxlLrkQbt80izWdbLQt9OW/4Aq1p4RuQoD2yQ5E=";
+    rev = "73b540d0b15d874ebb462eb3296399d4556aff64";
+    hash = "sha256-p0IxhG0P0G+DQ5UykC+uVlMZUZQwrWG/iiJprdmsLm0=";
   };
 
   # don't use the bundled turbostat binary
@@ -65,7 +65,7 @@ stdenv.mkDerivation {
 
   meta = with lib; {
     homepage = "https://github.com/intel/S0ixSelftestTool";
-    description = "A tool for testing the S2idle path CPU Package C-state and S0ix failures";
+    description = "Tool for testing the S2idle path CPU Package C-state and S0ix failures";
     license = licenses.gpl2Only;
     platforms = platforms.linux;
     maintainers = with maintainers; [ adamcstephens ];

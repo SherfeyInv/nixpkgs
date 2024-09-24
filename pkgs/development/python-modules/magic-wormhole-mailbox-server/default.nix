@@ -1,27 +1,26 @@
-{ lib
-, stdenv
-, buildPythonPackage
-, fetchPypi
-, fetchpatch
-, setuptools
-, six
-, attrs
-, twisted
-, autobahn
-, treq
-, mock
-, pythonOlder
-, pythonAtLeast
-, pytestCheckHook
+{
+  lib,
+  stdenv,
+  buildPythonPackage,
+  fetchPypi,
+  fetchpatch,
+  setuptools,
+  six,
+  attrs,
+  twisted,
+  autobahn,
+  treq,
+  mock,
+  nixosTests,
+  pythonOlder,
+  pythonAtLeast,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
   pname = "magic-wormhole-mailbox-server";
   version = "0.4.1";
   pyproject = true;
-
-  # python 3.12 support: https://github.com/magic-wormhole/magic-wormhole-mailbox-server/issues/41
-  disabled = pythonOlder "3.7" || pythonAtLeast "3.12";
 
   src = fetchPypi {
     inherit pname version;
@@ -37,15 +36,15 @@ buildPythonPackage rec {
     })
   ];
 
-  nativeBuildInputs = [ setuptools ];
+  build-system = [ setuptools ];
 
-  propagatedBuildInputs = [
+  dependencies = [
     attrs
+    autobahn
+    setuptools # pkg_resources is referenced at runtime
     six
     twisted
-    autobahn
-  ] ++ autobahn.optional-dependencies.twisted
-  ++ twisted.optional-dependencies.tls;
+  ] ++ autobahn.optional-dependencies.twisted ++ twisted.optional-dependencies.tls;
 
   pythonImportsCheck = [ "wormhole_mailbox_server" ];
 
@@ -60,11 +59,17 @@ buildPythonPackage rec {
     "src/wormhole_mailbox_server/test/test_web.py"
   ];
 
+  passthru.tests = {
+    inherit (nixosTests) magic-wormhole-mailbox-server;
+  };
+
   meta = {
     description = "Securely transfer data between computers";
     homepage = "https://github.com/magic-wormhole/magic-wormhole-mailbox-server";
     changelog = "https://github.com/magic-wormhole/magic-wormhole-mailbox-server/blob/${version}/NEWS.md";
     license = lib.licenses.mit;
     maintainers = [ lib.maintainers.mjoerg ];
+    # Python 3.12 support: https://github.com/magic-wormhole/magic-wormhole-mailbox-server/issues/41
+    broken = pythonOlder "3.7" || pythonAtLeast "3.12";
   };
 }

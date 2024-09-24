@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, jsoncpp, libossp_uuid, zlib, lib, fetchpatch
+{ stdenv, fetchFromGitHub, cmake, jsoncpp, libossp_uuid, zlib, lib
 # optional but of negligible size
 , openssl, brotli, c-ares
 # optional databases
@@ -15,7 +15,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "drogonframework";
     repo = "drogon";
     rev = "v${finalAttrs.version}";
-    sha256 = "sha256-P6blu3EIBzmK1zikFPiV+tvFLfiQhK+cRdClQOhcBSU=";
+    hash = "sha256-P6blu3EIBzmK1zikFPiV+tvFLfiQhK+cRdClQOhcBSU=";
     fetchSubmodules = true;
   };
 

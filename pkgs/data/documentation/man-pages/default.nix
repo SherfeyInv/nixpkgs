@@ -2,16 +2,14 @@
 
 stdenv.mkDerivation rec {
   pname = "man-pages";
-  version = "6.7";
+  version = "6.9.1";
 
   src = fetchurl {
     url = "mirror://kernel/linux/docs/man-pages/${pname}-${version}.tar.xz";
-    hash = "sha256-gkA61LwXqtuST2hji3nWkwssvVUVMSSKepaId52077I=";
+    hash = "sha256-4jy6wp8RC6Vx8NqFI+edNzaRRm7X8qMTAXIYF9NFML0=";
   };
 
   makeFlags = [
-    # Clobber /usr/bin/env with the one in PATH.
-    "SHELL=env"
     "prefix=${placeholder "out"}"
   ];
 

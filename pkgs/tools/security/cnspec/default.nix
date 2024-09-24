@@ -6,18 +6,18 @@
 
 buildGoModule rec {
   pname = "cnspec";
-  version = "11.4.1";
+  version = "11.19.0";
 
   src = fetchFromGitHub {
     owner = "mondoohq";
     repo = "cnspec";
     rev = "refs/tags/v${version}";
-    hash = "sha256-amTkhUChhgO4Uhv23TLFiKAkp58NqBmbyVsF/vaq/ZU=";
+    hash = "sha256-37i7lbkw70DpwCUvZtv6548l6csx3ozG+1gPTKhJQFg=";
   };
 
   proxyVendor = true;
 
-  vendorHash = "sha256-FNl7Tu2dDWmtCO3pJRWQpSkfR7aa96AdjP6lTcj6WY4=";
+  vendorHash = "sha256-8+qS6fR/5oYHP1QhoHfByQ7AayYPYVg4xEtF3617aJM=";
 
   subPackages = [ "apps/cnspec" ];
 
@@ -28,7 +28,7 @@ buildGoModule rec {
   ];
 
   meta = with lib; {
-    description = "An open source, cloud-native security and policy project";
+    description = "Open source, cloud-native security and policy project";
     homepage = "https://github.com/mondoohq/cnspec";
     changelog = "https://github.com/mondoohq/cnspec/releases/tag/v${version}";
     license = licenses.bsl11;

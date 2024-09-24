@@ -1,16 +1,18 @@
-{ lib
-, jdk8
-, buildPythonPackage
-, fetchPypi
-, six
-, py4j
-, pythonOlder
+{
+  lib,
+  jdk8,
+  buildPythonPackage,
+  fetchPypi,
+  setuptools,
+  six,
+  py4j,
+  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "databricks-connect";
   version = "11.3.33";
-  format = "setuptools";
+  pyproject = true;
 
   disabled = pythonOlder "3.7";
 
@@ -21,22 +23,29 @@ buildPythonPackage rec {
 
   sourceRoot = ".";
 
-  propagatedBuildInputs = [ py4j six jdk8 ];
+  build-system = [ setuptools ];
+
+  dependencies = [
+    py4j
+    six
+    jdk8
+  ];
 
   # requires network access
   doCheck = false;
 
-  prePatch = ''
-    substituteInPlace setup.py \
-      --replace "py4j==0.10.9" "py4j"
-  '';
+  pythonRelaxDeps = [ "py4j" ];
 
   preFixup = ''
     substituteInPlace "$out/bin/find-spark-home" \
-      --replace find_spark_home.py .find_spark_home.py-wrapped
+      --replace-fail find_spark_home.py .find_spark_home.py-wrapped
   '';
 
-  pythonImportsCheck = [ "pyspark" "six" "py4j" ];
+  pythonImportsCheck = [
+    "pyspark"
+    "six"
+    "py4j"
+  ];
 
   meta = with lib; {
     description = "Client for connecting to remote Databricks clusters";

@@ -13,11 +13,11 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "libaom";
-  version = "3.9.0";
+  version = "3.9.1";
 
   src = fetchzip {
     url = "https://aomedia.googlesource.com/aom/+archive/v${version}.tar.gz";
-    hash = "sha256-ON/BWCO2k7fADW3ZANKjnRE8SrQZpjdyUF1N0fD/xnc=";
+    hash = "sha256-XQ1sekNZDUAiYP/HriYRj4+40PAvE/OiyG9bbrdg63I=";
     stripRoot = false;
   };
 
@@ -47,9 +47,6 @@ stdenv.mkDerivation rec {
     "-DENABLE_TESTS=OFF"
   ] ++ lib.optionals enableVmaf [
     "-DCONFIG_TUNE_VMAF=1"
-  ] ++ lib.optionals (stdenv.isDarwin && stdenv.isAarch64) [
-    # CPU detection isn't supported on Darwin and breaks the aarch64-darwin build:
-    "-DCONFIG_RUNTIME_CPU_DETECT=0"
   ] ++ lib.optionals (isCross && !stdenv.hostPlatform.isx86) [
     "-DCMAKE_ASM_COMPILER=${stdenv.cc.targetPrefix}as"
   ] ++ lib.optionals stdenv.isAarch32 [

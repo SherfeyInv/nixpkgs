@@ -5,23 +5,23 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "neocmakelsp";
-  version = "0.6.24";
+  version = "0.8.4";
 
   src = fetchFromGitHub {
     owner = "Decodetalkers";
     repo = "neocmakelsp";
     rev = "v${version}";
-    hash = "sha256-Zpaw0LCdluU76epHrRDQJw1cVptjR5IH8Ufy8yLVECo=";
+    hash = "sha256-DPKCAWIDw3ykYp2Cuwt9CcWHgdL7aoW5z2CjVFxizhg=";
   };
 
-  cargoHash = "sha256-Z3MdJdgR1oVPwTcq8rihHUXGkP38Ve/C+48NooeAWlo=";
+  cargoHash = "sha256-wYh5JNT7HJnY6PLFCPm21LNFHsffFq53FTCRkUuHxWY=";
 
   meta = with lib; {
-    description = "A cmake lsp based on tower-lsp and treesitter";
+    description = "CMake lsp based on tower-lsp and treesitter";
     homepage = "https://github.com/Decodetalkers/neocmakelsp";
     license = licenses.mit;
-    platforms = platforms.linux;
-    maintainers = with maintainers; [ rewine ];
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ rewine multivac61 ];
     mainProgram = "neocmakelsp";
   };
 }

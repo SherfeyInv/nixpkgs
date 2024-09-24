@@ -11,16 +11,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "delta";
-  version = "0.17.0";
+  version = "0.18.2";
 
   src = fetchFromGitHub {
     owner = "dandavison";
-    repo = pname;
-    rev = version;
-    hash = "sha256-r0ED9o2UP91fe6Bng5ioJra5S1bg+UEXMLeSQPkMswI=";
+    repo = "delta";
+    rev = "refs/tags/${version}";
+    hash = "sha256-fJSKGa935kwLG8WYmT9Ncg2ozpSNMzUJx0WLo1gtVAA=";
   };
 
-  cargoHash = "sha256-3CxRNhcjfDK/xUuM3w+GwqE0+X6WT92/LGj/qRp0TwA=";
+  cargoHash = "sha256-DIWzRVTADfAZdFckhh2lIfOD13h7GP3KIOQHf/oBHgc=";
 
   nativeBuildInputs = [
     installShellFiles
@@ -50,12 +50,14 @@ rustPlatform.buildRustPackage rec {
   dontUseCargoParallelTests = true;
 
   checkFlags = lib.optionals stdenv.isDarwin [
-    "--skip=test_diff_same_non_empty_file"
+    # This test tries to read /etc/passwd, which fails with the sandbox
+    # enabled on Darwin
+    "--skip=test_diff_real_files"
   ];
 
   meta = with lib; {
     homepage = "https://github.com/dandavison/delta";
-    description = "A syntax-highlighting pager for git";
+    description = "Syntax-highlighting pager for git";
     changelog = "https://github.com/dandavison/delta/releases/tag/${version}";
     license = licenses.mit;
     maintainers = with maintainers; [ zowoq SuperSandro2000 figsoda ];

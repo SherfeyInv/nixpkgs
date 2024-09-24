@@ -1,20 +1,21 @@
-{ lib
-, buildPythonPackage
-, fetchFromGitHub
-, pyparsing
-, six
+{
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+  pyparsing,
+  six,
 }:
 
 buildPythonPackage rec {
   pname = "ucsmsdk";
-  version = "0.9.17";
+  version = "0.9.20";
   format = "setuptools";
 
   src = fetchFromGitHub {
     owner = "CiscoUcs";
     repo = "ucsmsdk";
     rev = "refs/tags/v${version}";
-    hash = "sha256-Ejn99MArKZjCHsl81WSHfpWV3Kz/mBrItIa0tPVProU=";
+    hash = "sha256-X8lGpfVjIZIpNneOM/mE+9RvglW9FlYoGz7pFs7ellk=";
   };
 
   propagatedBuildInputs = [

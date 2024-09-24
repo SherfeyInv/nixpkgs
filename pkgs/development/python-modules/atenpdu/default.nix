@@ -1,10 +1,11 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, async-timeout
-, pysnmp-lextudio
-, pythonOlder
-, poetry-core
+{
+  lib,
+  buildPythonPackage,
+  fetchPypi,
+  async-timeout,
+  pysnmp,
+  pythonOlder,
+  poetry-core,
 }:
 
 buildPythonPackage rec {
@@ -19,21 +20,22 @@ buildPythonPackage rec {
     hash = "sha256-KzRoE4tE/tQkKYroq5PbWKREmEl8AwbIOg3IHRZZtsQ=";
   };
 
-  nativeBuildInputs = [
-    poetry-core
-  ];
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail pysnmp-lextudio pysnmp
+  '';
+
+  nativeBuildInputs = [ poetry-core ];
 
   propagatedBuildInputs = [
     async-timeout
-    pysnmp-lextudio
+    pysnmp
   ];
 
   # Module has no test
   doCheck = false;
 
-  pythonImportsCheck = [
-    "atenpdu"
-  ];
+  pythonImportsCheck = [ "atenpdu" ];
 
   meta = with lib; {
     description = "Python interface to control ATEN PE PDUs";

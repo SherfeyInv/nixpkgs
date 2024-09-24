@@ -1,18 +1,18 @@
 { callPackage, lib, stdenv, fetchurl, jre, makeWrapper }:
 
 let this = stdenv.mkDerivation (finalAttrs: {
-  version = "7.5.0";
+  version = "7.8.0";
   pname = "openapi-generator-cli";
 
-  jarfilename = "${finalAttrs.pname}-${finalAttrs.version}.jar";
+  jarfilename = "openapi-generator-cli-${finalAttrs.version}.jar";
 
   nativeBuildInputs = [
     makeWrapper
   ];
 
   src = fetchurl {
-    url = "mirror://maven/org/openapitools/${finalAttrs.pname}/${finalAttrs.version}/${finalAttrs.jarfilename}";
-    sha256 = "sha256-R+u9G+3a99++5SPnuHYjxuwbHUKWD74V9srS9kJsab8=";
+    url = "mirror://maven/org/openapitools/openapi-generator-cli/${finalAttrs.version}/${finalAttrs.jarfilename}";
+    sha256 = "sha256-0Yec9C2jH4z2HPaHmLjvJBivDGvZOlwYcOH/VD+7k2U=";
   };
 
   dontUnpack = true;

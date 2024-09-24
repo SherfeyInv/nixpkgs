@@ -9,11 +9,11 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "arc-browser";
-  version = "1.42.1-49918";
+  version = "1.61.0-53949";
 
   src = fetchurl {
     url = "https://releases.arc.net/release/Arc-${finalAttrs.version}.dmg";
-    hash = "sha256-O0l2o0POyeZTqxJAahc/PfA4qS7US4AQYRnE6jSdqoE=";
+    hash = "sha256-FuRWi4+vPt31bd3muMDEn3Fu20h9oWEd1XuPJU7W1OU=";
   };
 
   nativeBuildInputs = [ undmg ];
@@ -28,6 +28,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     runHook postInstall
   '';
+
+  dontFixup = true;
 
   passthru.updateScript = lib.getExe (writeShellApplication {
     name = "arc-browser-update-script";

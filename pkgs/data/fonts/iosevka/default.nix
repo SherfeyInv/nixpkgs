@@ -2,7 +2,7 @@
 , lib
 , buildNpmPackage
 , fetchFromGitHub
-, darwin
+, cctools
 , remarshal
 , ttfautohint-nox
   # Custom font set options.
@@ -55,23 +55,23 @@ assert (extraParameters != null) -> set != null;
 
 buildNpmPackage rec {
   pname = "Iosevka${toString set}";
-  version = "30.0.1";
+  version = "31.6.1";
 
   src = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-THs6kN5VZpTvzTK7w/sGQbxoEyyPwzl93JDOvwucgeo=";
+    hash = "sha256-pulOJ3mJqfonoQPmk6VtdWLhFVeoBjANVi0S9fN9N7c=";
   };
 
-  npmDepsHash = "sha256-maDIkbe4BKY7XYOQNGdOalyTGdBXgIU5t0QjVJW6lvQ=";
+  npmDepsHash = "sha256-3GEWJLiWDZcjUU1yms0h0mm4eH4Ov20WVSHZN1OB5bA=";
 
   nativeBuildInputs = [
     remarshal
     ttfautohint-nox
   ] ++ lib.optionals stdenv.isDarwin [
     # libtool
-    darwin.cctools
+    cctools
   ];
 
   buildPlan =
@@ -127,7 +127,7 @@ buildNpmPackage rec {
   meta = with lib; {
     homepage = "https://typeof.net/Iosevka/";
     downloadPage = "https://github.com/be5invis/Iosevka/releases";
-    description = "Versatile typeface for code, from code.";
+    description = "Versatile typeface for code, from code";
     longDescription = ''
       Iosevka is an open-source, sans-serif + slab-serif, monospace +
       quasi‑proportional typeface family, designed for writing code, using in
@@ -137,9 +137,7 @@ buildNpmPackage rec {
     platforms = platforms.all;
     maintainers = with maintainers; [
       ttuegel
-      babariviere
       rileyinman
-      AluisioASG
       lunik1
     ];
   };

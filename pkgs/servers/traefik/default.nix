@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "traefik";
-  version = "3.0.0";
+  version = "3.1.2";
 
   # Archive with static assets for webui
   src = fetchzip {
     url = "https://github.com/traefik/traefik/releases/download/v${version}/traefik-v${version}.src.tar.gz";
-    hash = "sha256-OX9VJpO+SWIsocaSu+BhF3HT+zrhhgxb5NBvaRTadIY=";
+    hash = "sha256-PHS4x9RDoc2zDPS1SaYYEeZVa4SyQpvqzPT/SDo1ygg=";
     stripRoot = false;
   };
 
-  vendorHash = "sha256-GRVSZB4GojXv2xAdx8Y5RSuhF/3paRhhq7HOWLRmmHE=";
+  vendorHash = "sha256-xQPDlwu/mRdyvZW0qSCA9eko9pOQAMwh2vVJWzMnyfs=";
 
   subPackages = [ "cmd/traefik" ];
 
@@ -32,7 +32,7 @@ buildGoModule rec {
 
   meta = with lib; {
     homepage = "https://traefik.io";
-    description = "A modern reverse proxy";
+    description = "Modern reverse proxy";
     changelog = "https://github.com/traefik/traefik/raw/v${version}/CHANGELOG.md";
     license = licenses.mit;
     maintainers = with maintainers; [ vdemeester ];

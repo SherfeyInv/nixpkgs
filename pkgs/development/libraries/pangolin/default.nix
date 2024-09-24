@@ -1,5 +1,5 @@
 { stdenv, lib, fetchFromGitHub, cmake, pkg-config, doxygen, libGL, glew
-, xorg, ffmpeg_4, libjpeg, libpng, libtiff, eigen
+, xorg, ffmpeg_7, libjpeg, libpng, libtiff, eigen
 , Carbon, Cocoa
 }:
 
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     libGL
     glew
     xorg.libX11
-    ffmpeg_4
+    ffmpeg_7
     libjpeg
     libpng
     libtiff
@@ -34,7 +34,7 @@ stdenv.mkDerivation rec {
   cmakeFlags = [ "-DBUILD_TESTS=OFF" ];
 
   meta = {
-    description = "A lightweight portable rapid development library for managing OpenGL display / interaction and abstracting video input";
+    description = "Lightweight portable rapid development library for managing OpenGL display / interaction and abstracting video input";
     longDescription = ''
       Pangolin is a lightweight portable rapid development library for managing
       OpenGL display / interaction and abstracting video input. At its heart is

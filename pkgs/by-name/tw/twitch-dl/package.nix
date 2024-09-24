@@ -7,14 +7,14 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "twitch-dl";
-  version = "2.3.0";
+  version = "2.9.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ihabunek";
     repo = "twitch-dl";
     rev = "refs/tags/${version}";
-    hash = "sha256-0uOOc3ANXleQlENB+gdWheafBiOOcyZsFvYj7r+WMCY=";
+    hash = "sha256-BIE3+SDmc5ggF9P+qeloI1JYYrEtOJQ/8oDR76i0t6c=";
   };
 
   pythonRelaxDeps = [
@@ -24,7 +24,6 @@ python3Packages.buildPythonApplication rec {
   nativeBuildInputs = [
     python3Packages.setuptools
     python3Packages.setuptools-scm
-    python3Packages.pythonRelaxDepsHook
     installShellFiles
     scdoc
   ];
@@ -48,7 +47,7 @@ python3Packages.buildPythonApplication rec {
   pythonImportsCheck = [
     "twitchdl"
     "twitchdl.cli"
-    "twitchdl.download"
+    "twitchdl.naming"
     "twitchdl.entities"
     "twitchdl.http"
     "twitchdl.output"
@@ -62,6 +61,10 @@ python3Packages.buildPythonApplication rec {
   postInstall = ''
     scdoc < twitch-dl.1.scd > twitch-dl.1
     installManPage twitch-dl.1
+  '';
+
+  preInstallCheck = ''
+    export HOME="$(mktemp -d)"
   '';
 
   meta = with lib; {

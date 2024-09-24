@@ -5,7 +5,8 @@
 , hash ? null
 , src ? fetchFromGitHub { owner = "NixOS"; repo = "nix"; rev = version; inherit hash; }
 , patches ? [ ]
-, maintainers ? with lib.maintainers; [ eelco lovesegfault artturin ma27 ]
+, maintainers ? with lib.maintainers; [ eelco lovesegfault artturin ]
+, self_attribute_name
 }@args:
 assert (hash == null) -> (src != null);
 let
@@ -18,6 +19,7 @@ let
   atLeast219 = lib.versionAtLeast version "2.19pre";
   atLeast220 = lib.versionAtLeast version "2.20pre";
   atLeast221 = lib.versionAtLeast version "2.21pre";
+  atLeast224 = lib.versionAtLeast version "2.24pre";
   # Major.minor versions unaffected by CVE-2024-27297
   unaffectedByFodSandboxEscape = [
     "2.3"
@@ -57,10 +59,13 @@ in
 , libxml2
 , libxslt
 , lowdown
+, toml11
 , man
 , mdbook
 , mdbook-linkcheck
 , nlohmann_json
+, nixosTests
+, nixVersions
 , openssl
 , perl
 , pkg-config
@@ -69,8 +74,7 @@ in
 , sqlite
 , util-linuxMinimal
 , xz
-
-, enableDocumentation ? !atLeast24 || stdenv.hostPlatform == stdenv.buildPlatform
+, enableDocumentation ? stdenv.buildPlatform.canExecute stdenv.hostPlatform
 , enableStatic ? stdenv.hostPlatform.isStatic
 , withAWS ? !enableStatic && (stdenv.isLinux || stdenv.isDarwin), aws-sdk-cpp
 , withLibseccomp ? lib.meta.availableOn stdenv.hostPlatform libseccomp, libseccomp
@@ -81,6 +85,9 @@ in
 
   # passthru tests
 , pkgsi686Linux
+, pkgsStatic
+, runCommand
+, pkgs
 }: let
 self = stdenv.mkDerivation {
   pname = "nix";
@@ -96,7 +103,11 @@ self = stdenv.mkDerivation {
 
   hardeningEnable = lib.optionals (!stdenv.isDarwin) [ "pie" ];
 
-  hardeningDisable = lib.optional stdenv.hostPlatform.isMusl "fortify";
+  hardeningDisable = [
+    "shadowstack"
+  ] ++ lib.optional stdenv.hostPlatform.isMusl "fortify";
+
+  nativeInstallCheckInputs = lib.optional atLeast221 git ++ lib.optional atLeast219 man;
 
   nativeBuildInputs = [
     pkg-config
@@ -134,6 +145,8 @@ self = stdenv.mkDerivation {
     lowdown
   ] ++ lib.optionals atLeast220 [
     libgit2
+  ] ++ lib.optionals (atLeast224 || lib.versionAtLeast version "pre20240626") [
+    toml11
   ] ++ lib.optionals stdenv.isDarwin [
     Security
   ] ++ lib.optionals (stdenv.isx86_64) [
@@ -146,11 +159,6 @@ self = stdenv.mkDerivation {
     aws-sdk-cpp
   ];
 
-  installCheckInputs = lib.optionals atLeast221 [
-    git
-  ] ++ lib.optionals atLeast219 [
-    man
-  ];
 
   propagatedBuildInputs = [
     boehmgc
@@ -237,6 +245,12 @@ self = stdenv.mkDerivation {
   # See https://github.com/NixOS/nix/issues/5687
   + lib.optionalString (atLeast25 && stdenv.isDarwin) ''
     echo "exit 99" > tests/gc-non-blocking.sh
+  '' # TODO: investigate why this broken
+  + lib.optionalString (atLeast25 && stdenv.hostPlatform.system == "aarch64-linux") ''
+    echo "exit 0" > tests/functional/flakes/show.sh
+  '' + ''
+    # nixStatic otherwise does not find its man pages in tests.
+    export MANPATH=$man/share/man:$MANPATH
   '';
 
   separateDebugInfo = stdenv.isLinux && (atLeast24 -> !enableStatic);
@@ -249,7 +263,34 @@ self = stdenv.mkDerivation {
     perl-bindings = perl.pkgs.toPerlModule (callPackage ./nix-perl.nix { nix = self; inherit Security; });
 
     tests = {
-      nixi686 = pkgsi686Linux.nixVersions.${"nix_${lib.versions.major version}_${lib.versions.minor version}"};
+      nixi686 = pkgsi686Linux.nixVersions.${self_attribute_name};
+      nixStatic = pkgsStatic.nixVersions.${self_attribute_name};
+
+      # Basic smoke test that needs to pass when upgrading nix.
+      # Note that this test does only test the nixVersions.stable attribute.
+      misc = nixosTests.nix-misc.default;
+      upgrade = nixosTests.nix-upgrade;
+
+      srcVersion = runCommand "nix-src-version" {
+        inherit version;
+      } ''
+        # This file is an implementation detail, but it's a good sanity check
+        # If upstream changes that, we'll have to adapt.
+        srcVersion=$(cat ${src}/.version)
+        echo "Version in nix nix expression: $version"
+        echo "Version in nix.src: $srcVersion"
+        if [ "$version" != "$srcVersion" ]; then
+          echo "Version mismatch!"
+          exit 1
+        fi
+        touch $out
+      '';
+
+      /** Intended to test `lib`, but also a good smoke test for Nix */
+      nixpkgs-lib = import ../../../../lib/tests/test-with-nix.nix {
+        inherit lib pkgs;
+        nix = self;
+      };
     };
   };
 

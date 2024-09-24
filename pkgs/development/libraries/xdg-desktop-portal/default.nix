@@ -28,6 +28,7 @@
 , wrapGAppsHook3
 , xmlto
 , enableGeoLocation ? true
+, enableSystemd ? true
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -59,6 +60,9 @@ stdenv.mkDerivation (finalAttrs: {
     # While upstream has `XDG_DESKTOP_PORTAL_DIR`, it is meant for tests and actually blocks
     # any configs from being loaded from anywhere else.
     ./nix-pkgdatadir-env.patch
+
+    # test tries to read /proc/cmdline, which is not intended to be accessible in the sandbox
+    ./trash-test.patch
   ];
 
   nativeBuildInputs = [
@@ -78,7 +82,6 @@ stdenv.mkDerivation (finalAttrs: {
     flatpak
     fuse3
     bubblewrap
-    systemdMinimal # libsystemd
     glib
     gsettings-desktop-schemas
     json-glib
@@ -95,6 +98,8 @@ stdenv.mkDerivation (finalAttrs: {
     ]))
   ] ++ lib.optionals enableGeoLocation [
     geoclue2
+  ] ++ lib.optionals enableSystemd [
+    systemdMinimal # libsystemd
   ];
 
   nativeCheckInputs = [
@@ -109,6 +114,7 @@ stdenv.mkDerivation (finalAttrs: {
     "--sysconfdir=/etc"
     "-Dinstalled-tests=true"
     "-Dinstalled_test_prefix=${placeholder "installedTests"}"
+    (lib.mesonEnable "systemd" enableSystemd)
   ] ++ lib.optionals (!enableGeoLocation) [
     "-Dgeoclue=disabled"
   ];

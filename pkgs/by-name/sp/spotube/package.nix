@@ -10,19 +10,22 @@
   undmg,
   wrapGAppsHook3,
 
+  glib-networking,
+  gtk3,
   libappindicator,
   libnotify,
-  libsecret,
+  libsoup_3,
   mpv-unwrapped,
   xdg-user-dirs,
+  webkitgtk_4_1,
 }:
 
 let
   pname = "spotube";
-  version = "3.6.0";
+  version = "3.8.1";
 
   meta = {
-    description = "An open source, cross-platform Spotify client compatible across multiple platforms";
+    description = "Open source, cross-platform Spotify client compatible across multiple platforms";
     longDescription = ''
       Spotube is an open source, cross-platform Spotify client compatible across
       multiple platforms utilizing Spotify's data API and YouTube (or Piped.video or JioSaavn)
@@ -53,7 +56,7 @@ let
 
     src = fetchArtifact {
       filename = "Spotube-macos-universal.dmg";
-      hash = "sha256-Qsr+66ToyLCCUwirj/7V6vzSNmx7BZ3O34liLx6AdlI=";
+      hash = "sha256-NbKFvg50n/GByVU6/vNLmTTV9bhIhl3AxlwAcG60KVY=";
     };
 
     sourceRoot = ".";
@@ -77,7 +80,7 @@ let
 
     src = fetchArtifact {
       filename = "Spotube-linux-x86_64.deb";
-      hash = "sha256-dSFtjCuufrg5tG+FLgLgdx20WpO2s4wGOPtK+tel3dg=";
+      hash = "sha256-R/yHXx29T/7NNc1L1AmevzXp1k98qnmvOEd3cfSlJuA=";
     };
 
     nativeBuildInputs = [
@@ -88,10 +91,13 @@ let
     ];
 
     buildInputs = [
+      glib-networking
+      gtk3
       libappindicator
       libnotify
-      libsecret
+      libsoup_3
       mpv-unwrapped
+      webkitgtk_4_1
     ];
 
     dontWrapGApps = true;

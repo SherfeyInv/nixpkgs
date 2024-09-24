@@ -8,16 +8,16 @@
 
 buildGoModule rec {
   pname = "helm-ls";
-  version = "0.0.16";
+  version = "0.1.0";
 
   src = fetchFromGitHub {
     owner = "mrjosh";
     repo = "helm-ls";
     rev = "v${version}";
-    hash = "sha256-y4FYcago8tVK4ru6tLizEgOLsMuryFmJUa2D8fXulDg=";
+    hash = "sha256-EuZbbeRssacrctIbxBbd2GOh8zgFi2OBRregfC88se0=";
   };
 
-  vendorHash = "sha256-ZeJeLpuac8ecKCOv2gXpT/P4GBFstB6lUaKOhQKFRAE=";
+  vendorHash = "sha256-AWKCE2BZGVYcr6Pe8URQo11Xnr3sfgWWkm9v7vvILOo=";
 
   nativeBuildInputs = [ installShellFiles ];
 

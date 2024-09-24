@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "mirror://sourceforge/saga-gis/saga-${version}.tar.gz";
-    sha256 = "sha256-741O6C7amxSnOOTledF0izmVhiT79tFI4+EOtpNqP2Q=";
+    hash = "sha256-741O6C7amxSnOOTledF0izmVhiT79tFI4+EOtpNqP2Q=";
   };
 
   sourceRoot = "saga-${version}/saga-gis";
@@ -80,6 +80,7 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     description = "System for Automated Geoscientific Analyses";
     homepage = "https://saga-gis.sourceforge.io";
+    changelog = "https://sourceforge.net/p/saga-gis/wiki/Changelog ${version}/";
     license = licenses.gpl2Plus;
     maintainers = with maintainers; teams.geospatial.members ++ [ michelk mpickering ];
     platforms = with platforms; unix;

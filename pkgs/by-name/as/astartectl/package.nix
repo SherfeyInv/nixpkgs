@@ -5,16 +5,16 @@
 }:
 buildGoModule rec {
   pname = "astartectl";
-  version = "23.5.0";
+  version = "24.5.0";
 
   src = fetchFromGitHub {
     owner = "astarte-platform";
     repo = "astartectl";
     rev = "v${version}";
-    hash = "sha256-4NgDVuYEeJI5Arq+/+xdyUOBWdCLALM3EKVLSFimJlI=";
+    hash = "sha256-4Iyd+1hLSatWyeV2J7RSqo2jVEc8dSp5JBObsn3RciI=";
   };
 
-  vendorHash = "sha256-Syod7SUsjiM3cdHPZgjH/3qdsiowa0enyV9DN8k13Ws=";
+  vendorHash = "sha256-NWPLHbUHrk/oJXCOJF8kKhQiZR8aqZChxuz73Acu1cM=";
 
   nativeBuildInputs = [ installShellFiles ];
 

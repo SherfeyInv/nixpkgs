@@ -18,16 +18,16 @@ let
 in
 rustPlatform.buildRustPackage rec {
   pname = "uiua";
-  version = "0.10.3";
+  version = "0.12.3";
 
   src = fetchFromGitHub {
     owner = "uiua-lang";
     repo = "uiua";
     rev = version;
-    hash = "sha256-lqFDzM6EscC8cFPGq/JnEybctaurNRoEQi0zxFaKgwI=";
+    hash = "sha256-gI+FaiNN7Hql9HMsrl5skJuJDJv/mVarsFqslLXVvLU=";
   };
 
-  cargoHash = "sha256-R97KO3MYmtO9C1Hi9kU+1FDdbOCVQk+gwVXTTvbeok4=";
+  cargoHash = "sha256-9mdspWwuZ+dLBnhklSqi4Lg2SjJyhhfn5Ax58evtkDA=";
 
   nativeBuildInputs =
     lib.optionals stdenv.isDarwin [ rustPlatform.bindgenHook ]
@@ -52,7 +52,7 @@ rustPlatform.buildRustPackage rec {
 
   meta = {
     changelog = "https://github.com/uiua-lang/uiua/blob/${src.rev}/changelog.md";
-    description = "A stack-oriented array programming language with a focus on simplicity, beauty, and tacit code";
+    description = "Stack-oriented array programming language with a focus on simplicity, beauty, and tacit code";
     longDescription = ''
       Uiua combines the stack-oriented and array-oriented paradigms in a single
       language. Combining these already terse paradigms results in code with a very

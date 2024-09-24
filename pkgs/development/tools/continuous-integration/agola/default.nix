@@ -4,7 +4,7 @@
 }:
 
 let
-  version = "0.9.1";
+  version = "0.9.2";
 in
 
 buildGoModule {
@@ -15,7 +15,7 @@ buildGoModule {
     owner = "agola-io";
     repo = "agola";
     rev = "v${version}";
-    hash = "sha256-96D4E4H3JsXCHWUyTKzZxqsqylJdzbnbLi6engNR/Eg=";
+    hash = "sha256-ggi0Eb4vO5zBoIrIIa3MFwOIW0IBS8yGF6eveBb+lgY=";
   };
 
   vendorHash = "sha256-Igtccundx/2PHFp8+L44CvOLG+/Ndinhonh/EDcQeoY=";
@@ -34,7 +34,7 @@ buildGoModule {
   doCheck = false;
 
   meta = with lib; {
-    description = "Agola: CI/CD Redefined ";
+    description = "Agola: CI/CD Redefined";
     homepage = "https://agola.io";
     maintainers = with maintainers; [ happysalada ];
     license = licenses.mit;

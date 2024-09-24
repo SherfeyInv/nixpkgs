@@ -21,7 +21,14 @@ in {
         history-service
         libusermetrics
         lomiri
+        lomiri-calculator-app
+        lomiri-camera-app
+        lomiri-clock-app
+        lomiri-docviewer-app
         lomiri-download-manager
+        lomiri-filemanager-app
+        lomiri-gallery-app
+        lomiri-polkit-agent
         lomiri-schemas # exposes some required dbus interfaces
         lomiri-session # wrappers to properly launch the session
         lomiri-sounds
@@ -35,7 +42,16 @@ in {
         qtmir # not having its desktop file for Xwayland available causes any X11 application to crash the session
         suru-icon-theme
         telephony-service
+        teleports
       ]);
+      variables = {
+        # To override the keyboard layouts in Lomiri
+        NIXOS_XKB_LAYOUTS = config.services.xserver.xkb.layout;
+      };
+    };
+
+    hardware = {
+      bluetooth.enable = lib.mkDefault true;
     };
 
     networking.networkmanager.enable = lib.mkDefault true;
@@ -53,11 +69,11 @@ in {
 
     fonts.packages = with pkgs; [
       # Applications tend to default to Ubuntu font
-      ubuntu_font_family
+      ubuntu-classic
     ];
 
     # Copy-pasted basic stuff
-    hardware.opengl.enable = lib.mkDefault true;
+    hardware.graphics.enable = lib.mkDefault true;
     fonts.enableDefaultPackages = lib.mkDefault true;
     programs.dconf.enable = lib.mkDefault true;
 
@@ -71,8 +87,14 @@ in {
       enable = true;
       packages = (with pkgs; [
         ayatana-indicator-datetime
+        ayatana-indicator-display
         ayatana-indicator-messages
+        ayatana-indicator-power
         ayatana-indicator-session
+      ] ++ lib.optionals config.hardware.bluetooth.enable [
+        ayatana-indicator-bluetooth
+      ] ++ lib.optionals (config.hardware.pulseaudio.enable || config.services.pipewire.pulse.enable) [
+        ayatana-indicator-sound
       ]) ++ (with pkgs.lomiri; [
         telephony-service
       ] ++ lib.optionals config.networking.networkmanager.enable [
@@ -133,6 +155,18 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.lomiri.lomiri-url-dispatcher}/libexec/lomiri-url-dispatcher/lomiri-update-directory /run/current-system/sw/share/lomiri-url-dispatcher/urls/";
+        };
+      };
+
+      "lomiri-polkit-agent" = rec {
+        description = "Lomiri Polkit agent";
+        wantedBy = [ "lomiri.service" "lomiri-full-greeter.service" "lomiri-full-shell.service" "lomiri-greeter.service" "lomiri-shell.service" ];
+        after = [ "graphical-session.target" ];
+        partOf = wantedBy;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "always";
+          ExecStart = "${pkgs.lomiri.lomiri-polkit-agent}/libexec/lomiri-polkit-agent/policykit-agent";
         };
       };
     };

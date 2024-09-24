@@ -25,14 +25,14 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "rbw";
-  version = "1.10.1";
+  version = "1.12.1";
 
   src = fetchzip {
     url = "https://git.tozt.net/rbw/snapshot/rbw-${version}.tar.gz";
-    hash = "sha256-56QlWVEx6bWxQz3u/s9+bXsGVPSDaDEdFNj4nVw0SLY=";
+    hash = "sha256-+1kalFyhk2UL+iVzuFLDsSSTudrd4QpXw+3O4J+KsLc=";
   };
 
-  cargoHash = "sha256-mQrplqu9yiCTwsiChGPjfLDx3dZTofmrp+ouDFuwYO8=";
+  cargoHash = "sha256-cKbbsDb449WANGT+x8APhzs+hf5SR3RBsCBWDNceRMA=";
 
   nativeBuildInputs = [
     installShellFiles
@@ -51,6 +51,7 @@ rustPlatform.buildRustPackage rec {
 
   postInstall = ''
     install -Dm755 -t $out/bin bin/git-credential-rbw
+  '' + lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
     installShellCompletion --cmd rbw \
       --bash <($out/bin/rbw gen-completions bash) \
       --fish <($out/bin/rbw gen-completions fish) \

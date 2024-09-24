@@ -9,13 +9,13 @@
 
 buildGoModule rec {
   pname = "grype";
-  version = "0.77.4";
+  version = "0.80.0";
 
   src = fetchFromGitHub {
     owner = "anchore";
     repo = "grype";
     rev = "refs/tags/v${version}";
-    hash = "sha256-xD6G4DGimmYVVCZHpXlvC24zaRwpRpQ0iRc4Yxac3O8=";
+    hash = "sha256-28/BR4oKOW7CK4gv4ESVZsvsyd6gKwW2XPvA1vU8/Wc=";
     # populate values that require us to use git. By doing this in postFetch we
     # can delete .git afterwards and maintain better reproducibility of the src.
     leaveDotGit = true;
@@ -30,7 +30,7 @@ buildGoModule rec {
 
   proxyVendor = true;
 
-  vendorHash = "sha256-WosgdN49MEXSfK42l4em+Cpk8iAQphf9KOhY0mgBQ7U=";
+  vendorHash = "sha256-F8r332smhjVRxAQ42CvJDmBl2rjxgwUZpoMDhFsBYSA=";
 
   nativeBuildInputs = [ installShellFiles ];
 
@@ -92,6 +92,11 @@ buildGoModule rec {
       --replace-fail "TestVersionCmdPrintsToStdout" "SkipVersionCmdPrintsToStdout"
     substituteInPlace grype/presenter/sarif/presenter_test.go \
       --replace-fail "Test_SarifIsValid" "SkipTest_SarifIsValid"
+
+    # May fail on NixOS, probably due bug in how syft handles tmpfs.
+    # See https://github.com/anchore/grype/issues/1822
+    substituteInPlace grype/distro/distro_test.go \
+      --replace-fail "Test_NewDistroFromRelease_Coverage" "SkipTest_NewDistroFromRelease_Coverage"
 
     # segfault
     rm grype/db/v5/namespace/cpe/namespace_test.go

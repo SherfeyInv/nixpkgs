@@ -16,16 +16,16 @@ let
 in
 rustPlatform.buildRustPackage rec {
   pname = "surrealdb";
-  version = "1.5.0";
+  version = "2.0.1";
 
   src = fetchFromGitHub {
     owner = "surrealdb";
     repo = "surrealdb";
     rev = "v${version}";
-    hash = "sha256-MX7XE+1YCP6zSc207GAaFgr0QJLMX0dbFqGjLMf/KOI=";
+    hash = "sha256-JFkTD/MGvak8EuDEABGH1xLykSNj4rtnnENAruls6W8=";
   };
 
-  cargoHash = "sha256-skPCmQVH76qdmBVd4IVCnKn1uHP7mEgJ8YXprycpQ5I=";
+  cargoHash = "sha256-N/4VHvBA9ij+VLPxJ+1237fnOHGoC6guZ62CYrwfHM4=";
 
   # error: linker `aarch64-linux-gnu-gcc` not found
   postPatch = ''
@@ -65,10 +65,10 @@ rustPlatform.buildRustPackage rec {
   };
 
   meta = with lib; {
-    description = "A scalable, distributed, collaborative, document-graph database, for the realtime web";
+    description = "Scalable, distributed, collaborative, document-graph database, for the realtime web";
     homepage = "https://surrealdb.com/";
     mainProgram = "surreal";
     license = licenses.bsl11;
-    maintainers = with maintainers; [ sikmir happysalada ];
+    maintainers = with maintainers; [ sikmir happysalada siriobalmelli ];
   };
 }

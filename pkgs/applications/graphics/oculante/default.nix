@@ -22,16 +22,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "oculante";
-  version = "0.8.21";
+  version = "0.8.23";
 
   src = fetchFromGitHub {
     owner = "woelper";
     repo = "oculante";
     rev = version;
-    hash = "sha256-2QX7cD9SjhLb82O8T90BTQGsy3/gDaNwoX4Mbe2H6s4=";
+    hash = "sha256-Dg1FFB9WVB4SWInSyOYb1TCPAtCa9gwsFLUX+UhL4DY=";
   };
 
-  cargoHash = "sha256-VAWLs15xsjoT0VSJjS/j0wd5P7OjQGrvyUSHp4B8hHI=";
+  cargoHash = "sha256-Ze3ACs9WyoxNsaeJlZWhR0g+aFsntwNLLYbw2RnmwfE=";
 
   nativeBuildInputs = [
     cmake
@@ -40,8 +40,6 @@ rustPlatform.buildRustPackage rec {
     perl
     wrapGAppsHook3
   ];
-
-  checkFlagsArray = [ "--skip=tests::net" ]; # requires network access
 
   buildInputs = [
     openssl
@@ -62,6 +60,7 @@ rustPlatform.buildRustPackage rec {
 
   checkFlags = [
     "--skip=bench"
+    "--skip=tests::net" # requires network access
   ];
 
   postInstall = ''
@@ -73,7 +72,7 @@ rustPlatform.buildRustPackage rec {
 
   meta = with lib; {
     broken = stdenv.isDarwin;
-    description = "A minimalistic crossplatform image viewer written in Rust";
+    description = "Minimalistic crossplatform image viewer written in Rust";
     homepage = "https://github.com/woelper/oculante";
     changelog = "https://github.com/woelper/oculante/blob/${version}/CHANGELOG.md";
     license = licenses.mit;

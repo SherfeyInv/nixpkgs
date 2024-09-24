@@ -1,7 +1,6 @@
 { lib
 , stdenv
 , fetchFromGitHub
-, fetchpatch
 , rustPlatform
 , cmake
 , pkg-config
@@ -15,16 +14,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "tpnote";
-  version = "1.24.2";
+  version = "1.24.8";
 
   src = fetchFromGitHub {
     owner = "getreu";
     repo = "tp-note";
     rev = "v${version}";
-    hash = "sha256-uNW1gb4zmLjOZFtxaBBEQGRGc9C2M8cSARZBa3+FC2k=";
+    hash = "sha256-tn6GCBX3DrqyZZz2FJLTn1vJd4eEbawyJM5huco21/8=";
   };
 
-  cargoHash = "sha256-pOiIQU/5z/g4NbdwoYaDdxTfTkxEdddVsmuH54pCOBM=";
+  cargoHash = "sha256-2qGObTu7g6GbUwd4obgqufig7bABFLBsCWSyZt8AVac=";
 
   nativeBuildInputs = [
     cmake
@@ -39,6 +38,10 @@ rustPlatform.buildRustPackage rec {
      CoreServices
      SystemConfiguration
   ]);
+
+  postInstall = ''
+    installManPage docs/build/man/man1/tpnote.1
+  '';
 
   RUSTONIG_SYSTEM_LIBONIG = true;
 

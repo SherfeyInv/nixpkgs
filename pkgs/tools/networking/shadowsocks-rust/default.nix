@@ -2,16 +2,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "shadowsocks-rust";
-  version = "1.18.4";
+  version = "1.20.4";
 
   src = fetchFromGitHub {
     rev = "v${version}";
     owner = "shadowsocks";
     repo = pname;
-    hash = "sha256-1gZP0PVvYWEfWmTVql+8uyNhcjawBMJKvqy/4sZ0/6Y=";
+    hash = "sha256-UDr1/5PlK395CnWbp3eDTniltZYrFZ6raVBiqsVaCZs=";
   };
 
-  cargoHash = "sha256-GZuRz4VtAm+aQO0Hq5v3HVfqjoMPsEw5G6VADsAvdEQ=";
+  cargoHash = "sha256-xrD0vImCZwaAaoVWC/Wlj6Gvm0COwmINJdlBlud9+7Y=";
 
   nativeBuildInputs = lib.optionals stdenv.isLinux [ pkg-config ];
 
@@ -48,7 +48,7 @@ rustPlatform.buildRustPackage rec {
   doCheck = false;
 
   meta = with lib; {
-    description = "A Rust port of Shadowsocks";
+    description = "Rust port of Shadowsocks";
     homepage = "https://github.com/shadowsocks/shadowsocks-rust";
     changelog = "https://github.com/shadowsocks/shadowsocks-rust/raw/v${version}/debian/changelog";
     license = licenses.mit;

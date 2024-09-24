@@ -115,6 +115,11 @@ stdenv.mkDerivation (rec {
       "-Dprefix=${placeholder "out"}"
       "-Dman1dir=${placeholder "out"}/share/man/man1"
       "-Dman3dir=${placeholder "out"}/share/man/man3"
+    ]
+    ++ lib.optionals (stdenv.isFreeBSD && crossCompiling && enableCrypt) [
+      # https://github.com/Perl/perl5/issues/22295
+      # configure cannot figure out that we have crypt automatically, but we really do
+      "-Dd_crypt"
     ];
 
   configureScript = lib.optionalString (!crossCompiling) "${stdenv.shell} ./Configure";
@@ -228,9 +233,9 @@ stdenv.mkDerivation (rec {
 
   meta = with lib; {
     homepage = "https://www.perl.org/";
-    description = "The standard implementation of the Perl 5 programming language";
+    description = "Standard implementation of the Perl 5 programming language";
     license = licenses.artistic1;
-    maintainers = [ maintainers.eelco ];
+    maintainers = [ ];
     platforms = platforms.all;
     priority = 6; # in `buildEnv' (including the one inside `perl.withPackages') the library files will have priority over files in `perl`
     mainProgram = "perl";

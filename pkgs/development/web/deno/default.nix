@@ -13,16 +13,16 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "deno";
-  version = "1.43.1";
+  version = "1.46.2";
 
   src = fetchFromGitHub {
     owner = "denoland";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-Y/1c0b7CmT5jzgkRGzEnTNmUiLn5oDf5jTvzU2SU0RA=";
+    hash = "sha256-6rmAgGX7BnhbyDk0Pmp1uLBDywlK4cptTOfuvNhm0KE=";
   };
 
-  cargoHash = "sha256-Hoe22bToJ+2nZeq9iy2XXwbXDEbfRjW1g3rhcT3Og04=";
+  cargoHash = "sha256-B+O2QYQDH+mqbnJhLumFWnv1b7dvnbpR7JG/3IS5tnI=";
 
   postPatch = ''
     # upstream uses lld on aarch64-darwin for faster builds
@@ -68,7 +68,7 @@ rustPlatform.buildRustPackage rec {
     find ./target -name libswc_common${stdenv.hostPlatform.extensions.sharedLibrary} -delete
   '';
 
-  postInstall = ''
+  postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
     installShellCompletion --cmd deno \
       --bash <($out/bin/deno completions bash) \
       --fish <($out/bin/deno completions fish) \
@@ -89,7 +89,7 @@ rustPlatform.buildRustPackage rec {
   meta = with lib; {
     homepage = "https://deno.land/";
     changelog = "https://github.com/denoland/deno/releases/tag/v${version}";
-    description = "A secure runtime for JavaScript and TypeScript";
+    description = "Secure runtime for JavaScript and TypeScript";
     longDescription = ''
       Deno aims to be a productive and secure scripting environment for the modern programmer.
       Deno will always be distributed as a single executable.

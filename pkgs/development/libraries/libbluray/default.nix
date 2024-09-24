@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, fetchpatch, pkg-config, fontconfig, autoreconfHook, DiskArbitration
+{ lib, stdenv, fetchurl, pkg-config, fontconfig, autoreconfHook, DiskArbitration
 , withJava ? false, jdk17, ant, stripJavaArchivesHook
 , withAACS ? false, libaacs
 , withBDplus ? false, libbdplus
@@ -28,6 +28,7 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = lib.optional withAACS libaacs;
 
+  env.JAVA_HOME = lib.optionalString withJava jdk17.home; # Fails at runtime without this
   env.NIX_LDFLAGS = lib.optionalString withAACS "-L${libaacs}/lib -laacs"
     + lib.optionalString withBDplus " -L${libbdplus}/lib -lbdplus";
 
