@@ -265,6 +265,7 @@
   ./programs/pqos-wrapper.nix
   ./programs/projecteur.nix
   ./programs/proxychains.nix
+  ./programs/pulseview.nix
   ./programs/qdmr.nix
   ./programs/qgroundcontrol.nix
   ./programs/qt5ct.nix
@@ -698,6 +699,7 @@
   ./services/matrix/conduit.nix
   ./services/matrix/dendrite.nix
   ./services/matrix/hebbot.nix
+  ./services/matrix/hookshot.nix
   ./services/matrix/maubot.nix
   ./services/matrix/mautrix-facebook.nix
   ./services/matrix/mautrix-meta.nix
@@ -856,6 +858,7 @@
   ./services/misc/tautulli.nix
   ./services/misc/tiddlywiki.nix
   ./services/misc/tp-auto-kbbl.nix
+  ./services/misc/turn-rs.nix
   ./services/misc/tuxclocker.nix
   ./services/misc/transfer-sh.nix
   ./services/misc/tzupdate.nix
@@ -1014,7 +1017,6 @@
   ./services/networking/dhcpcd.nix
   ./services/networking/dnscache.nix
   ./services/networking/dnscrypt-proxy2.nix
-  ./services/networking/dnscrypt-wrapper.nix
   ./services/networking/dnsdist.nix
   ./services/networking/dnsmasq.nix
   ./services/networking/dnsproxy.nix
@@ -1043,7 +1045,6 @@
   ./services/networking/gdomap.nix
   ./services/networking/ghostunnel.nix
   ./services/networking/git-daemon.nix
-  ./services/networking/globalprotect-vpn.nix
   ./services/networking/gns3-server.nix
   ./services/networking/gnunet.nix
   ./services/networking/go-autoconfig.nix
@@ -1623,6 +1624,7 @@
   ./system/boot/stage-2.nix
   ./system/boot/systemd.nix
   ./system/boot/systemd/coredump.nix
+  ./system/boot/systemd/dm-verity.nix
   ./system/boot/systemd/initrd-secrets.nix
   ./system/boot/systemd/initrd.nix
   ./system/boot/systemd/journald.nix

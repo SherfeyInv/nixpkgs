@@ -128,6 +128,7 @@ in {
   apcupsd = handleTest ./apcupsd.nix {};
   apfs = runTest ./apfs.nix;
   appliance-repart-image = runTest ./appliance-repart-image.nix;
+  appliance-repart-image-verity-store = runTest ./appliance-repart-image-verity-store.nix;
   apparmor = handleTest ./apparmor.nix {};
   archi = handleTest ./archi.nix {};
   aria2 = handleTest ./aria2.nix {};
@@ -260,7 +261,6 @@ in {
   disable-installer-tools = handleTest ./disable-installer-tools.nix {};
   discourse = handleTest ./discourse.nix {};
   dnscrypt-proxy2 = handleTestOn ["x86_64-linux"] ./dnscrypt-proxy2.nix {};
-  dnscrypt-wrapper = runTestOn ["x86_64-linux"] ./dnscrypt-wrapper;
   dnsdist = import ./dnsdist.nix { inherit pkgs runTest; };
   doas = handleTest ./doas.nix {};
   docker = handleTestOn ["aarch64-linux" "x86_64-linux"] ./docker.nix {};
@@ -686,7 +686,7 @@ in {
   nix-misc = handleTest ./nix/misc.nix {};
   nix-upgrade = handleTest ./nix/upgrade.nix {inherit (pkgs) nixVersions;};
   nix-required-mounts = runTest ./nix-required-mounts;
-  nix-serve = handleTest ./nix-serve.nix {};
+  nix-serve = runTest ./nix-serve.nix;
   nix-serve-ssh = handleTest ./nix-serve-ssh.nix {};
   nixops = handleTest ./nixops/default.nix {};
   nixos-generate-config = handleTest ./nixos-generate-config.nix {};
@@ -786,6 +786,7 @@ in {
   plasma6 = handleTest ./plasma6.nix {};
   plasma5-systemd-start = handleTest ./plasma5-systemd-start.nix {};
   plausible = handleTest ./plausible.nix {};
+  playwright-python = handleTest ./playwright-python.nix {};
   please = handleTest ./please.nix {};
   pleroma = handleTestOn [ "x86_64-linux" "aarch64-linux" ] ./pleroma.nix {};
   plikd = handleTest ./plikd.nix {};
@@ -805,6 +806,7 @@ in {
   postgresql-jit = handleTest ./postgresql-jit.nix {};
   postgresql-wal-receiver = handleTest ./postgresql-wal-receiver.nix {};
   postgresql-tls-client-cert = handleTest ./postgresql-tls-client-cert.nix {};
+  postgresql-wal2json = handleTest ./postgresql-wal2json.nix {};
   powerdns = handleTest ./powerdns.nix {};
   powerdns-admin = handleTest ./powerdns-admin.nix {};
   power-profiles-daemon = handleTest ./power-profiles-daemon.nix {};
@@ -1046,6 +1048,7 @@ in {
   txredisapi = handleTest ./txredisapi.nix {};
   tuptime = handleTest ./tuptime.nix {};
   turbovnc-headless-server = handleTest ./turbovnc-headless-server.nix {};
+  turn-rs = handleTest ./turn-rs.nix {};
   tuxguitar = handleTest ./tuxguitar.nix {};
   twingate = runTest ./twingate.nix;
   typesense = handleTest ./typesense.nix {};

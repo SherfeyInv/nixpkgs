@@ -73,6 +73,7 @@ mapAliases ({
   bedup = throw "bedup was removed because it was broken and abandoned upstream"; # added 2023-02-04
   bip_utils = bip-utils; # 2023-10-08
   bitcoin-price-api = throw "bitcoin-price-api has been removed, it was using setuptools 2to3 translation feautre, which has been removed in setuptools 58"; # added 2022-02-15
+  blessings = throw "blessings has been removed in favor of blessed, as it was unmaintained"; # added 2024-08-20
   BlinkStick = blinkstick; # added 2023-02-19
   blockdiagcontrib-cisco = throw "blockdiagcontrib-cisco is not compatible with blockdiag 2.0.0 and has been removed."; # added 2020-11-29
   bsblan = python-bsblan; # added 2022-11-04
@@ -332,6 +333,7 @@ mapAliases ({
   mrkd = throw "mrkd has been promoted to a top-level attribute name: `pkgs.mrkd`"; # added 2023-08-01
   multi_key_dict = multi-key-dict; # added 2023-11-05
   mutmut = throw "mutmut has been promoted to a top-level attribute name: `pkgs.mutmut`"; # added 2022-10-02
+  n3fit = throw "n3fit has been removed since it relies on a dependency that was removed"; # added 2024-08-24
   nbmerge = throw "nbmerge has moved to pkgs.nbmerge"; # added 2024-07-05
   mypy-boto3-alexaforbusiness = throw "mypy-boto3-alexaforbusiness was removed because it is unmaintained"; # added 2024-09-04
   mypy-boto3-backupstorage = throw "mypy-boto3-backupstorage was removed because it is unmaintained"; # added 2024-09-04
@@ -468,6 +470,7 @@ mapAliases ({
   pyruckus = throw "pyruckus has been removed, it was deprecrated in favor of aioruckus."; # added 2023-09-07
   py_scrypt = py-scrypt; # added 2024-01-07
   pysha3 = throw "pysha3 has been removed, use safe-pysha3 instead"; # added 2023-05-20
+  pysimplegui = throw "pysimplegui update to v5 broke the package, it now needs a license key to decrypt the source code"; # added 2024-09-16
   pysmart-smartx = pysmart; # added 2021-10-22
   pySmartDL = pysmartdl; # added 2023-10-11
   pysmi-lextudio = pysmi; # added 2024-07-18
@@ -482,6 +485,7 @@ mapAliases ({
   pytest-pep8 = pytestpep8; # added 2021-01-04
   pytest-pep257 = throw "pytest-pep257 was removed, as the pep257 package was migrated into pycodestyle"; # added 2022-04-12
   pytest-pythonpath = throw "pytest-pythonpath is obsolete as of pytest 7.0.0 and has been removed"; # added 2022-03-09
+  pytest-runner = throw "pytest-runner has been removed as it uses deprecated features of setuptools and is deprecated by upstream"; # added 2024-09-15
   pytest-sanic = throw "pytest-sanic has been removed because it is unmaintained and broken"; # added 2023-06-22
   pytestpep8 = throw "pytestpep8 was removed because it is abandoned and no longer compatible with pytest v6.0"; # added 2020-12-10
   pytestquickcheck = pytest-quickcheck; # added 2021-07-20
@@ -533,6 +537,7 @@ mapAliases ({
   recursivePthLoader = recursive-pth-loader; # added 2024-01-07
   rednose = throw "rednose is no longer maintained (since February 2018)"; # added 2023-08-06
   repeated_test = repeated-test; # added 2022-11-15
+  reportengine = throw "reportengine has been removed, since it is unmaintained and broken"; # added 2024-08-21
   repoze_lru = repoze-lru; # added 2023-11-11
   repoze_sphinx_autointerface = repoze-sphinx-autointerface; # added 2023-11-11
   repoze_who = repoze-who; # added 2023-11-11
@@ -546,6 +551,7 @@ mapAliases ({
   rig = throw "rig has been removed because it was pinned to python 2.7 and 3.5, failed to build and is otherwise unmaintained"; # added 2022-11-28
   rl-coach = "rl-coach was removed because the project is discontinued and was archived by upstream"; # added 2023-05-03
   roboschool = throw "roboschool is deprecated in favor of PyBullet and has been removed"; # added 2022-01-15
+  ronin = throw "ronin has been removed because it was unmaintained since 2018"; # added 2024-08-21
   ROPGadget = ropgadget; # added 2021-07-06
   rotate-backups = throw "rotate-backups was removed in favor of the top-level rotate-backups"; # added 2021-07-01
   ruamel_base = ruamel-base; # added 2021-11-01
@@ -638,6 +644,7 @@ mapAliases ({
   urwid-mitmproxy-mitmproxy = throw "urwid-mitmproxy has been removed because mitmproxy no longer uses it"; # Added 2024-07-26
   uuid = throw "uuid is a Python standard module"; # added 2024-04-18
   validictory = throw "validictory has been removed, since it abandoned"; # added 2023-07-07
+  validphys2 = throw "validphys2 has been removed, since it had a broken dependency that was removed"; # added 2023-07-07
   vega_datasets = vega-datasets; # added 2023-11-04
   ViennaRNA = viennarna; # added 2023-08-23
   virtual-display = throw "virtual-display has been renamed to PyVirtualDisplay"; # added 2023-01-07
