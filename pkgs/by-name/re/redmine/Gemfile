@@ -88,7 +88,7 @@ group :test do
   gem 'rubocop-rails', '~> 2.22.1', require: false
 end
 
-gem "webrick"
+gem "webrick", ">= 1.8.2"
 
 local_gemfile = File.join(File.dirname(__FILE__), "Gemfile.local")
 if File.exist?(local_gemfile)
