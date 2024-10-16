@@ -29,7 +29,7 @@
     "@tauri-apps/api": "1.5.3",
     "dayjs": "1.11.10",
     "framer-motion": "10.16.9",
-    "markdown-to-jsx": "7.3.2",
+    "markdown-to-jsx": "7.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "7.48.2",
