@@ -184,7 +184,7 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
-    nio4r (2.7.3)
+    nio4r (2.7.4)
     nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -200,7 +200,7 @@ GEM
       rack
       railties (>= 7.0.0)
     public_suffix (5.0.5)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.0)
     rack (2.2.9)
@@ -273,7 +273,7 @@ DEPENDENCIES
   pg_query
   pghero
   propshaft
-  puma
+  puma (>= 6.4.3)
   rails (~> 7.0.0)
 
 BUNDLED WITH
