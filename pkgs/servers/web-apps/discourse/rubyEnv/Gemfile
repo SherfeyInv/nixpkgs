@@ -124,11 +124,11 @@ end
 
 group :test do
   gem "capybara", require: false
-  gem "webmock", require: false
+  gem "webmock", ">= 3.20.0", require: false
   gem "fakeweb", require: false
   gem "simplecov", require: false
-  gem "selenium-webdriver", "~> 4.14", require: false
-  gem "selenium-devtools", require: false
+  gem "selenium-webdriver", "~> 4.18", ">= 4.18.0", require: false
+  gem "selenium-devtools", ">= 0.122.0", require: false
   gem "test-prof"
   gem "rails-dom-testing", require: false
   gem "minio_runner", require: false
@@ -149,7 +149,7 @@ group :test, :development do
   gem "rspec-html-matchers"
   gem "pry-stack_explorer", require: false
   gem "byebug", require: ENV["RM_INFO"].nil?, platform: :mri
-  gem "rubocop-discourse", require: false
+  gem "rubocop-discourse", ">= 3.6.1", require: false
   gem "parallel_tests"
 
   gem "rswag-specs"
@@ -204,7 +204,7 @@ gem "rbtrace", require: false, platform: :mri
 gem "ruby-readability", require: false
 
 # rss gem is a bundled gem from Ruby 3 onwards
-gem "rss", require: false
+gem "rss", ">= 0.3.1", require: false
 
 gem "stackprof", require: false, platform: :mri
 gem "memory_profiler", require: false, platform: :mri
