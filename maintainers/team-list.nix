@@ -44,6 +44,19 @@ with lib.maintainers;
     enableFeatureFreezePing = true;
   };
 
+  android = {
+    members = [
+      numinit
+      hadilq
+      RossComputerGuy
+      adrian-gierakowski
+    ];
+    scope = "Maintain Android-related tooling in nixpkgs.";
+    githubTeams = [ "android" ];
+    shortName = "Android";
+    enableFeatureFreezePing = true;
+  };
+
   bazel = {
     members = [
       mboes
@@ -132,6 +145,24 @@ with lib.maintainers;
     ];
     scope = "Maintain packages used in the C3D2 hackspace";
     shortName = "c3d2";
+  };
+
+  categorization = {
+    members = [
+      aleksana
+      fgaz
+      getpsyched
+      lyndeno
+      natsukium
+      philiptaron
+      pyrotelekinetic
+      raskin
+      sigmasquadron
+      tomodachi94
+    ];
+    githubTeams = [ "categorization" ];
+    scope = "Maintain the categorization system in Nixpkgs, per RFC 146. This team has authority over all categorization issues in Nixpkgs.";
+    shortName = "Categorization";
   };
 
   cinnamon = {
@@ -434,6 +465,17 @@ with lib.maintainers;
     enableFeatureFreezePing = true;
   };
 
+  gnome-circle = {
+    members = [
+      aleksana
+      dawidd6
+      getchoo
+      michaelgrahamevans
+    ];
+    scope = "Maintain GNOME Circle applications.";
+    shortName = "GNOME Circle";
+  };
+
   graalvm-ce = {
     members = [
       bandresen
@@ -449,7 +491,6 @@ with lib.maintainers;
     members = [
       cdepillabout
       maralorn
-      ncfavier
       sternenseemann
     ];
     githubTeams = [ "haskell" ];
@@ -507,6 +548,16 @@ with lib.maintainers;
     shortName = "Java";
     scope = "Maintainers of the Nixpkgs Java ecosystem (JDK, JVM, Java, Gradle, Maven, Ant, and adjacent projects)";
     enableFeatureFreezePing = true;
+  };
+
+  jetbrains = {
+    members = [
+      edwtjo
+      leona
+      theCapypara
+    ];
+    shortName = "Jetbrains";
+    scope = "Maintainers of the Jetbrains IDEs in nixpkgs";
   };
 
   jitsi = {
@@ -763,6 +814,13 @@ with lib.maintainers;
     scope = "Maintain the Nixpkgs module system.";
     shortName = "Module system";
     enableFeatureFreezePing = true;
+  };
+
+  neovim = {
+    members = [ ];
+    githubTeams = [ "neovim" ];
+    scope = "Maintain the vim and neovim text editors and related packages.";
+    shortName = "Vim/Neovim";
   };
 
   ngi = {
@@ -1049,16 +1107,6 @@ with lib.maintainers;
     members = [ mic92 ];
     scope = "coqui-ai TTS (formerly Mozilla TTS) and leaf packages";
     shortName = "coqui-ai TTS";
-  };
-
-  vim = {
-    members = [
-      figsoda
-      softinio
-      teto
-    ];
-    scope = "Maintain the vim and neovim text editors and related packages.";
-    shortName = "Vim/Neovim";
   };
 
   wdz = {

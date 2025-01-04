@@ -29,16 +29,16 @@ let
 in
 buildNpmPackage rec {
   pname = "homepage-dashboard";
-  version = "0.9.12";
+  version = "0.10.6";
 
   src = fetchFromGitHub {
     owner = "gethomepage";
     repo = "homepage";
     rev = "v${version}";
-    hash = "sha256-/7MWeCn9vMRlwqYoOf0oldtb1hy0xyKI4+HvnUQIU1c=";
+    hash = "sha256-5JdCd/A+wmsZic0OsbqBBTUQO/SinnUtDKYy7iUmtAs=";
   };
 
-  npmDepsHash = "sha256-Hajc6Ift8V6Q3h6DiePc31nNBVsOm0L97wnEe+fwXPI=";
+  npmDepsHash = "sha256-AW7lNkvQeeHkAf6Q23912LiSHJMelR9+4KVSKdlFqd0=";
 
   preBuild = ''
     mkdir -p config

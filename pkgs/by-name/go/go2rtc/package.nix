@@ -10,13 +10,13 @@ buildGoModule rec {
   src = fetchFromGitHub {
     owner = "AlexxIT";
     repo = "go2rtc";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-pxKocvnFy1XMrjQ57VAmCnavcBgVPuNqWzT0v5+pWMI=";
   };
 
   vendorHash = "sha256-N8aJmxNQ/p2ddJG9DuIVVjcgzEC6TzD0sz992h3q0RU=";
 
-  CGO_ENABLED = 0;
+  env.CGO_ENABLED = 0;
 
   ldflags = [
     "-s"

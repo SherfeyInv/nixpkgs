@@ -28,18 +28,21 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Textualize";
     repo = "textual";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-5msCFv79nAmoaP9gZxV3DXMLTyVlSFb+qyA5jHWwc50=";
   };
 
   build-system = [ poetry-core ];
 
-  dependencies = [
-    platformdirs
-    markdown-it-py
-    rich
-    typing-extensions
-  ] ++ markdown-it-py.optional-dependencies.plugins ++ markdown-it-py.optional-dependencies.linkify;
+  dependencies =
+    [
+      platformdirs
+      markdown-it-py
+      rich
+      typing-extensions
+    ]
+    ++ markdown-it-py.optional-dependencies.plugins
+    ++ markdown-it-py.optional-dependencies.linkify;
 
   optional-dependencies = {
     syntax = [

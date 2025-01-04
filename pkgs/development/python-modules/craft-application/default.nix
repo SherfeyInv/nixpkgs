@@ -30,7 +30,7 @@
 
 buildPythonPackage rec {
   pname = "craft-application";
-  version = "4.4.0";
+  version = "4.6.0";
   pyproject = true;
 
   disabled = pythonOlder "3.10";
@@ -38,8 +38,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "canonical";
     repo = "craft-application";
-    rev = "refs/tags/${version}";
-    hash = "sha256-Sb7/p5g03stipnvfE5FceXv6xDA4c45qnxllBUWhmY8=";
+    tag = version;
+    hash = "sha256-kDujv7iVUvPfP9g3Ofm0Vso+I6qKBOq9NlFpigd6+Tc=";
   };
 
   postPatch = ''

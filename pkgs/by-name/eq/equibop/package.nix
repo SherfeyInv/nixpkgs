@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  substituteAll,
+  replaceVars,
   makeWrapper,
   makeDesktopItem,
   copyDesktopItems,
@@ -28,7 +28,7 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "Equicord";
     repo = "Equibop";
-    rev = "refs/tags/v${finalAttrs.version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-LGgmWaC7iYj0Mx5wPKmLkYV2ozyhkiwrE4v4uFB0erg=";
   };
 
@@ -64,10 +64,11 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches =
     [ ./disable_update_checking.patch ]
-    ++ lib.optional withSystemEquicord (substituteAll {
-      inherit equicord;
-      src = ./use_system_equicord.patch;
-    });
+    ++ lib.optional withSystemEquicord (
+      replaceVars ./use_system_equicord.patch {
+        inherit equicord;
+      }
+    );
 
   env = {
     ELECTRON_SKIP_BINARY_DOWNLOAD = 1;

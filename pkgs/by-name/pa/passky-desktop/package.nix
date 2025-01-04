@@ -1,10 +1,11 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, electron_29
-, makeWrapper
-, makeDesktopItem
-, copyDesktopItems
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  electron_29,
+  makeWrapper,
+  makeDesktopItem,
+  copyDesktopItems,
 }:
 
 let
@@ -17,7 +18,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "Rabbit-Company";
     repo = "Passky-Desktop";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     sha256 = "sha256-QQ0+qIkDPNCHeWmcF6FkbDrrt/r3fIkNi0dv6XlV1rc=";
   };
 
@@ -49,19 +50,17 @@ stdenv.mkDerivation rec {
   '';
 
   desktopItems = [
-    (
-      makeDesktopItem {
-        name = "passky";
-        type = "Application";
-        desktopName = "Passky";
-        comment = "Simple, modern, open source and secure password manager.";
-        icon = "passky";
-        exec = "passky %U";
-        terminal = false;
-        categories = [ "Utility" ];
-        startupWMClass = "Passky";
-      }
-    )
+    (makeDesktopItem {
+      name = "passky";
+      type = "Application";
+      desktopName = "Passky";
+      comment = "Simple, modern, open source and secure password manager.";
+      icon = "passky";
+      exec = "passky %U";
+      terminal = false;
+      categories = [ "Utility" ];
+      startupWMClass = "Passky";
+    })
   ];
 
   meta = with lib; {

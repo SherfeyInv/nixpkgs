@@ -1,8 +1,9 @@
-{ python311Packages
-, fetchFromGitHub
-, nix-update-script
-, qt5
-, lib
+{
+  python311Packages,
+  fetchFromGitHub,
+  nix-update-script,
+  qt5,
+  lib,
 }:
 
 python311Packages.buildPythonApplication rec {
@@ -12,7 +13,7 @@ python311Packages.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "evilsocket";
     repo = "opensnitch";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-pJPpkXRp7cby6Mvc7IzxH9u6MY4PcrRPkimTw3je6iI=";
   };
 

@@ -1,9 +1,9 @@
-{ lib
-, stdenv
-, rustPlatform
-, fetchFromGitHub
-, apple-sdk_11
-, uutils-coreutils
+{
+  lib,
+  stdenv,
+  rustPlatform,
+  fetchFromGitHub,
+  uutils-coreutils,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -23,8 +23,6 @@ rustPlatform.buildRustPackage rec {
   ];
 
   cargoHash = "sha256-xMhyKovXoBPZp6epWQ+CYODpyvHgpv6eZfdWPTuDnK8=";
-
-  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [ apple-sdk_11 ];
 
   cargoBuildFlags = [
     # Only build the binary we want

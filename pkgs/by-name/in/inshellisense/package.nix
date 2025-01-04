@@ -1,4 +1,10 @@
-{ lib, stdenv, buildNpmPackage, fetchFromGitHub, cacert }:
+{
+  lib,
+  stdenv,
+  buildNpmPackage,
+  fetchFromGitHub,
+  cacert,
+}:
 
 buildNpmPackage rec {
   pname = "inshellisense";
@@ -7,7 +13,7 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "microsoft";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-9cSygGQar2rD3lorehlNmUzd0ZnABNJSJwmoNH3MTmk=";
   };
 
@@ -30,4 +36,3 @@ buildNpmPackage rec {
     maintainers = [ maintainers.malo ];
   };
 }
-

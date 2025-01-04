@@ -18,7 +18,7 @@
 
 buildPythonPackage rec {
   pname = "aioswitcher";
-  version = "4.4.1";
+  version = "5.0.0";
   pyproject = true;
 
   disabled = pythonOlder "3.9";
@@ -26,8 +26,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "TomerFi";
     repo = "aioswitcher";
-    rev = "refs/tags/${version}";
-    hash = "sha256-O1wKw6jv2aRPLZ2hSYv3MwneeNcjO+2/RKzQ7xXWHtY=";
+    tag = version;
+    hash = "sha256-cKHH1yXVm/kZigO1Ub0XZEv+yq4lROc4SGFLqFuwQto=";
   };
 
   __darwinAllowLocalNetworking = true;

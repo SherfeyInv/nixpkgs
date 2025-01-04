@@ -1,18 +1,19 @@
-{ lib
-, python3Packages
-, fetchPypi
-, substituteAll
-, ffmpeg
+{
+  lib,
+  python3Packages,
+  fetchPypi,
+  substituteAll,
+  ffmpeg,
 }:
 
 python3Packages.buildPythonApplication rec {
   pname = "streamlink";
-  version = "7.0.0";
+  version = "7.1.1";
   pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-UaQGKGLmeV1pQEbKbnBUnW0TWDxkDRUFlmgEsOA/7/I=";
+    hash = "sha256-wYge0LulNhLZedmpGLfewFb8k80gKlsHoIDlVo29q0w=";
   };
 
   patches = [
@@ -49,7 +50,6 @@ python3Packages.buildPythonApplication rec {
     requests
     trio
     trio-websocket
-    typing-extensions
     urllib3
     websocket-client
   ];
@@ -67,6 +67,10 @@ python3Packages.buildPythonApplication rec {
     '';
     license = lib.licenses.bsd2;
     mainProgram = "streamlink";
-    maintainers = with lib.maintainers; [ dezgeg zraexy DeeUnderscore ];
+    maintainers = with lib.maintainers; [
+      dezgeg
+      zraexy
+      DeeUnderscore
+    ];
   };
 }

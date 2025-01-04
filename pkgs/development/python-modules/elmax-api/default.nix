@@ -12,7 +12,7 @@
 
 buildPythonPackage rec {
   pname = "elmax-api";
-  version = "0.0.6.2";
+  version = "0.0.6.3";
   pyproject = true;
 
   disabled = pythonOlder "3.8";
@@ -20,8 +20,8 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "albertogeniola";
     repo = pname;
-    rev = "refs/tags/v${version}";
-    hash = "sha256-71ewBzAMWncvgXII2VAcbSDwudxqA+MBCl+TCCwTxa4=";
+    tag = "v${version}";
+    hash = "sha256-jnm1AFnPxZIgD815ZFxV/i9ar4cZfsYJ0+xDpM3hKmg=";
   };
 
   build-system = [ setuptools ];

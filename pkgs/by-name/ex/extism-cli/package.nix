@@ -1,8 +1,8 @@
 {
-  lib
-, buildGoModule
-, fetchFromGitHub
-, installShellFiles
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+  installShellFiles,
 }:
 
 buildGoModule rec {
@@ -12,7 +12,7 @@ buildGoModule rec {
   src = fetchFromGitHub {
     owner = "extism";
     repo = "cli";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-txwpFc1FQlZLAxbpO92Ei7z3vhXBrpdIJHAqnrKp9Bg=";
   };
 

@@ -10,7 +10,6 @@
 
   # dependencies
   anyio,
-  cached-property,
   distro,
   httpx,
   jiter,
@@ -22,6 +21,7 @@
   numpy,
   pandas,
   pandas-stubs,
+  websockets,
 
   # check deps
   pytestCheckHook,
@@ -36,16 +36,16 @@
 
 buildPythonPackage rec {
   pname = "openai";
-  version = "1.54.5";
+  version = "1.58.1";
   pyproject = true;
 
-  disabled = pythonOlder "3.7.1";
+  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "openai";
     repo = "openai-python";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-bDYGE8bm1+qHvhNfLSHG2bW8Wnm1yOEjD/oCzBG+CPw=";
+    tag = "v${version}";
+    hash = "sha256-QK0NNMJM4sj4u8nlNPBBQpqV0pBYUMcSwKqhna5q10c=";
   };
 
   build-system = [
@@ -62,13 +62,16 @@ buildPythonPackage rec {
     sniffio
     tqdm
     typing-extensions
-  ] ++ lib.optionals (pythonOlder "3.8") [ cached-property ];
+  ] ++ optional-dependencies.realtime;
 
   optional-dependencies = {
     datalib = [
       numpy
       pandas
       pandas-stubs
+    ];
+    realtime = [
+      websockets
     ];
   };
 

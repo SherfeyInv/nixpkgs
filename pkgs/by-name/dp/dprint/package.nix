@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchCrate,
+  fetchFromGitHub,
   rustPlatform,
   installShellFiles,
   testers,
@@ -11,21 +11,30 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "dprint";
-  version = "0.47.6";
+  version = "0.48.0";
 
-  src = fetchCrate {
-    inherit pname version;
-    hash = "sha256-7tGzSFp7Dnu27L65mqFd7hzeFFDfe1xJ6cMul3hGyJs=";
+  # Prefer repository rather than crate here
+  #   - They have Cargo.lock in the repository
+  #   - They have WASM files in the repository which will be used in checkPhase
+  src = fetchFromGitHub {
+    owner = "dprint";
+    repo = "dprint";
+    tag = version;
+    hash = "sha256-Zem37oHku90c7PDV8ep/7FN128eGRUvfIvRsaXa7X9g=";
   };
 
-  cargoHash = "sha256-y3tV3X7YMOUGBn2hCmxsUUc9QQleKEioTIw7SGoBvSQ=";
-
-  # Tests fail because they expect a test WASM plugin. Tests already run for
-  # every commit upstream on GitHub Actions
-  doCheck = false;
+  cargoHash = "sha256-vlG+0cQMUev8iEgut9l1bCDpS85bRWsNWZyJJXcgSlw=";
 
   nativeBuildInputs = lib.optionals (stdenv.buildPlatform.canExecute stdenv.hostPlatform) [
     installShellFiles
+  ];
+
+  checkFlags = [
+    # Require creating directory and network access
+    "--skip=plugins::cache_fs_locks::test"
+    "--skip=utils::lax_single_process_fs_flag::test"
+    # Require cargo is running
+    "--skip=utils::process::test"
   ];
 
   postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
@@ -59,7 +68,10 @@ rustPlatform.buildRustPackage rec {
     changelog = "https://github.com/dprint/dprint/releases/tag/${version}";
     homepage = "https://dprint.dev";
     license = licenses.mit;
-    maintainers = with maintainers; [ khushraj ];
+    maintainers = with maintainers; [
+      khushraj
+      kachick
+    ];
     mainProgram = "dprint";
   };
 }

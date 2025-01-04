@@ -35,7 +35,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "RDFLib";
     repo = "rdflib";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-/jRUV7H6JBWBv/gphjLjjifbEwMSxWke5STqkeSzwoE=";
   };
 
@@ -52,12 +52,15 @@ buildPythonPackage rec {
 
   __darwinAllowLocalNetworking = true;
 
-  nativeCheckInputs = [
-    pip
-    pytest-cov-stub
-    pytestCheckHook
-    setuptools
-  ] ++ optional-dependencies.networkx ++ optional-dependencies.html;
+  nativeCheckInputs =
+    [
+      pip
+      pytest-cov-stub
+      pytestCheckHook
+      setuptools
+    ]
+    ++ optional-dependencies.networkx
+    ++ optional-dependencies.html;
 
   pytestFlagsArray = [
     # requires network access

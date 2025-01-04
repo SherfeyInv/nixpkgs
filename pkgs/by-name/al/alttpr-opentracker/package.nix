@@ -22,7 +22,7 @@ buildDotnetModule rec {
   src = fetchFromGitHub {
     owner = "trippsc2";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha512-nWkPgVYdnBJibyJRdLPe3O3RioDPbzumSritRejmr4CeiPb7aUTON7HjivcV/GKor1guEYu+TJ+QxYrqO/eppg==";
   };
 
@@ -30,7 +30,7 @@ buildDotnetModule rec {
 
   dotnet-sdk = dotnetCorePackages.sdk_6_0;
 
-  nugetDeps = ./deps.nix;
+  nugetDeps = ./deps.json;
 
   projectFile = "OpenTracker.sln";
   executables = ["OpenTracker"];

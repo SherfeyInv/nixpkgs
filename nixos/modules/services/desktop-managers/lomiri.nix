@@ -29,9 +29,13 @@ in
     (lib.mkIf cfg.basics {
       environment = {
         # To override the default keyboard layout in Lomiri
-        etc.${pkgs.lomiri.lomiri.passthru.etcLayoutsFile}.text = lib.strings.replaceStrings [ "," ] [
-          "\n"
-        ] config.services.xserver.xkb.layout;
+        etc.${pkgs.lomiri.lomiri.passthru.etcLayoutsFile}.text =
+          lib.strings.replaceStrings
+            [ "," ]
+            [
+              "\n"
+            ]
+            config.services.xserver.xkb.layout;
 
         pathsToLink = [
           # Data
@@ -142,7 +146,7 @@ in
               ayatana-indicator-power
             ]
             ++ lib.optionals config.hardware.bluetooth.enable [ ayatana-indicator-bluetooth ]
-            ++ lib.optionals (config.hardware.pulseaudio.enable || config.services.pipewire.pulse.enable) [
+            ++ lib.optionals (config.services.pulseaudio.enable || config.services.pipewire.pulse.enable) [
               ayatana-indicator-sound
             ]
           )

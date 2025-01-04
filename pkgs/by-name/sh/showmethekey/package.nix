@@ -1,16 +1,17 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, meson
-, ninja
-, libevdev
-, json-glib
-, libinput
-, gtk4
-, libadwaita
-, wrapGAppsHook4
-, libxkbcommon
-, pkg-config
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  meson,
+  ninja,
+  libevdev,
+  json-glib,
+  libinput,
+  gtk4,
+  libadwaita,
+  wrapGAppsHook4,
+  libxkbcommon,
+  pkg-config,
 }:
 
 stdenv.mkDerivation rec {
@@ -20,7 +21,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "AlynxZhou";
     repo = "showmethekey";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-d+k7EbGrFWOztr/e+ugnXVP/hUZAIEgmLDvQDf18K48=";
   };
 

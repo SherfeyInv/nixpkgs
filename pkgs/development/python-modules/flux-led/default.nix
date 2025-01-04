@@ -19,7 +19,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "Danielhiversen";
     repo = "flux_led";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-enYo2hZ1C8jqO+8xZhSmIOJQAyrtVUJ9S/e2Bxzhv0I=";
   };
 
@@ -57,7 +57,7 @@ buildPythonPackage rec {
     homepage = "https://github.com/Danielhiversen/flux_led";
     changelog = "https://github.com/Danielhiversen/flux_led/releases/tag/${version}";
     license = licenses.lgpl3Plus;
-    maintainers = with maintainers; [ colemickens ];
+    maintainers = with maintainers; [ ];
     platforms = platforms.linux;
     mainProgram = "flux_led";
   };

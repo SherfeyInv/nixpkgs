@@ -20,7 +20,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "tillsteinbach";
     repo = "WeConnect-mqtt";
-    rev = "refs/tags/v${version}";
+    tag = "v${version}";
     hash = "sha256-jTScDPTj7aIQcGuL2g8MvuYln6iaj6abEyCfd8vvT2I=";
   };
 
@@ -37,7 +37,6 @@ buildPythonPackage rec {
   pythonRelaxDeps = [ "python-dateutil" ];
 
   build-system = [ setuptools ];
-
 
   dependencies = [
     paho-mqtt_2

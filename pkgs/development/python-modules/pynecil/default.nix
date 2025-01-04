@@ -1,4 +1,5 @@
 {
+  aiohttp,
   bleak,
   buildPythonPackage,
   fetchFromGitHub,
@@ -12,22 +13,27 @@
 
 buildPythonPackage rec {
   pname = "pynecil";
-  version = "1.0.1";
+  version = "3.0.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "tr4nt0r";
     repo = "pynecil";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-95tHT3n4QbYkbAnzFZ0PJ8EHNQdjOqONOKma+QcZSD8=";
+    tag = "v${version}";
+    hash = "sha256-Z4QuX562LKDtNbl1rWcnJbB3Qw0ZaQcJskPPy7DWvQs=";
   };
+
+  pythonRelaxDeps = [ "aiohttp" ];
 
   build-system = [
     hatch-regex-commit
     hatchling
   ];
 
-  dependencies = [ bleak ];
+  dependencies = [
+    aiohttp
+    bleak
+  ];
 
   pythonImportsCheck = [ "pynecil" ];
 

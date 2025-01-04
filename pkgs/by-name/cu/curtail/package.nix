@@ -1,21 +1,23 @@
-{ lib
-, python3
-, fetchFromGitHub
-, wrapGAppsHook4
-, appstream-glib
-, desktop-file-utils
-, gettext
-, gtk4
-, libadwaita
-, meson
-, ninja
-, pkg-config
-, gobject-introspection
-, jpegoptim
-, libwebp
-, optipng
-, pngquant
-, oxipng
+{
+  lib,
+  python3,
+  fetchFromGitHub,
+  wrapGAppsHook4,
+  appstream-glib,
+  desktop-file-utils,
+  gettext,
+  gtk4,
+  libadwaita,
+  meson,
+  ninja,
+  pkg-config,
+  gobject-introspection,
+  jpegoptim,
+  libwebp,
+  optipng,
+  pngquant,
+  oxipng,
+  nix-update-script,
 }:
 
 python3.pkgs.buildPythonApplication rec {
@@ -26,7 +28,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "Huluti";
     repo = "Curtail";
-    rev = "refs/tags/${version}";
+    tag = version;
     sha256 = "sha256-IpN1NMIT13icYnflkcZW+aSzw0Nau8UIOP38Kzji3bg=";
   };
 
@@ -63,15 +65,27 @@ python3.pkgs.buildPythonApplication rec {
   preFixup = ''
     makeWrapperArgs+=(
       "''${gappsWrapperArgs[@]}"
-      "--prefix" "PATH" ":" "${lib.makeBinPath [ jpegoptim libwebp optipng pngquant oxipng ]}"
+      "--prefix" "PATH" ":" "${
+        lib.makeBinPath [
+          jpegoptim
+          libwebp
+          optipng
+          pngquant
+          oxipng
+        ]
+      }"
     )
   '';
+
+  passthru = {
+    updateScript = nix-update-script { };
+  };
 
   meta = with lib; {
     description = "Simple & useful image compressor";
     mainProgram = "curtail";
     homepage = "https://github.com/Huluti/Curtail";
     license = licenses.gpl3Only;
-    maintainers = with maintainers; [ aleksana ];
+    maintainers = lib.teams.gnome-circle.members;
   };
 }

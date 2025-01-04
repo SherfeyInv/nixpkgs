@@ -65,7 +65,7 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "iterative";
     repo = "dvc";
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-ljrQV+Ca0EooCdoEU1B2mnN62bpKV0ZGnX8W1yZWyjM=";
   };
 
@@ -82,7 +82,6 @@ buildPythonPackage rec {
   '';
 
   build-system = [ setuptools-scm ];
-
 
   dependencies =
     [
