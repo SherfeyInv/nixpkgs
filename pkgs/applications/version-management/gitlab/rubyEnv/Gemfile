@@ -30,9 +30,9 @@ gem 'bundler-checksum', '~> 0.1.0', path: 'vendor/gems/bundler-checksum', requir
 # See https://docs.gitlab.com/ee/development/gemfile.html#upgrade-rails for guidelines when upgrading Rails
 
 if next?
-  gem 'rails', '~> 7.1.4', feature_category: :shared
+  gem 'rails', '~> 7.0.8', '>= 7.0.8.7', feature_category: :shared
 else
-  gem 'rails', '~> 7.0.8.4', feature_category: :shared
+  gem 'rails', '~> 7.0.8.7', feature_category: :shared
 end
 
 gem 'activerecord-gitlab', path: 'gems/activerecord-gitlab' # rubocop:todo Gemfile/MissingFeatureCategory
@@ -225,8 +225,8 @@ gem 'google-apis-sqladmin_v1beta4', '~> 0.41.0' # rubocop:todo Gemfile/MissingFe
 gem 'google-apis-androidpublisher_v3', '~> 0.34.0' # rubocop:todo Gemfile/MissingFeatureCategory
 
 gem 'googleauth', '~> 1.8.1', feature_category: :shared
-gem 'google-cloud-artifact_registry-v1', '~> 0.11.0', feature_category: :shared
-gem 'google-cloud-compute-v1', '~> 2.6.0', feature_category: :shared
+gem 'google-cloud-artifact_registry-v1', '~> 1.2.0', feature_category: :shared
+gem 'google-cloud-compute-v1', '~> 2.15.0', feature_category: :shared
 
 # Seed data
 gem 'seed-fu', '~> 2.3.7' # rubocop:todo Gemfile/MissingFeatureCategory
