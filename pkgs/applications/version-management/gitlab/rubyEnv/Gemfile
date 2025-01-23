@@ -347,7 +347,7 @@ gem 'ruby-openai', '~> 3.7' # rubocop:todo Gemfile/MissingFeatureCategory
 gem 'circuitbox', '2.0.0' # rubocop:todo Gemfile/MissingFeatureCategory
 
 # Sanitize user input
-gem 'sanitize', '~> 6.0.2' # rubocop:todo Gemfile/MissingFeatureCategory
+gem 'sanitize', '~> 7.0.0' # rubocop:todo Gemfile/MissingFeatureCategory
 gem 'babosa', '~> 2.0' # rubocop:todo Gemfile/MissingFeatureCategory
 
 # Sanitizes SVG input
