@@ -37,7 +37,7 @@ GEM
     console (1.23.2)
       fiber-annotation
       fiber-local
-    date (3.3.3)
+    date (3.4.1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     drb (2.1.1)
@@ -80,12 +80,12 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.1)
+    net-imap (0.4.19)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
     net-smtp (0.4.0)
       net-protocol
@@ -218,7 +218,7 @@ GEM
     tilt (2.3.0)
     time (0.2.2)
       date
-    timeout (0.4.0)
+    timeout (0.4.3)
     timers (4.3.5)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -236,7 +236,7 @@ PLATFORMS
 
 DEPENDENCIES
   net-ftp
-  net-imap
+  net-imap (>= 0.4.19)
   net-pop
   net-smtp
   ronin
