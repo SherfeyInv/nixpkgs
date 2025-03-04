@@ -1,2 +1,2 @@
 source 'https://rubygems.org'
-gem 'showoff'
+gem 'showoff', '>= 0.20.2'
