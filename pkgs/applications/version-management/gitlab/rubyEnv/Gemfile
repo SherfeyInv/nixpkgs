@@ -627,7 +627,7 @@ gem 'net-ntp' # rubocop:todo Gemfile/MissingFeatureCategory
 gem 'ssh_data', '~> 1.3' # rubocop:todo Gemfile/MissingFeatureCategory
 
 # Spamcheck GRPC protocol definitions
-gem 'spamcheck', '~> 1.3.0' # rubocop:todo Gemfile/MissingFeatureCategory
+gem 'spamcheck', '~> 1.3.2' # rubocop:todo Gemfile/MissingFeatureCategory
 
 # Gitaly GRPC protocol definitions
 gem 'gitaly', '~> 17.4.0.pre.rc1', feature_category: :gitaly
