@@ -45,7 +45,7 @@ jobs:
           echo "baseSha=$baseSha" >> "$GITHUB_OUTPUT"
 
       - name: Install Nix
-        uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+        uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
         if: needs.get-merge-commit.outputs.mergedSha
 
       - name: Evaluate the list of all attributes and get the systems matrix
@@ -74,7 +74,7 @@ jobs:
           path: nixpkgs
 
       - name: Install Nix
-        uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+        uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
 
       - name: Query nixpkgs with aliases enabled to check for basic syntax errors
         run: |
@@ -103,7 +103,7 @@ jobs:
           path: nixpkgs
 
       - name: Install Nix
-        uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+        uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
 
       - name: Evaluate the ${{ matrix.system }} output paths for all derivation attributes
         env:
@@ -142,7 +142,7 @@ jobs:
           path: nixpkgs
 
       - name: Install Nix
-        uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+        uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
 
       - name: Combine all output paths and eval stats
         run: |
