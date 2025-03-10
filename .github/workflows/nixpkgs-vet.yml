@@ -43,7 +43,7 @@ jobs:
           base=$(mktemp -d)
           git worktree add "$base" "$(git rev-parse HEAD^1)"
           echo "base=$base" >> "$GITHUB_ENV"
-      - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+      - uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
         if: needs.get-merge-commit.outputs.mergedSha
       - name: Fetching the pinned tool
         if: needs.get-merge-commit.outputs.mergedSha

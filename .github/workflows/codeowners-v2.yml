@@ -38,7 +38,7 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-    - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+    - uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
 
     - uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
       if: github.repository_owner == 'NixOS'
@@ -83,7 +83,7 @@ jobs:
     name: Request
     runs-on: ubuntu-latest
     steps:
-    - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+    - uses: cachix/install-nix-action@91a071959513ca103b54280ac0bef5b825791d4d # v31
 
     # Important: Because we use pull_request_target, this checks out the base branch of the PR, not the PR head.
     # This is intentional, because we need to request the review of owners as declared in the base branch.
