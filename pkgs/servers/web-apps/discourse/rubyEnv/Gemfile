@@ -15,7 +15,7 @@ gem "activesupport", "~> 7.1.0"
 gem "railties", "~> 7.1.0"
 gem "sprockets-rails"
 
-gem "json"
+gem "json", ">= 2.10.2"
 
 # TODO: At the moment Discourse does not work with Sprockets 4, we would need to correct internals
 # We intend to drop sprockets rather than upgrade to 4.x
@@ -103,7 +103,7 @@ gem "mini_racer"
 
 gem "highline", require: false
 
-gem "rack"
+gem "rack", ">= 2.2.13"
 
 gem "rack-protection" # security
 gem "cbor", require: false
