@@ -189,7 +189,7 @@ GEM
       reline (>= 0.4.2)
     iso8601 (0.13.0)
     jmespath (1.6.2)
-    json (2.10.1)
+    json (2.10.2)
     json-schema (4.3.1)
       addressable (>= 2.8)
     json_schemer (2.3.0)
@@ -630,7 +630,7 @@ DEPENDENCIES
   http_accept_language
   image_optim
   iso8601
-  json
+  json (>= 2.10.2)
   json_schemer
   listen
   lograge
