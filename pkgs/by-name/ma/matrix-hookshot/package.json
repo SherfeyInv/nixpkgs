@@ -60,7 +60,7 @@
     "ioredis": "^5.2.3",
     "jira-client": "^8.2.2",
     "markdown-it": "^14.0.0",
-    "matrix-appservice-bridge": "^9.0.1",
+    "matrix-appservice-bridge": "^10.0.0",
     "matrix-bot-sdk": "npm:@vector-im/matrix-bot-sdk@^0.7.0-specific-device-2",
     "matrix-widget-api": "^1.6.0",
     "micromatch": "^4.0.5",
