@@ -189,7 +189,7 @@ GEM
       reline (>= 0.4.2)
     iso8601 (0.13.0)
     jmespath (1.6.2)
-    json (2.10.1)
+    json (2.10.2)
     json-schema (4.3.1)
       addressable (>= 2.8)
     json_schemer (2.3.0)
@@ -339,7 +339,7 @@ GEM
     puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.11)
+    rack (2.2.13)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
     rack-protection (3.2.0)
@@ -630,7 +630,7 @@ DEPENDENCIES
   http_accept_language
   image_optim
   iso8601
-  json
+  json (>= 2.10.2)
   json_schemer
   listen
   lograge
@@ -672,7 +672,7 @@ DEPENDENCIES
   pry-rails
   pry-stack_explorer
   puma
-  rack
+  rack (>= 2.2.13)
   rack-mini-profiler
   rack-protection
   rails-dom-testing
