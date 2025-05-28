@@ -30,9 +30,9 @@ gem 'bundler-checksum', '~> 0.1.0', path: 'vendor/gems/bundler-checksum', requir
 # See https://docs.gitlab.com/ee/development/gemfile.html#upgrade-rails for guidelines when upgrading Rails
 
 if next?
-  gem 'rails', '~> 7.1.4', feature_category: :shared
+  gem 'rails', '~> 7.2.0', feature_category: :shared
 else
-  gem 'rails', '~> 7.0.8.4', feature_category: :shared
+  gem 'rails', '~> 7.2.0.0', feature_category: :shared
 end
 
 gem 'activerecord-gitlab', path: 'gems/activerecord-gitlab' # rubocop:todo Gemfile/MissingFeatureCategory
@@ -151,7 +151,7 @@ gem 'gitlab_omniauth-ldap', '~> 2.2.0', require: 'omniauth-ldap' # rubocop:todo 
 gem 'net-ldap', '~> 0.17.1' # rubocop:todo Gemfile/MissingFeatureCategory
 
 # API
-gem 'grape', '~> 2.0.0', feature_category: :api
+gem 'grape', '~> 2.1.0', feature_category: :api
 gem 'grape-entity', '~> 1.0.1', feature_category: :api
 gem 'grape-swagger', '~> 2.1.0', group: [:development, :test], feature_category: :api
 gem 'grape-swagger-entity', '~> 0.5.1', group: [:development, :test], feature_category: :api
