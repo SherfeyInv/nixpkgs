@@ -264,7 +264,7 @@ gem "faraday-retry"
 gem "net-http"
 
 # Workaround until Ruby ships with cgi version 0.3.6 or higher.
-gem "cgi", ">= 0.3.6", require: false
+gem "cgi", ">= 0.4.2", require: false
 
 gem "tzinfo-data"
 gem "csv", require: false
